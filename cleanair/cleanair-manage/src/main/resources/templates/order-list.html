@@ -1,0 +1,181 @@
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">订单管理</a>
+        <a>
+          <cite>订单列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <div class="layui-inline layui-show-xs-block">
+            <input name="orderId" id="orderId" placeholder="请输入订单号" required="" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline layui-show-xs-block">
+            <button class="layui-btn" data-type="reload">搜索</button>
+            <!--                                    <i class="layui-icon">&#xe615;</i>-->
+        </div>
+    </div>
+    <table class="order-list" lay-filter="user">
+
+    </table>
+    <script type="text/html" id="barDemo">
+        {{#  if(d.status == 3 ){ }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini " lay-event="status" style="background-color: #93b1d7">
+            取货成功 </a>
+        {{#  }else{ }}
+        <!--        <a class="layui-btn layui-btn-primary layui-btn-mini   layui-btn-normal " lay-event="detail"></a>-->
+        {{#  }  }}
+        <!--        <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="edit">变更职位</a>-->
+    </script>
+</div>
+<script th:inline="none">
+
+    //layui自带的渲染网页tble格式
+    layui.use(['layer', 'jquery', 'table', 'form', 'layedit', 'upload'], function () {
+        var layedit = layui.layedit;
+        $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+        var upload = layui.upload;
+
+        table.render({
+            elem: '.order-list',
+            url: '/order-list/findOrderByPage',
+            cellMinWidth: 95,
+            page: true,
+            height: "312",
+            limits: [10, 15, 20, 25],
+            limit: 10,
+            id: "OrderListTable",
+            cols: [[
+                {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
+                {field: 'id', title: '订单编号', minWidth: 80, align: "center", id: 'id'},
+                {
+                    field: 'payment', title: '订单总金额', minWidth: 80, align: "center", templet: function (d) {
+                        return d.payment / 100;
+                    }
+                },
+                {field: 'userId', title: '顾客ID', minWidth: 80, align: "center"},
+                {field: 'address', title: '收货地址', minWidth: 80, align: "center"},
+                {field: 'phone', title: '联系电话', minWidth: 80, align: "center"},
+                {
+                    field: 'created', title: '创建时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.created / 1)
+                    }
+                },
+                {
+                    field: ' updated', title: '更新时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.updated / 1)
+                    }
+                },
+                {
+                    field: 'status', title: '订单状态', minWidth: 80, align: 'center', templet: function (d) {
+                        return getStatus(d.status)
+                    }
+                },
+                {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
+
+            ]]
+        });
+        table.on('tool(user)', function (obj) {
+            var data = obj.data;
+            //删除单个item
+            if (obj.event === 'status') {
+                // console.log(data);
+                layer.confirm('订单编号为' + data.id+ '的货物都取到了吗？', function (index) {
+                    $.ajax({
+                        url: '/order-list/updateOrderStatusTo4ById/',
+                        data: {'id': data.id},
+                        method: 'get',
+                        contentType: 'json',
+                        //执行完成回调函数
+                        success: function (data) {
+                            console.log(data)
+                            if (data.status == 200) {
+                                layer.close(index);
+                                layer.msg("收货成功", {icon: 6});
+                                //表格刷新
+                                table.reload('OrderListTable', {});
+                            } else {
+                                layer.msg("收货失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(data.data)
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+            }
+        })
+        //按照title搜索
+        var $ = layui.$, active = {
+            reload: function () {
+                var orderId = $('#orderId');
+                if (orderId.val() == "") {
+                    layer.msg("搜索订单编号不能为空");
+                    return;
+                }else if ( isNaN(orderId.val())){
+                    layer.msg("搜索订单编号不规范");
+                    return;
+                } else {
+                    table.reload('OrderListTable', {
+                        where: {
+                            orderId: orderId.val(),
+                        }
+                    });
+                }
+            }
+        }
+        //绑定点击事件
+        $(' .layui-btn ').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    })
+
+    function getStatus(status) {
+        var state = ""
+        if (status == 1) {
+            state = "派件中";
+        } else if (status == 2) {
+            state = "租用中";
+        } else if (status == 3) {
+            state = "取货中";
+        } else if (status == 4) {
+            state = "订单完成";
+        }
+        return state;
+    }
+</script>
+</body>
+
+</html>

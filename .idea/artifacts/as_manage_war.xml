@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="as-manage:war">
+    <output-path>$PROJECT_DIR$/as/as-manage/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>as-manage</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="as-manage-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="as-manage:war exploded" />
+    </root>
+  </artifact>
+</component>

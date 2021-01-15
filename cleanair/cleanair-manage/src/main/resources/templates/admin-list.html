@@ -1,0 +1,369 @@
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">管理员管理</a>
+        <a>
+          <cite>管理员列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <div class="layui-inline layui-show-xs-block">
+            <input type="text" name="adminname" id="adminname" placeholder="请输入账户名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline layui-show-xs-block">
+            <button class="layui-btn"  data-type="reload">搜索</button>
+            <!--                                    <i class="layui-icon">&#xe615;</i>-->
+        </div>
+    </div>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" id="delall"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./admin-add.html')"><i class="layui-icon"></i>添加
+        </button>
+        <span class="x-right" style="line-height:40px"></span>
+    </xblock>
+    <table class="admin-list" lay-filter="user">
+    </table>
+    <script type="text/html" id="barDemo">
+
+        {{#  if(d.valid ==1 ){ }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail" style="background-color: red">禁用</a>
+        {{#  }else{ }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini  layui-btn-normal " lay-event="detail">启用</a>
+        {{#  }  }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="edit">变更职位</a>
+        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="del">删除</a>
+    </script>
+
+    <div class="x-bodyedit" style="display: none">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="x-red">*</span>角色</label>
+                <div class="layui-input-block">
+                    <select name="roleId" id="roleId" lay-verify="required" lay-filter="xmFilter">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="roleId" class="layui-form-label">
+                </label>
+                <button class="layui-btn" lay-filter="edit" lay-submit="">
+                    修改
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+<script>
+    layui.use(['layer', 'jquery', 'table', 'form'], function () {
+        $ = layui.jquery;
+        var table = layui.table;
+        var form = layui.form;
+
+        //初始化下拉框的所有的数据
+        $.ajax({
+            url: '/role-list/findAllRole',
+            dataType: 'json',
+            type: 'get',
+            success: function (data) {
+                //这里要role的id和name 一方面是要显示出来，另一方面作为admin的属性进行保存
+                // console.log(data)
+                $.each(data.data, function (index, value) {
+                    // console.log(value.name);
+                    $('#roleId').append(new Option(value.name, value.id));// 下拉菜单里添加元素
+                });
+                layui.form.render("select");
+            }
+        })
+
+
+        table.render({
+            elem: '.admin-list',
+            url: '/admin-list/findAdminByPage',
+            cellMinWidth: 95,
+            page: true,
+            height: "312",
+            limits: [10, 15, 20, 25],
+            limit: 10,
+            id: "AdminListTable",
+            cols: [
+                [
+                    {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
+                    {field: 'id', title: '账户ID', minWidth: 80, align: "center", id: 'id'},
+                    {field: 'name', title: '账户名称', minWidth: 80, align: "center"},
+                    {field: 'email', title: '邮箱', minWidth: 80, align: "center"},
+                    {field: 'phone', title: '手机号码', minWidth: 80, align: "center"},
+                    {
+                        field: 'roleId', title: '职位', minWidth: 80, align: "center", templet: function (d) {
+                            return getRoleName(d.roleId)
+                        }
+                    },
+                    {
+                        field: 'created', title: '创建时间', minWidth: 80, align: 'center', templet: function (d) {
+                            return layui.util.toDateString(d.created / 1)
+                        }
+                    },
+                    {
+                        field: ' updated', title: '更新时间', minWidth: 80, align: 'center', templet: function (d) {
+                            return layui.util.toDateString(d.updated / 1)
+                        }
+                    },
+                    {
+                        field: 'valid', title: '账户状态', minWidth: 80, align: 'center', templet: function (d) {
+                            return d.valid == '1' ? "正常" : "<span class='layui-red' style='color: red'>被禁用</span>";
+                        }
+                    },
+                    {field: 'right', title: '操作', align: 'center', minWidth: 230, toolbar: "#barDemo"}
+                ]
+            ]
+
+        });
+
+        //批量删除
+        $("#delall").click(function () {
+            var checkStatus = table.checkStatus("AdminListTable")
+            if (checkStatus.data.length != 0){
+                var ids = [];
+                var names = []
+                for (var i =0;i<checkStatus.data.length;i++){
+                    ids.push(checkStatus.data[i].id);
+                    names.push(checkStatus.data[i].name)
+                }
+                var id = ids.join(",")
+                var name = names.join(",")
+                layer.confirm('真的删除账户' +name + '吗？',function () {
+                    $.post("/admin-list/deleteAdminsById",{"ids":id},
+                        function (index) {
+                            if(index.status == 200){
+                                layer.msg("删除成功", {icon: 6});
+                                table.reload('AdminListTable', {})
+                            }else {
+                                layer.msg("删除失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(index.data)
+                            }
+                        },"json",);
+                })
+            }else {
+                layer.msg("请勾选要删除的商品", {icon: 5})
+            }
+        });
+        //按照title搜索
+        var $=layui.$, active = {
+            reload:function () {
+                var name = $('#adminname');
+                if (name.val() == ""){
+                    layer.msg("搜索账户名不能为空");
+                    return ;
+                }else {
+                    table.reload('AdminListTable',{
+                        where:{
+                           name:name.val(),
+                        }
+                    });
+                }
+            }
+        }
+
+        //绑定点击事件
+        $(' .layui-btn ').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        table.on('tool(user)', function (obj) {
+            var data = obj.data;
+            //启用禁用账户
+            if (obj.event === 'detail') {
+                $.ajax({
+                    url: '/admin-list/updateValidById/',
+                    data: {"id": data.id},
+                    method: 'get',
+                    contentType: 'json',
+                    success: function (data) {
+                        if (data.status == 200) {
+                            layer.msg("操作成功", {icon: 6});
+                            //表格刷新
+                            table.reload('AdminListTable', {});
+                        } else {
+                            layer.msg("操作失败", {icon: 5})
+                            // table.reload('itemListTable', {});
+                            console.log(data)
+                            layer.alert(data.data)
+                        }
+
+                    }
+                })
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    type: 1,
+                    area: [600 + 'px', 400 + 'px'],
+                    fix: false, //不固定
+                    //maxmin: true,
+                    //shadeClose: true,
+                    skin: 'layui-layer-rim',
+                    shade: 0.6,
+                    title: '修改管理员',
+                    content: $('.x-bodyedit'),
+                    success: function (layero, index) {
+                        $('#name').val(data.name);
+                        $('#phone').val(data.phone);
+                        $('#email').val(data.email);
+                        // console.log(data.roleId); 给下拉框赋值
+                        $('#roleId').find("option[value=" + data.roleId + "]").attr("selected", true);
+                        //重新渲染select
+                        form.render('select');
+                        form.on('submit(edit)', function (obj) {
+                            console.log(obj.field);
+                            console.log(data.id)
+                            var admin = {
+                                id: data.id,
+                                roleId: obj.field.roleId
+                            }
+                            $.ajax({
+                                url: "/admin-list/updateAdmin",
+                                data: admin,
+                                dataType: "json",
+                                type: "post",
+                                success: function (data) {
+                                    if (data.status == 200) {
+                                        layer.msg("操作成功", {icon: 6});
+                                        //表格刷新
+                                        table.reload('AdminListTable', {});
+                                        parent.location.reload();
+                                    } else {
+                                        layer.msg("操作失败", {icon: 6});
+                                        layer.alert(data.data)
+                                    }
+                                }
+                            });
+                            return false;
+                        });
+
+                    }
+                })
+            } else if (obj.event === 'del') {
+                layer.confirm('真的删除账户' + data.name + '吗？', function (index) {
+                    $.ajax({
+                        url: '/admin-list/deleteAdminById',
+                        data: {"id": data.id},
+                        method: 'get',
+                        contentType: 'json',
+                        //执行完成回调函数
+                        success: function (data) {
+                            console.log(data)
+                            if (data.status == 200) {
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                //表格刷新
+                                table.reload('roleListTable', {});
+                                parent.location.reload();
+                            } else {
+                                layer.msg("删除失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(data.data)
+
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+
+            }
+        })
+
+    });
+    //由于只能更改人物角色 所以表单验证可以不需要
+    // //自定义验证规则
+    // form.verify({
+    //     name: function (value) {
+    //         if (value.length < 5) {
+    //             return '昵称至少得5个字符啊';
+    //         }
+    //         var back;
+    //         $.ajax({
+    //             url: '/admin-list/findAdminByName',
+    //             dataType: "json",
+    //             type: "get",
+    //             data: {"value": value},
+    //             async: false,
+    //             success: function (data) {
+    //                 return  back = data.data;
+    //             }
+    //         })
+    //         // console.log(value)
+    //         // console.log(back);
+    //         if (back) {
+    //             return '用户id已存在';
+    //         }
+    //     }
+    //     , pass: [/(.+){6,12}$/, '密码必须6到12位']
+    //     , repass: function (value) {
+    //         if ($('#L_pass').val() != $('#L_repass').val()) {
+    //             return '两次密码不一致';
+    //         }
+    //     }
+    // });
+
+
+    //在页面上把roleID 改为roleName显示
+    function getRoleName(roleId) {
+        var name = "";
+       if (roleId == 0){
+           name = "无职位"
+       }else {
+           $.ajax({
+               url: "/role-list/findRoleNameByRoleId",
+               dataType: "json",
+               async: false,
+               data: {"roleId": roleId},
+               type: "get",
+               success: function (data) {
+                   // console.log(data);
+                   // if (data.data == null) {
+                   //     name = "无职位"
+                   // } else {
+                   //     name = data.data;
+                   // }
+                   name = data.data;
+               }
+           })
+       }
+        // console.log(name)
+        return name;
+    }
+</script>
+</body>
+
+</html>

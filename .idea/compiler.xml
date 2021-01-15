@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="test" />
+        <module name="cleanair-web" />
+        <module name="cleanair-manage" />
+        <module name="aprm" />
+        <module name="as-manage" />
+        <module name="cleanair-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aprm" target="1.5" />
+      <module name="aprm-manage" target="1.8" />
+      <module name="as" target="1.5" />
+      <module name="as-common" target="1.8" />
+      <module name="as-manage" target="1.8" />
+      <module name="cleanair" target="1.8" />
+      <module name="cleanair-common" target="1.8" />
+      <module name="cleanair-manage" target="1.8" />
+      <module name="cleanair-web" target="1.8" />
+      <module name="test" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aprm-manage" options="-parameters" />
+      <module name="as" options="" />
+      <module name="as-common" options="-parameters" />
+      <module name="as-manage" options="-parameters" />
+      <module name="cleanair" options="-parameters" />
+      <module name="cleanair-common" options="-parameters" />
+      <module name="cleanair-manage" options="-parameters" />
+      <module name="cleanair-web" options="-parameters" />
+      <module name="test" options="-parameters" />
+    </option>
+  </component>
+</project>
