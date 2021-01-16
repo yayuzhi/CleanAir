@@ -83,8 +83,8 @@ public class SpringShiroConfig {
         map.put("/lib/**","anon");
         map.put("/admin/doLogin", "anon");
         map.put("/doLogout","logout");
-        map.put("/index","anon");
-        map.put("/allproducts","anon");
+//        map.put("/index","anon");
+//        map.put("/allproducts","anon");
         //除了匿名访问的资源,其它都要认证("authc")后访问
         map.put("/**","user");
         sfBean.setFilterChainDefinitionMap(map);
