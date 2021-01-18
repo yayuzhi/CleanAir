@@ -5,7 +5,6 @@ server:
     context-path: /
 
 # spring
-
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/qkdb?serverTimezone=GMT%2B8&characterEncoding=utf8
@@ -15,16 +14,6 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
-  aop:
-    proxy-target-class: false  #false 表示jdk代理,默认为true
-  task: # 配置spring框架中的线程池
-    execution:
-      pool:
-        core-size: 5 #线程池中核心线程数(当池中线程没有达到这个值时，每次从池中请求线程都会创建一个新的线程)
-        max-size: 12 # 当池中核心线程都在忙，任务队列也满了，此时又有新的任务要交给池中线程去执行，当池中线程没有达到最大值时，此时创建新的线程去执行任务。
-        queue-capacity: 46 # 当池中核心线程都在忙，又有新的任务要交给池中线程去执行，此时可以将任务存储到任务队列。
-        keep-alive: 120s #当池中线程数量大于核心线程数，又没有新的任务时，此时空闲下来的线程，超过keep-alive这个参数指定的值，线程会被释放。
-      thread-name-prefix: db-service- #定义池中线程名的前缀，默认为task-
   mvc:
     hiddenmethod:
       filter:
