@@ -11,13 +11,7 @@ public class IndexController {
 
     @RequestMapping("/index")
     public String index(){
-
         return "index";
-    }
-
-    @GetMapping("{moduleName}")
-    public String doModuleUI(@PathVariable String moduleName){
-        return moduleName;
     }
 
 
