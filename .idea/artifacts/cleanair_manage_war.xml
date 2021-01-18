@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="cleanair-manage-0.0.1-SNAPSHOT.war">
+    <root id="archive" name="cleanair-manage-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="cleanair-manage:war exploded" />
     </root>
   </artifact>

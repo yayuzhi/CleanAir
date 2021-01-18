@@ -17,6 +17,7 @@ import java.util.Date;
 @Accessors(chain=true)
 public class Item extends BasePojo{
 
+    private static final long serialVersionUID = 8592342964602979232L;
     @TableId(type = IdType.AUTO)
     private Long id;
     private String title;

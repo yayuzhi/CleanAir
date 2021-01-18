@@ -10,9 +10,10 @@
         <module name="test" />
         <module name="cleanair-web" />
         <module name="cleanair-manage" />
-        <module name="aprm" />
-        <module name="as-manage" />
         <module name="cleanair-common" />
+        <module name="as-manage" />
+        <module name="aprm" />
+        <module name="cleanair-sso" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
       <module name="cleanair" target="1.8" />
       <module name="cleanair-common" target="1.8" />
       <module name="cleanair-manage" target="1.8" />
+      <module name="cleanair-sso" target="1.8" />
       <module name="cleanair-web" target="1.8" />
       <module name="test" target="1.5" />
     </bytecodeTargetLevel>
@@ -37,6 +39,7 @@
       <module name="cleanair" options="-parameters" />
       <module name="cleanair-common" options="-parameters" />
       <module name="cleanair-manage" options="-parameters" />
+      <module name="cleanair-sso" options="-parameters" />
       <module name="cleanair-web" options="-parameters" />
       <module name="test" options="-parameters" />
     </option>

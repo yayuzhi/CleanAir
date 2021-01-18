@@ -14,6 +14,7 @@ import java.util.Date;
 @Data
 @Accessors(chain=true)
 public class Admin extends BasePojo{
+    private static final long serialVersionUID = -9090687799108736205L;
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;

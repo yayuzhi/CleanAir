@@ -16,6 +16,7 @@ import java.util.Date;
 @Accessors(chain=true)
 public class Order extends BasePojo{
 
+    private static final long serialVersionUID = 8187380989812640400L;
     @TableId(type = IdType.AUTO)
     private Long id; //订单编号
     private Long payment; //订单总金额
