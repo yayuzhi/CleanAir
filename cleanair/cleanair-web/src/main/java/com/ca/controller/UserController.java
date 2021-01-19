@@ -13,9 +13,6 @@ import redis.clients.jedis.JedisCluster;
 @RequestMapping("/user")
 public class UserController {
 
-    @RequestMapping("/{moduleName}")
-    public String doModuleUI(@PathVariable String moduleName){
-        return moduleName;
-    }
+
 
 }
