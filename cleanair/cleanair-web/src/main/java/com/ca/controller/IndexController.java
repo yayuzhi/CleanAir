@@ -13,6 +13,7 @@ public class IndexController {
     public String index(){
         return "index";
     }
+
     @RequestMapping("/{moduleName}")
     public String doModuleUI(@PathVariable String moduleName){
         return moduleName;

@@ -41,11 +41,13 @@
                                     <form class="register" onsubmit="return checkForm()">
                                         <p class="form-row form-row-wide">
                                             <label class="text">邮箱</label>
-                                            <input id="email" title="email" type="email" class="input-text">
+                                            <input id="email" title="email" type="email" class="input-text" value=""
+                                                   placeholder="登录名@主机名.域名">
                                         </p>
                                         <p class="form-row form-row-wide">
                                             <label class="text">手机号码</label>
-                                            <input id="phone" title="phone" type="phone" class="input-text">
+                                            <input id="phone" title="phone" type="phone" class="input-text"
+                                                   placeholder="11位数组1开头">
                                         </p>
                                         <p class="form-row form-row-wide">
                                             <label class="text">用户名</label>
@@ -53,11 +55,13 @@
                                         </p>
                                         <p class="form-row form-row-wide">
                                             <label class="text">密码</label>
-                                            <input id="password" title="pass" type="password" class="input-text">
+                                            <input id="password" title="pass" type="password" class="input-text"
+                                                   placeholder=" 长度大于6">
                                         </p>
                                         <p class="form-row form-row-wide">
                                             <label class="text">确认密码</label>
-                                            <input id="pass2" title="pass2" type="password" class="input-text">
+                                            <input id="pass2" title="pass2" type="password" class="input-text"
+                                                   placeholder="再次输入密码">
                                         </p>
                                         <p class="form-row">
 												<span class="inline">
@@ -71,8 +75,8 @@
                                         <!--                                        </p>-->
 
                                         <div class="input-group-btn">
-                                            <button type="submit" class="button-submit" >现在注册</button>
-<!--                                            type="submit"-->
+                                            <button type="submit" class="button-submit">现在注册</button>
+                                            <!--                                            type="submit"-->
                                         </div>
                                     </form>
                                 </div>
@@ -116,14 +120,14 @@
     // });
 
 
-    //注册事件
+    //注册事件 ajax填写！！！
     function doRegist() {
         // 对数据进行验证
         var email = $('#email').val();
-        // var phone = $('#phone').val();
-        // var name = $('#name').val();
-        // var password = $('#password').val();
-        // var pass2 = $('#pass2').val();
+        var phone = $('#phone').val();
+        var name = $('#name').val();
+        var password = $('#password').val();
+        var pass2 = $('#pass2').val();
         // if (checkEmail(email)) ;
         // if (checkPhone(phone)) ;
         // if (checkName(name)) ;
@@ -133,18 +137,28 @@
         // checkName(name);
         // checkPass(password, pass2);
         // var user = {}
-        console.log(email);
-        // $.ajax({
-        //     url: '/user/addUser',
-        //     dataType: "json",
-        //     type: "get",
-        //     data: data.field,
-        //     success: function (result) {
-        //     }
-        // })
+        var user = {
+            'email': email,
+            'phone': phone,
+            'username': name,
+            'password': pass2
+        }
+
+
+        console.log(user)
+        $.ajax({
+            url: '/user/addUser',
+            dataType: "json",
+            type: "post",
+            data: user,
+            success: function (result) {
+
+            }
+        })
         return false;
 
     }
+
     //表单的全部验证
     function checkForm() {
         var email = $('#email').val();
@@ -152,11 +166,19 @@
         var name = $('#name').val();
         var password = $('#password').val();
         var pass2 = $('#pass2').val();
-       if (checkEmail(email) && checkPhone(phone) && checkName(name) && checkPass(password, pass2) && checkAgree()){
-           return doRegist();
-       }else {
-           return false;
-       }
+        var user = {
+            'email': email,
+            'phone': phone,
+            'username': name,
+            'password': pass2
+        };
+        if (checkEmail(email) && checkPhone(phone) && checkName(name) && checkPass(password, pass2) && checkAgree() && checkAll(user)) {
+
+            return doRegist();
+
+        } else {
+            return false;
+        }
         // checkEmail(email);
         // checkPhone(phone);
         // checkName(name);
@@ -167,13 +189,14 @@
 
     function checkAgree() {
 
-        if ($('#agree').is(":checked")){
+        if ($('#agree').is(":checked")) {
             return true;
-        }else{
+        } else {
             alert("请勾选用户准则 & 商城规则!");
             return false;
         }
     }
+
     //判断name
     function checkName(name) {
         if (name == null || name == "") {
@@ -181,14 +204,47 @@
             $('#name').focus();
             return false;
         } else {
-            return true;
+            return true
         }
+
+    }
+
+    function checkAll(user) {
+        var a =false;
+        $.ajax({
+            url: "http://sso.qk.com/user/check",
+            dataType: "json",
+            type: "post",
+            crossDomain: true,
+            data: user,
+            async: false, //异步处理
+            success: function (result) {
+                // if (result)
+                // console.log(result)
+                if (result.status == 200) {
+                    // console.log(typeof(result.data))
+                    if ( result.data == null || result.data == "") {
+                        a = true;
+                        // console.log("ok")
+                    } else {
+                        a = false;
+                        window.alert(result.data);
+                    }
+                }
+            }
+        })
+        // console.log(a)
+        return a;
     }
 
     //对两个密码进行一样的校验
     function checkPass(password, pass2) {
         if (password == null || password == "") {
             alert("密码不能为空!");
+            $('#password').focus();
+            return false;
+        } else if (password.length < 6) {
+            alert("密码长度大于6!");
             $('#password').focus();
             return false;
         } else if (pass2 == null || pass2 == "") {
