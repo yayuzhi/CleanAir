@@ -152,7 +152,13 @@
             type: "post",
             data: user,
             success: function (result) {
-
+                console.log(result)
+                if (result.status == 200){
+                    window.alert("注册成功！")
+                    window.location.href = "http://www.qk.com/login"
+                }else {
+                    window.alert("注册失败！")
+                }
             }
         })
         return false;

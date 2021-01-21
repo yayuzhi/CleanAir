@@ -35,8 +35,8 @@ public class UserController {
     public JsonResult checkUser(User user) {
         //只需要校验数据库中是否有结果
         StringBuffer str  = userService.checkUser(user);
-        System.out.println(user);
-        System.out.println(str);
+//        System.out.println(user);
+//        System.out.println(str);
 
         return JsonResult.success(str);
     }
