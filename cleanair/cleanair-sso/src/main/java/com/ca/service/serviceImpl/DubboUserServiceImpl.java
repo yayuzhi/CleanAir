@@ -40,7 +40,7 @@ public class DubboUserServiceImpl implements DubboUserService {
         User userDB = userMapper.selectOne(queryWrapper);
         if (userDB == null){
             ////根据用户名和密码错误
-            return "账号或密码错误";
+            return null;
         }
 
         //开始进行单点登录业务操作

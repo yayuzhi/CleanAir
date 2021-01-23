@@ -41,17 +41,17 @@
                                     <form class="login">
                                         <p class="form-row form-row-wide">
                                             <label class="text">用户名</label>
-                                            <input title="username" type="text" class="input-text">
+                                            <input id="name" title="name" type="text" class="input-text">
                                         </p>
                                         <p class="form-row form-row-wide">
                                             <label class="text">密码</label>
-                                            <input title="password" type="password" class="input-text">
+                                            <input  id="password" title="password" type="password" class="input-text">
                                         </p>
                                         <p class="lost_password">
-												<span class="inline">
-													<input type="checkbox" id="cb1">
-													<label for="cb1" class="label-text">记住我</label>
-												</span>
+<!--												<span class="inline">-->
+<!--													<input type="checkbox" id="cb1">-->
+<!--													<label for="cb1" class="label-text">记住我</label>-->
+<!--												</span>-->
                                             <a href="#" class="forgot-pw">忘记密码</a>
                                         </p>
                                         <p class="form-row">
@@ -96,7 +96,39 @@
     });
 
     function doLogin() {
-        console.log("??");
+
+        var name = $('#name').val();
+        var password = $('#password').val();
+        // var remenberme = $("input[type='checkbox']").is(':checked');
+        // console.log(remenberme);
+
+        var user = {
+            "username":name,
+            "password":password,
+            //判断是否要生成一个cookie
+            // "remenberme":remenberme
+        }
+
+        $.ajax({
+            url: '/user/doLogin',
+            dataType: "json",
+            type: "post",
+            data: user,
+            xhrFields: {withCredentials: true},
+            success: function (result) {
+                console.log(result)
+                if (result.status == 200){
+                    window.alert("登录成功！")
+                    // window.location = "http://www.qk.com/"
+                    location.href = 'index?it=' + Math.random();
+                    // location.href = '/index?t=' + Math.random();
+
+                }else {
+                    window.alert("用户名或密码错误！")
+                }
+            }
+
+        })
         return false;
     }
 

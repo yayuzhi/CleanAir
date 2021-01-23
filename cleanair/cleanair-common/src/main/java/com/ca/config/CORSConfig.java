@@ -24,9 +24,10 @@ public class CORSConfig implements WebMvcConfigurer{//web项目的全局配置�
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOriginPatterns("*")
-                .allowedMethods("GET", "HEAD", "POST","PUT", "DELETE", "OPTIONS")
-                .allowCredentials(true).maxAge(3600);
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true);
+        //.maxAge();       默认30分钟 是否允许跨域请求 30分钟之内不会再次验证
+        //.allowedMethods() 允许请求类型
     }
 }
-
