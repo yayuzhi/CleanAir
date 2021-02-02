@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./images/favicon.ico"/>
-    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>
+    <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
+    <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
@@ -35,10 +36,10 @@
                     欢迎来到气清!
                 </div>
             </div>
-            <div class="top-bar-right">
+            <div id="loginbar" class="top-bar-right">
                 <div class="header-language">
                     <div class="teamo-language ">
-                        <a href="#" class="active language-toggle">
+                        <a href="http://www.qk.com/login" class="active language-toggle">
 								<span>
 									请登录
 								</span>
@@ -47,14 +48,14 @@
                 </div>
                 <ul class="header-user-links">
                     <li>
-                        <a href="#">注册</a>
+                        <a href="http://www.qk.com/regist">注册</a>
                     </li>
                 </ul>
-                <ul class="header-user-links">
-                    <li>
-                        <a href="#">个人中心</a>
-                    </li>
-                </ul>
+                <!--                <ul class="header-user-links">-->
+                <!--                    <li>-->
+                <!--                        <a href="#">个人中心</a>-->
+                <!--                    </li>-->
+                <!--                </ul>-->
             </div>
         </div>
     </div>
@@ -135,7 +136,7 @@
                             <!--								</div>-->
 
                             <div style="margin-top:70px;" id="product"></div>
-<!--                            商品展示-->
+                            <!--                            商品展示-->
 
                         </li>
                     </ul>
@@ -170,30 +171,60 @@
 <script src="./js/lightbox.min.js"></script>
 <script src="./js/owl.thumbs.min.js"></script>
 <script src="./js/jquery.scrollbar.min.js"></script>
-<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>
+<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
-<script>
+<script src="./js/jquery.cookie.js"></script>
+<script type="text/javascript">
+    var TT = QK = {
+        checkLogin: function () {
+            var _ticket = $.cookie("QK_TICKET");
+            if (!_ticket) {
+                return;
+            }
+            //当dataType类型为jsonp时，jQuery就会自动在请求链接上增加一个callback的参数
+            $.ajax({
+                url: "http://sso.qk.com/user/query/" + _ticket,
+                dataType: "jsonp",
+                type: "GET",
+                success: function (data) {
+                    if (data.status == 200) {
+                        //要求获取的是user的JSON串
+                        var _data = JSON.parse(data.data);//将JSON串转化为对象
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        $("#loginbar").html(html);
+                    }
+                }
+            });
+        }
+    }
+
+    $(function () {
+        // 查看是否已经登录，如果已经登录查询登录信息
+        TT.checkLogin();
+    });
+
+
     layui.use(['jquery', 'laypage'], function () {
         var $ = layui.jquery,
             laypage = layui.laypage;
 
         var page = 1;//当前页
         var limit = 16;//每页显示的数目
-        var resCount, resData ;
+        var resCount, resData;
         var resPage = renderPage1();
 
         //渲染展示商品的html页面
-        function renderProductHtml(data){
+        function renderProductHtml(data) {
             var str = "";//用来存储html内容
-            if(data.length > 0){
-                $.each(data, function(v, o){
-                    str += "<div style='margin:auto; margin-bottom:130px;  width:150px; height:150px; float:left; text-align:center'><div><img alt='' src='"+o.imgPath+"' width='150px' height='150px'/></div>";
-                    str += "<div style='text-align:left'><div><label>商品名称:</label><span>"+o.productName+"</span></div>";
-                    str += "<div><label>价格:</label><span style='color:#FF3030;'>￥"+o.price+"</span></div>";
-                    str += "<div><label>新旧程度:</label><span>"+o.degree+"</span></div>";
-                    str += "<div><label>销量:</label><span style='color:#CDC9C9;'>"+o.sales+"</span>";
-                    str += "<label>库存:</label><span style='color:#CDC9C9;'>"+o.stock+"</span></div>";
-                    str += "<div style='display:none;'><label>商品ID:</label><span>"+o.product_id+"</span></div></div></div>";
+            if (data.length > 0) {
+                $.each(data, function (v, o) {
+                    str += "<div style='margin:auto; margin-bottom:130px;  width:150px; height:150px; float:left; text-align:center'><div><img alt='' src='" + o.imgPath + "' width='150px' height='150px'/></div>";
+                    str += "<div style='text-align:left'><div><label>商品名称:</label><span>" + o.productName + "</span></div>";
+                    str += "<div><label>价格:</label><span style='color:#FF3030;'>￥" + o.price + "</span></div>";
+                    str += "<div><label>新旧程度:</label><span>" + o.degree + "</span></div>";
+                    str += "<div><label>销量:</label><span style='color:#CDC9C9;'>" + o.sales + "</span>";
+                    str += "<label>库存:</label><span style='color:#CDC9C9;'>" + o.stock + "</span></div>";
+                    str += "<div style='display:none;'><label>商品ID:</label><span>" + o.product_id + "</span></div></div></div>";
                 });
                 $("#product").html(str);
             }
@@ -202,13 +233,13 @@
 
 
         //同步加载商品数据
-        function renderProduct(page, limit){
+        function renderProduct(page, limit) {
             $.ajax({
                 async: false,
                 url: '/UsedProduct/product/getProductPage',
                 data: {"page": page, "limit": limit},
                 dataType: 'json',
-                success: function(result){
+                success: function (result) {
                     console.info(result);
                     resCount = result.count;
                     resData = result.data;
@@ -219,20 +250,20 @@
 
 
         //分页的完整功能，page，limit，resCount都是自定义的全局变量
-        function renderPage1(){
+        function renderPage1() {
             renderProduct(page, limit);//关键
             laypage.render({
                 elem: 'layuipage'//div的id，不能加#
-                ,count: resCount//数据总条数
-                ,limit: limit//每页显示多少条数据
-                ,limits: [limit]//可选择的 每页显示多少条数据
-                ,curr: page//当前页码
-                ,theme: '#FFB800'//分页导航栏的颜色，用了橘色
-                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                ,jump: function(obj, first){
+                , count: resCount//数据总条数
+                , limit: limit//每页显示多少条数据
+                , limits: [limit]//可选择的 每页显示多少条数据
+                , curr: page//当前页码
+                , theme: '#FFB800'//分页导航栏的颜色，用了橘色
+                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , jump: function (obj, first) {
                     console.info(obj);
                     page = obj.curr;
-                    if(!first){//如果不是首次加载，那么进行ajax同步获取数据请求
+                    if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
                         renderProduct(page, limit);//关键
                     }
                 }

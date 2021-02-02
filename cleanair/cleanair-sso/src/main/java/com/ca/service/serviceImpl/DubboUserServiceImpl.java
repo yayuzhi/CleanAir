@@ -2,9 +2,9 @@ package com.ca.service.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ca.service.DubboUserService;
 import com.ca.mapper.UserMapper;
 import com.ca.pojo.User;
-import com.ca.service.DubboUserService;
 import com.ca.util.ObjectMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;

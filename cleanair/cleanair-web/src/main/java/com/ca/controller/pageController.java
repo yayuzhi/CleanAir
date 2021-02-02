@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class IndexController {
+@RequestMapping("/")
+public class pageController {
     //负责页面跳转
 
-    @RequestMapping("/index")
-    public String index(){
+    @RequestMapping("doIndex")
+    public String doIndexUI(){
         return "index";
     }
 
-    @RequestMapping("/{moduleName}")
+    @RequestMapping("{moduleName}")
     public String doModuleUI(@PathVariable String moduleName){
         return moduleName;
     }

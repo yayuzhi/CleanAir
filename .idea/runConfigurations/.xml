@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="清空后台管理" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+  <configuration default="false" name="清空后台管理" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="true">
     <module name="cleanair-manage" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.ca.CleanairManageApplication" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/cleanair/cleanair-manage" />

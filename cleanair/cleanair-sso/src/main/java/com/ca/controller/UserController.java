@@ -50,15 +50,15 @@ public class UserController {
      * 3.返回值:   SysResult对象 (userJSON)
      * 需求: 通过ticket信息获取user JSON串
      */
-//    @RequestMapping("/query/{ticket}")
-//    public JSONPObject findUserByTicket(@PathVariable String ticket, String callback) {
-//        String userJSON = jedisCluster.get(ticket);
-//        if (StringUtils.isEmpty(userJSON)) {
-//            return new JSONPObject(callback, SysResult.fail());
-//        } else {
-//            return new JSONPObject(callback, SysResult.success(userJSON));
-//        }
-//    }
+    @RequestMapping("/query/{ticket}")
+    public JSONPObject findUserByTicket(@PathVariable String ticket, String callback) {
+        String userJSON = jedisCluster.get(ticket);
+        if (StringUtils.isEmpty(userJSON)) {
+            return new JSONPObject(callback, JsonResult.fail());
+        } else {
+            return new JSONPObject(callback, JsonResult.success(userJSON));
+        }
+    }
 
 
 

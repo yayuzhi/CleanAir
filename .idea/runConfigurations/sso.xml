@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="清空sso" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="cleanair-sso" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.ca.CleanairSsoApplication" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/cleanair/cleanair-sso" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

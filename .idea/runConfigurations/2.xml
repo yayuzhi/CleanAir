@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="清空前台管理" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+  <configuration default="false" name="清空前台管理" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="true">
     <module name="cleanair-web" />
     <extension name="coverage">
       <pattern>

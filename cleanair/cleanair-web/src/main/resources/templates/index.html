@@ -1,11 +1,11 @@
-<html lang="en" >
+<html lang="en">
 <head>
     <title>气清商城</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./images/favicon.ico"/>
-    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
@@ -35,25 +35,34 @@
                 </div>
             </div>
             <div class="top-bar-right">
-                <div class="header-language">
-                    <div class="teamo-language ">
-                        <a href="http://www.qk.com/login" class="active language-toggle">
-								<span>
-									请登录
-								</span>
-                        </a>
-                    </div>
+                <!--                <div class="header-language">-->
+                <!--                    <div class="teamo-language ">-->
+                <!--                        <a href="http://www.qk.com/login" class="active language-toggle">-->
+                <!--								<span>-->
+                <!--									请登录-->
+                <!--								</span>-->
+                <!--                        </a>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <div id="loginbar">
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/login">请登录</a>
+                        </li>
+                    </ul>
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/regist">注册</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="header-user-links">
-                    <li>
-                        <a href="http://www.qk.com/regist">注册</a>
-                    </li>
-                </ul>
-                <ul class="header-user-links">
-                    <li>
-                        <a href="#">个人中心</a>
-                    </li>
-                </ul>
+<!--                <div>-->
+<!--                    <ul class="header-user-links">-->
+<!--                        <li>-->
+<!--                            <a href="#">个人中心</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -91,15 +100,15 @@
                     <div class="container-wapper">
                         <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
                             <li class="menu-item  menu-item-has-children">
-<!--                                <a href="allproducts.html" class="teamo-menu-item-title" title="Home">全部商品</a>-->
-                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title" title="Home">全部商品</a>
-<!--                                http://www.qk.com/allproducts-->
+                                <!--                                <a href="allproducts.html" class="teamo-menu-item-title" title="Home">全部商品</a>-->
+                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title">全部商品</a>
+                                <!--                                http://www.qk.com/allproducts-->
                             </li>
                             <li class="menu-item menu-item-has-children">
-                                <a href="#" class="teamo-menu-item-title" title="Shop">购物车</a>
+                                <a href="#" class="teamo-menu-item-title">购物车</a>
                             </li>
                             <li class="menu-item  menu-item-has-children item-megamenu">
-                                <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
+                                <a href="#" class="teamo-menu-item-title">订单</a>
                             </li>
                         </ul>
                     </div>
@@ -132,7 +141,8 @@
 												￥1.2/天
 											</span>
                                 </div>
-                                <a href="http://www.qk.com/allproducts" class="button btn-shop-the-look bgroud-style">立刻 租用</a>
+                                <a href="http://www.qk.com/allproducts" class="button btn-shop-the-look bgroud-style">立刻
+                                    租用</a>
                             </div>
                         </div>
                     </div>
@@ -154,7 +164,8 @@
 												8月3日
 											</span>
                                 </div>
-                                <a href="http://www.qk.com/allproducts" class="button btn-view-promotion bgroud-style">立刻 租用</a>
+                                <a href="http://www.qk.com/allproducts" class="button btn-view-promotion bgroud-style">立刻
+                                    租用</a>
                             </div>
                         </div>
                     </div>
@@ -176,7 +187,8 @@
 												1瓶水的价格
 											</span>
                                 </div>
-                                <a href="http://www.qk.com/allproducts" class="button btn-lets-create bgroud-style">立刻 租用</a>
+                                <a href="http://www.qk.com/allproducts" class="button btn-lets-create bgroud-style">立刻
+                                    租用</a>
                             </div>
                         </div>
                     </div>
@@ -311,15 +323,40 @@
 <script src="./js/jquery.scrollbar.min.js"></script>
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
-
+<script src="./js/jquery.cookie.js"></script>
 <script type="text/javascript">
 
-    $.ajax({
+    var TT = QK = {
+        checkLogin: function () {
+            var _ticket = $.cookie("QK_TICKET");
+
+            if (!_ticket) {
+                return;
+            }
+            //当dataType类型为jsonp时，jQuery就会自动在请求链接上增加一个callback的参数
+            $.ajax({
+                url: "http://sso.qk.com/user/query/" + _ticket,
+                dataType: "jsonp",
+                type: "GET",
+                success: function (data) {
+                    if (data.status == 200) {
+                        //要求获取的是user的JSON串
+                        var _data = JSON.parse(data.data);//将JSON串转化为对象
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        $("#loginbar").html(html);
+                    }
+                }
+            });
+        }
+    }
+        // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
 
 
+    $(function () {
+        // 查看是否已经登录，如果已经登录查询登录信息
 
-    })
-
+        TT.checkLogin();
+    });
 
 
 </script>
