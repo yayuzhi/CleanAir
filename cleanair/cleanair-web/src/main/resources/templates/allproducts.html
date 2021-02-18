@@ -136,7 +136,7 @@
                             <!--								</div>-->
 
                             <div style="margin-top:70px;" id="product"></div>
-                            <!--                            商品展示-->
+                            <!--商品展示-->
 
                         </li>
                     </ul>
@@ -203,7 +203,7 @@
         TT.checkLogin();
     });
 
-
+    //    定义分页组件
     layui.use(['jquery', 'laypage'], function () {
         var $ = layui.jquery,
             laypage = layui.laypage;
@@ -217,8 +217,8 @@
         function renderProductHtml(data) {
             var str = "";//用来存储html内容
             if (data.length > 0) {
-                $.each(data, function (v, o) {
-                    str += "<div style='margin:auto; margin-bottom:130px;  width:150px; height:150px; float:left; text-align:center'><div><img alt='' src='" + o.imgPath + "' width='150px' height='150px'/></div>";
+                $.each(data, function (v, o) {  //o.imgPath
+                    str += "<div style='margin:auto; margin-bottom:130px;  width:150px; height:150px; float:left; text-align:center'><div><img alt='' src='" + " " + "' width='150px' height='150px'/></div>";
                     str += "<div style='text-align:left'><div><label>商品名称:</label><span>" + o.productName + "</span></div>";
                     str += "<div><label>价格:</label><span style='color:#FF3030;'>￥" + o.price + "</span></div>";
                     str += "<div><label>新旧程度:</label><span>" + o.degree + "</span></div>";
@@ -236,7 +236,7 @@
         function renderProduct(page, limit) {
             $.ajax({
                 async: false,
-                url: '/UsedProduct/product/getProductPage',
+                url: '/product/getProductPage',
                 data: {"page": page, "limit": limit},
                 dataType: 'json',
                 success: function (result) {
@@ -258,8 +258,8 @@
                 , limit: limit//每页显示多少条数据
                 , limits: [limit]//可选择的 每页显示多少条数据
                 , curr: page//当前页码
-                , theme: '#FFB800'//分页导航栏的颜色，用了橘色
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                , theme: '#77ff00'//分页导航栏的颜色，用了橘色
+                , layout: ['first','count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip','last']
                 , jump: function (obj, first) {
                     console.info(obj);
                     page = obj.curr;
