@@ -34,7 +34,7 @@ public class DubboItemServiceImpl implements DubboItemService{
             String trueImage = firstImage[0];
             item.setImage(trueImage);
         }
-        long total = trueItem.size();
+        long total = itemMapper.count();
         PageInfo<Item>  pageInfo = new PageInfo<>();
         pageInfo.setList(trueItem);
         pageInfo.setTotal(total);
