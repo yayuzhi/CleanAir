@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
     <link rel="stylesheet" href="./css/style.css">
     <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script src="./js/vue.min.js"></script>
 </head>
 <body class="productsgrid-page">
 <header class="header style7">
@@ -112,35 +113,34 @@
         <div class="row">
             <div class="content-area shop-grid-content full-width col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="site-main">
-                    <ul class="row list-products auto-clear equal-container product-grid">
-                        <li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1">
+                    <ul class="row list-products auto-clear equal-container product-grid" id="product">
+                        <li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1"
+                            v-for="p in products">
+                            <div class="product-inner equal-element">
+                                <div class="product-thumb">
+                                    <div class="thumb-inner">
+                                        <a href="#">
+                                            <img :src='p.image' alt="img"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h5 class="product-name product_title">
+                                        <a href="#">{{p.title}}</a>
+                                    </h5>
+                                    <div class="group-info">
+                                        <div class="price">
+                                            ￥{{p.price/100}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <!--								<div class="product-inner equal-element">-->
-                            <!--									<div class="product-thumb">-->
-                            <!--										<div class="thumb-inner">-->
-                            <!--											<a href="#">-->
-                            <!--												<img src="./images/product-item-1.jpg" alt="img">-->
-                            <!--											</a>-->
-                            <!--										</div>-->
-                            <!--									</div>-->
-                            <!--									<div class="product-info">-->
-                            <!--										<h5 class="product-name product_title">-->
-                            <!--											<a href="#">小米空气净化器2S</a>-->
-                            <!--										</h5>-->
-                            <!--										<div class="group-info">-->
-                            <!--											<div class="price">-->
-                            <!--													￥2.1-->
-                            <!--											</div>-->
-                            <!--										</div>-->
-                            <!--									</div>-->
-                            <!--								</div>-->
-
-                            <div style="margin-top:70px;" id="product"></div>
                             <!--商品展示-->
 
                         </li>
                     </ul>
-                    <div class="pagination clearfix style2" style="margin-top:640px;margin-left:200px;">
+                    <div class="pagination clearfix style2">
                         <div class="nav-link" id="layuipage"></div>
                     </div>
                 </div>
@@ -174,7 +174,10 @@
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
+<script src="./js/axios.min.js"></script>
 <script type="text/javascript">
+
+    //验证是否登录
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
@@ -202,6 +205,8 @@
         // 查看是否已经登录，如果已经登录查询登录信息
         TT.checkLogin();
     });
+    //验证 登录 末
+
 
     //    定义分页组件
     layui.use(['jquery', 'laypage'], function () {
@@ -211,41 +216,42 @@
         var page = 1;//当前页
         var limit = 16;//每页显示的数目
         var resCount, resData;
+        //实现分页
         var resPage = renderPage1();
-
-        //渲染展示商品的html页面
-        function renderProductHtml(data) {
-            var str = "";//用来存储html内容
-            if (data.length > 0) {
-                $.each(data, function (v, o) {  //o.imgPath
-                    str += "<div style='margin:auto; margin-bottom:130px;  width:150px; height:150px; float:left; text-align:center'><div><img alt='' src='" + " " + "' width='150px' height='150px'/></div>";
-                    str += "<div style='text-align:left'><div><label>商品名称:</label><span>" + o.productName + "</span></div>";
-                    str += "<div><label>价格:</label><span style='color:#FF3030;'>￥" + o.price + "</span></div>";
-                    str += "<div><label>新旧程度:</label><span>" + o.degree + "</span></div>";
-                    str += "<div><label>销量:</label><span style='color:#CDC9C9;'>" + o.sales + "</span>";
-                    str += "<label>库存:</label><span style='color:#CDC9C9;'>" + o.stock + "</span></div>";
-                    str += "<div style='display:none;'><label>商品ID:</label><span>" + o.product_id + "</span></div></div></div>";
-                });
-                $("#product").html(str);
-            }
-
-        }
 
 
         //同步加载商品数据
         function renderProduct(page, limit) {
-            $.ajax({
-                async: false,
-                url: '/product/getProductPage',
-                data: {"page": page, "limit": limit},
-                dataType: 'json',
-                success: function (result) {
-                    console.info(result);
-                    resCount = result.count;
-                    resData = result.data;
-                    renderProductHtml(resData);
+            //使用vue for
+            var vm = new Vue({
+                el: '#product',
+                data: {
+                    products: {}
+                },
+                methods: {
+                    doFindProduct: function () {
+                        var that = this;
+                        $.ajax({
+                            async: false,
+                            url: '/product/getProductPage',
+                            data: {"page": page, "limit": limit},
+                            dataType: 'json',
+                            success: function (result) {
+                                console.info(result);
+                                resCount = result.count;
+                                var products = result.data;
+
+                                that.products = result.data;
+                                // renderProductHtml(resData);
+                            }
+                        });
+                    }
+                },
+                mounted: function () {
+                    this.doFindProduct();
                 }
-            });
+            })
+
         }
 
 
@@ -259,7 +265,7 @@
                 , limits: [limit]//可选择的 每页显示多少条数据
                 , curr: page//当前页码
                 , theme: '#77ff00'//分页导航栏的颜色，用了橘色
-                , layout: ['first','count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip','last']
+                , layout: ['first', 'count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip', 'last']
                 , jump: function (obj, first) {
                     console.info(obj);
                     page = obj.curr;

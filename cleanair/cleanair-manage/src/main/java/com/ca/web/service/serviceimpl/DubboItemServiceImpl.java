@@ -22,10 +22,17 @@ public class DubboItemServiceImpl implements DubboItemService{
     public PageInfo<Item> getProductPage(Integer page, Integer limit) {
         List<Item> items = itemMapper.findAllPage(page, limit);
         List<Item> trueItem =new ArrayList<>();
+        //商品下架后  无法在商品列表分页显示出来
         for (Item item : items){
             if (item.getStatus() == 1){
                 trueItem.add(item);
             }
+        }
+        for (Item item :trueItem){
+            String image = item.getImage();
+            String[] firstImage =  image.split(",");
+            String trueImage = firstImage[0];
+            item.setImage(trueImage);
         }
         long total = trueItem.size();
         PageInfo<Item>  pageInfo = new PageInfo<>();
