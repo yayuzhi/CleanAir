@@ -211,76 +211,89 @@
     //验证 登录 末
 
 
+    var vm = new Vue({
+        el: '#product',
+        data: {
+            products: null
+        },
+    });
+
+
     //    定义分页组件
     layui.use(['jquery', 'laypage'], function () {
         var $ = layui.jquery,
             laypage = layui.laypage;
+        laypage.render({
+            elem: 'layuipage'//div的id，不能加#
+            , count: resCount//数据总条数
+            , limit: limit//每页显示多少条数据
+            , limits: [limit]//可选择的 每页显示多少条数据
+            , curr: page//当前页码
+            // , theme: '#FFB800'//分页导航栏的颜色，用了橘色
+            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+            , jump: function (obj, first) {
+                console.info(obj);
+                page = obj.curr;
+                if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
+                    renderProduct(page, limit);//关键
 
-        var page = 1;//当前页
-        var limit = 16;//每页显示的数目
-        var resCount, resData;
-        //实现分页
-        var resPage = renderPage1();
-
-
-        //同步加载商品数据
-        function renderProduct(page, limit) {
-            //使用vue for
-            var vm = new Vue({
-                el: '#product',
-                data: {
-                    products: {}
-                },
-                methods: {
-                    doFindProduct: function () {
-                        var that = this;
-                        $.ajax({
-                            async: false,
-                            url: '/product/getProductPage',
-                            data: {"page": page, "limit": limit},
-                            dataType: 'json',
-                            success: function (result) {
-                                console.info(result);
-                                resCount = result.count;
-                                resData =result.data;
-                                // var products = ;
-                                that.products = result.data;
-
-                                // renderProductHtml(resData);
-                            }
-                        });
-                    }
-                },
-                mounted: function () {
-                    this.doFindProduct();
                 }
-            })
-
-        }
-
-
-        //分页的完整功能，page，limit，resCount都是自定义的全局变量
-        function renderPage1() {
-            renderProduct(page, limit);//关键
-            laypage.render({
-                elem: 'layuipage'//div的id，不能加#
-                , count: resCount//数据总条数
-                , limit: limit//每页显示多少条数据
-                , limits: [limit]//可选择的 每页显示多少条数据
-                , curr: page//当前页码
-                // , theme: '#FFB800'//分页导航栏的颜色，用了橘色
-                , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                , jump: function (obj, first) {
-                    console.info(obj);
-                    page = obj.curr;
-                    if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
-                        renderProduct(page, limit);//关键
-
-                    }
-                }
-            });
-        }
+            }
+        });
     });
+
+    var page = 1;//当前页
+    var limit = 16;//每页显示的数目
+    var resCount, resData;
+    //同步加载商品数据
+    renderProduct(page,limit);
+    function renderProduct(page, limit) {
+        //使用vue for
+        // var vm = new Vue({
+        //     el: '#product',
+        //     data: {
+        //         products: {}
+        //     },
+        //     methods: {
+        //         doFindProduct: function () {
+        //             var that = this;
+        //             $.ajax({
+        //                 async: false,
+        //                 url: '/product/getProductPage',
+        //                 data: {"page": page, "limit": limit},
+        //                 dataType: 'json',
+        //                 success: function (result) {
+        //                     console.info(result);
+        //                     resCount = result.count;
+        //                     resData = result.data;
+        //                     // var products = ;
+        //                     that.products = result.data;
+        //
+        //                     // renderProductHtml(resData);
+        //                 }
+        //             });
+        //         }
+        //     },
+        //     mounted: function () {
+        //         this.doFindProduct();
+        //     }
+        // })
+        $.ajax({
+            async: false,
+            url: '/product/getProductPage',
+            data: {"page": page, "limit": limit},
+            dataType: 'json',
+            success: function (result) {
+                console.info(result);
+                resCount = result.count;
+                resData = result.data;
+                vm.products = resData;
+
+            }
+        });
+    }
+
+
 </script>
 </body>
 </html>
