@@ -28,6 +28,7 @@ public class DubboItemServiceImpl implements DubboItemService{
                 trueItem.add(item);
             }
         }
+        //处理首页显示照片
         for (Item item :trueItem){
             String image = item.getImage();
             String[] firstImage =  image.split(",");

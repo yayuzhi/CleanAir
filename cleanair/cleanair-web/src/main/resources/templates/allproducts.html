@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="./css/mobile-menu.css">
     <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
     <script src="./js/vue.min.js"></script>
 </head>
 <body class="productsgrid-page">
@@ -175,7 +176,7 @@
 <script src="./js/jquery.cookie.js"></script>
 <script src="./js/axios.min.js"></script>
 <script src="./lib/layui/layui.js"></script>
-<script src="./lib/layui/css/layui.css"></script>
+
 <script type="text/javascript">
 
 
@@ -244,6 +245,7 @@
                                 resData =result.data;
                                 // var products = ;
                                 that.products = result.data;
+
                                 // renderProductHtml(resData);
                             }
                         });
@@ -273,6 +275,7 @@
                     page = obj.curr;
                     if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
                         renderProduct(page, limit);//关键
+
                     }
                 }
             });
