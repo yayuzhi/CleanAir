@@ -1,0 +1,319 @@
+<html lang="en">
+<head>
+    <title>气清商城</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./images/favicon.ico"/>
+    <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
+    <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/animate.min.css">
+    <link rel="stylesheet" href="./css/jquery-ui.css">
+    <link rel="stylesheet" href="./css/slick.css">
+    <link rel="stylesheet" href="./css/chosen.min.css">
+    <link rel="stylesheet" href="./css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="./css/magnific-popup.min.css">
+    <link rel="stylesheet" href="./css/lightbox.min.css">
+    <link rel="stylesheet" href="./js/fancybox/source/jquery.fancybox.css">
+    <link rel="stylesheet" href="./css/jquery.scrollbar.min.css">
+    <link rel="stylesheet" href="./css/mobile-menu.css">
+    <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
+    <script src="./js/vue.min.js"></script>
+</head>
+<body class="details-page">
+<header class="header style7">
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <div class="header-message">
+                    欢迎来到气清!
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <div id="loginbar">
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/login">请登录</a>
+                        </li>
+                    </ul>
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/regist">注册</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-nav-container">
+        <div class="container">
+            <div class="header-nav-wapper main-menu-wapper">
+                <div class="header-nav">
+                    <div class="container-wapper">
+                        <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
+                            <li class="menu-item  menu-item-has-children">
+                                <a href="#" class="teamo-menu-item-title" title="Home">全部商品</a>
+                            </li>
+                            <li class="menu-item menu-item-has-children">
+                                <a href="#" class="teamo-menu-item-title" title="Shop">购物车</a>
+                            </li>
+                            <li class="menu-item  menu-item-has-children item-megamenu">
+                                <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="main-header">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-4 col-md-3 col-xs-7 col-ts-12 header-element">
+                        <div class="logo">
+                            <a href="http://www.qk.com/index">
+                                <img src="./images/logo.png" alt="img">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-sm-8 col-md-6 col-xs-5 col-ts-12">
+                        <div class="block-search-block">
+                            <form class="form-search form-search-width-category">
+                                <div class="form-content">
+                                    <div class="inner">
+                                        <input type="text" class="input" id="productName" value="" placeholder="输入商品名称">
+                                    </div>
+                                    <button class="btn-search" type="button" id="searchProduct">
+                                        <span class="icon-search"></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="main-content main-content-details single no-sidebar">
+    <div class="container">
+        <div class="row">
+            <div class="content-area content-details full-width col-lg-9 col-md-8 col-sm-12 col-xs-12">
+                <div class="site-main">
+                    <div class="details-product">
+                        <div class="details-thumd">
+                            <div class="image-preview-container image-thick-box image_preview_container">
+                                <img id="img_zoom" data-zoom-image="./images/details-item-1.jpg"
+                                     src="./images/details-item-1.jpg" alt="img">
+
+                            </div>
+                            <div class="product-preview image-small product_preview">
+                                <div id="thumbnails" class="thumbnails_carousel owl-carousel" data-nav="true"
+                                     data-autoplay="false" data-dots="false" data-loop="false" data-margin="10"
+                                     data-responsive='{"0":{"items":3},"480":{"items":3},"600":{"items":3},"1000":{"items":3}}'>
+                                    <a href="#" data-image="./images/details-item-1.jpg"
+                                       data-zoom-image="./images/details-item-1.jpg" class="active">
+                                        <img src="./images/details-item-1.jpg"
+                                             data-large-image="./images/details-item-1.jpg" alt="img">
+                                    </a>
+                                    <a href="#" data-image="./images/details-item-2.jpg"
+                                       data-zoom-image="./images/details-item-2.jpg">
+                                        <img src="./images/details-item-2.jpg"
+                                             data-large-image="./images/details-item-2.jpg" alt="img">
+                                    </a>
+                                    <a href="#" data-image="./images/details-item-3.jpg"
+                                       data-zoom-image="./images/details-item-3.jpg">
+                                        <img src="./images/details-item-3.jpg"
+                                             data-large-image="./images/details-item-3.jpg" alt="img">
+                                    </a>
+                                    <a href="#" data-image="./images/details-item-4.jpg"
+                                       data-zoom-image="./images/details-item-4.jpg">
+                                        <img src="./images/details-item-4.jpg"
+                                             data-large-image="./images/details-item-4.jpg" alt="img">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="details-infor">
+                            <h1 class="product-title">
+                                Areca palm
+                            </h1>
+                            <div class="stars-rating">
+                                <div class="star-rating">
+                                    <span class="star-5"></span>
+                                </div>
+                                <div class="count-star">
+                                    (7)
+                                </div>
+                            </div>
+                            <div class="availability">
+                                availability:
+                                <a href="#">in Stock</a>
+                            </div>
+                            <div class="price">
+                                <span>$45</span>
+                            </div>
+                            <div class="product-details-description">
+                                <ul>
+                                    <li>Vestibulum tortor quam</li>
+                                    <li>Imported</li>
+                                    <li>Art.No. 06-7680</li>
+                                </ul>
+                            </div>
+                            <div class="variations">
+                                <div class="attribute attribute_color">
+                                    <div class="color-text text-attribute">
+                                        Color:
+                                    </div>
+                                    <div class="list-color list-item">
+                                        <a href="#" class="color1"></a>
+                                        <a href="#" class="color2"></a>
+                                        <a href="#" class="color3 active"></a>
+                                        <a href="#" class="color4"></a>
+                                    </div>
+                                </div>
+                                <div class="attribute attribute_size">
+                                    <div class="size-text text-attribute">
+                                        Size:
+                                    </div>
+                                    <div class="list-size list-item">
+                                        <a href="#" class="">xs</a>
+                                        <a href="#" class="">s</a>
+                                        <a href="#" class="active">m</a>
+                                        <a href="#" class="">l</a>
+                                        <a href="#" class="">xl</a>
+                                        <a href="#" class="">xxl</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group-button">
+                                <div class="yith-wcwl-add-to-wishlist">
+                                    <div class="yith-wcwl-add-button">
+                                        <a href="#">Add to Wishlist</a>
+                                    </div>
+                                </div>
+                                <div class="size-chart-wrapp">
+                                    <div class="btn-size-chart">
+                                        <a id="size_chart" href="./images/size-chart.jpg" class="fancybox">View
+                                            Size Chart</a>
+                                    </div>
+                                </div>
+                                <div class="quantity-add-to-cart">
+                                    <div class="quantity">
+                                        <div class="control">
+                                            <a class="btn-number qtyminus quantity-minus" href="#">-</a>
+                                            <input type="text" data-step="1" data-min="0" value="1" title="Qty"
+                                                   class="input-qty qty" size="4">
+                                            <a href="#" class="btn-number qtyplus quantity-plus">+</a>
+                                        </div>
+                                    </div>
+                                    <button class="single_add_to_cart_button button">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-details-product">
+                        <ul class="tab-link">
+                            <li class="active">
+                                <a data-toggle="tab" aria-expanded="true" href="#product-descriptions">商品详细介绍</a>
+                            </li>
+                        </ul>
+                        <div class="tab-container">
+                            <div id="product-descriptions" class="tab-panel active">
+                                <p>
+                                    Quisque quis ipsum venenatis, fermentum ante volutpat, ornare enim.
+                                    Phasellus molestie risus non aliquet cursus.
+                                    Integer
+                                    vestibulum mi lorem, id hendrerit ante lobortis non.
+                                    Nunc ante ante, lobortis non pretium non, vulputate vel nisi.
+                                    Maecenas dolor elit, fringilla nec turpis ac, auctor vulputate nulla. Phasellus sed
+                                    laoreet velit.
+                                </p>
+                                <p>
+                                    Proin fringilla urna vel mattis euismod.
+                                    Etiam sodales, massa non tincidunt iaculis, mauris libero scelerisque justo, ut
+                                    rutrum lectus urna sit amet quam.
+                                    Nulla maximus vestibulum mi vitae accumsan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/jquery.plugin-countdown.min.js"></script>
+<script src="./js/jquery-countdown.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/owl.carousel.min.js"></script>
+<script src="./js/magnific-popup.min.js"></script>
+<script src="./js/isotope.min.js"></script>
+<script src="./js/jquery.scrollbar.min.js"></script>
+<script src="./js/jquery-ui.min.js"></script>
+<script src="./js/mobile-menu.js"></script>
+<script src="./js/chosen.min.js"></script>
+<script src="./js/slick.js"></script>
+<script src="./js/jquery.elevateZoom.min.js"></script>
+<script src="./js/jquery.actual.min.js"></script>
+<script src="./js/fancybox/source/jquery.fancybox.js"></script>
+<script src="./js/lightbox.min.js"></script>
+<script src="./js/owl.thumbs.min.js"></script>
+<script src="./js/jquery.scrollbar.min.js"></script>
+<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
+<script src="./js/frontend-plugin.js"></script>
+<script src="./js/jquery.cookie.js"></script>
+<script type="text/javascript">
+
+    var TT = QK = {
+        checkLogin: function () {
+            var _ticket = $.cookie("QK_TICKET");
+
+            if (!_ticket) {
+                return;
+            }
+            //当dataType类型为jsonp时，jQuery就会自动在请求链接上增加一个callback的参数
+            $.ajax({
+                url: "http://sso.qk.com/user/query/" + _ticket,
+                dataType: "jsonp",
+                type: "GET",
+                success: function (data) {
+                    if (data.status == 200) {
+                        //要求获取的是user的JSON串
+                        var _data = JSON.parse(data.data);//将JSON串转化为对象
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        $("#loginbar").html(html);
+                    }
+                }
+            });
+        }
+    }
+    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
+
+
+    $(function () {
+        // 查看是否已经登录，如果已经登录查询登录信息
+
+        TT.checkLogin();
+    });
+
+    $('#searchProduct').click(function () {
+        title =  $('#productName').val();
+        console.log(title);
+        window.location.href="http://www.qk.com/allproducts?"+title;
+    })
+
+
+
+</script>
+</body>
+</html>

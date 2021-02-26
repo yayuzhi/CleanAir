@@ -119,14 +119,14 @@
                             <div class="product-inner equal-element">
                                 <div class="product-thumb">
                                     <div class="thumb-inner">
-                                        <a href="#">
+                                        <a :href=" 'product?'+ p.id">
                                             <img :src='p.image' alt="img">
                                         </a>
                                     </div>
                                 </div>
                                 <div class="product-info">
                                     <h5 class="product-name product_title">
-                                        <a href="#">{{p.title}}</a>
+                                        <a >{{p.title}}</a>
                                     </h5>
                                     <div class="group-info">
                                         <div class="price">
