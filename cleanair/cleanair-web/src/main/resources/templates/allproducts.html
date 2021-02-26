@@ -222,16 +222,12 @@
     var limit = 16;//每页显示的数目
     var resCount, resData;
     var title;
-    //http://www.qk.com/allproducts?title=小米
+    //http://www.qk.com/allproducts?小米
     var url = document.location.toString();
     var arrayObject = url.split("?")
     if (arrayObject.length > 1) {
-        var titlelong = arrayObject[1];
-        var truetitle = titlelong.split("=");
-        if (truetitle.length > 1) {
-            title = decodeURI(decodeURI(truetitle[1]));
-            $("#productName").val(title);
-        }
+        title = decodeURI(decodeURI(arrayObject[1]));
+        $("#productName").val(title);
     }
 
     init();
@@ -314,8 +310,9 @@
 
     //获取搜索框数据
     $('#searchProduct').click(function () {
+
         title = $('#productName').val();
-        window.location.href = "http://www.qk.com/allproducts?title=" + title;
+        window.location.href = "http://www.qk.com/allproducts?" + title;
         // console.log(title);
         // init();
     })
