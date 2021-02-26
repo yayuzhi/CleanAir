@@ -40,4 +40,5 @@ public class JsonResult implements Serializable {
         return new JsonResult(200,msg,data);
     }
 
+
 }

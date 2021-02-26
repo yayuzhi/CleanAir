@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/AllProduct")
 public class AllProductsController {
 
     @Reference(check = false)

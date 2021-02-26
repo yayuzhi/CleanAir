@@ -263,39 +263,10 @@
 
     //同步加载商品数据
     function renderProduct(page, limit, title) {
-        //使用vue for
-        // var vm = new Vue({
-        //     el: '#product',
-        //     data: {
-        //         products: {}
-        //     },
-        //     methods: {
-        //         doFindProduct: function () {
-        //             var that = this;
-        //             $.ajax({
-        //                 async: false,
-        //                 url: '/product/getProductPage',
-        //                 data: {"page": page, "limit": limit},
-        //                 dataType: 'json',
-        //                 success: function (result) {
-        //                     console.info(result);
-        //                     resCount = result.count;
-        //                     resData = result.data;
-        //                     // var products = ;
-        //                     that.products = result.data;
-        //
-        //                     // renderProductHtml(resData);
-        //                 }
-        //             });
-        //         }
-        //     },
-        //     mounted: function () {
-        //         this.doFindProduct();
-        //     }
-        // })
+
         $.ajax({
             async: false,
-            url: '/product/getProductPage',
+            url: '/AllProduct/getProductPage',
             data: {"page": page, "limit": limit, "title": title},
             dataType: 'json',
             success: function (result) {

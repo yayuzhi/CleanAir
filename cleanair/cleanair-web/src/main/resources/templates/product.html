@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>气清商城</title>
     <meta charset="UTF-8">
@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
     <script src="./js/vue.min.js"></script>
+    <style> [v-cloak] {
+        display: none;
+    } </style>
 </head>
 <body class="details-page">
 <header class="header style7">
@@ -101,48 +104,50 @@
     </div>
 </header>
 
-<div class="main-content main-content-details single no-sidebar">
+<div class="main-content main-content-details single no-sidebar" id="product" v-if="product != null">
     <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-trail breadcrumbs">
+                    <ul class="trail-items breadcrumb">
+                        <li class="trail-item trail-begin">
+                            <a href="#">主页</a>
+                        </li>
+                        <li class="trail-item">
+                            <a href="#">商品列表</a>
+                        </li>
+                        <li class="trail-item trail-end active" v-cloak>
+                            {{product.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="content-area content-details full-width col-lg-9 col-md-8 col-sm-12 col-xs-12">
                 <div class="site-main">
                     <div class="details-product">
-                        <div class="details-thumd">
+                        <div class="details-thumd" v-if="images != null">
                             <div class="image-preview-container image-thick-box image_preview_container">
                                 <img id="img_zoom" data-zoom-image="./images/details-item-1.jpg"
-                                     src="./images/details-item-1.jpg" alt="img">
+                                     :src="images[0]" alt="img">
 
                             </div>
-                            <div class="product-preview image-small product_preview">
-                                <div id="thumbnails" class="thumbnails_carousel owl-carousel" data-nav="true"
-                                     data-autoplay="false" data-dots="false" data-loop="false" data-margin="10"
-                                     data-responsive='{"0":{"items":3},"480":{"items":3},"600":{"items":3},"1000":{"items":3}}'>
-                                    <a href="#" data-image="./images/details-item-1.jpg"
-                                       data-zoom-image="./images/details-item-1.jpg" class="active">
-                                        <img src="./images/details-item-1.jpg"
-                                             data-large-image="./images/details-item-1.jpg" alt="img">
-                                    </a>
-                                    <a href="#" data-image="./images/details-item-2.jpg"
-                                       data-zoom-image="./images/details-item-2.jpg">
-                                        <img src="./images/details-item-2.jpg"
-                                             data-large-image="./images/details-item-2.jpg" alt="img">
-                                    </a>
-                                    <a href="#" data-image="./images/details-item-3.jpg"
-                                       data-zoom-image="./images/details-item-3.jpg">
-                                        <img src="./images/details-item-3.jpg"
-                                             data-large-image="./images/details-item-3.jpg" alt="img">
-                                    </a>
-                                    <a href="#" data-image="./images/details-item-4.jpg"
-                                       data-zoom-image="./images/details-item-4.jpg">
-                                        <img src="./images/details-item-4.jpg"
-                                             data-large-image="./images/details-item-4.jpg" alt="img">
-                                    </a>
-                                </div>
-                            </div>
+                            <!--                            <div class="product-preview image-small product_preview">-->
+                            <!--                                <div id="thumbnails" class="thumbnails_carousel owl-carousel" data-nav="true"-->
+                            <!--                                     data-autoplay="false" data-dots="false" data-loop="false" data-margin="10"-->
+                            <!--                                     data-responsive='{"0":{"items":3},"480":{"items":3},"600":{"items":3},"1000":{"items":3}}'>-->
+                            <!--                                    <a href="#" data-image="./images/details-item-1.jpg"-->
+                            <!--                                       data-zoom-image="./images/details-item-1.jpg" class="active">-->
+                            <!--                                        <img src="./images/details-item-1.jpg"-->
+                            <!--                                             data-large-image="./images/details-item-1.jpg" alt="img">-->
+                            <!--                                    </a>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
-                        <div class="details-infor">
+                        <div class="details-infor" v-cloak>
                             <h1 class="product-title">
-                                Areca palm
+                                {{product.title}}
                             </h1>
                             <div class="stars-rating">
                                 <div class="star-rating">
@@ -153,55 +158,48 @@
                                 </div>
                             </div>
                             <div class="availability">
-                                availability:
-                                <a href="#">in Stock</a>
+                                销售情况
+                                <a href="#">正在火热销售</a>
                             </div>
-                            <div class="price">
-                                <span>$45</span>
+                            <div class="price" v-cloak>
+                                <span>￥{{product.price}}/天</span>
                             </div>
                             <div class="product-details-description">
                                 <ul>
-                                    <li>Vestibulum tortor quam</li>
-                                    <li>Imported</li>
-                                    <li>Art.No. 06-7680</li>
+                                    <li>{{product.sell_point}}</li>
+
                                 </ul>
                             </div>
                             <div class="variations">
                                 <div class="attribute attribute_color">
                                     <div class="color-text text-attribute">
-                                        Color:
+                                        在库数量:
                                     </div>
-                                    <div class="list-color list-item">
-                                        <a href="#" class="color1"></a>
-                                        <a href="#" class="color2"></a>
-                                        <a href="#" class="color3 active"></a>
-                                        <a href="#" class="color4"></a>
+                                    <div class="list-item">
+                                        <a href="#">{{product.num}}台</a>
+
                                     </div>
                                 </div>
                                 <div class="attribute attribute_size">
                                     <div class="size-text text-attribute">
-                                        Size:
+                                        安心保障
                                     </div>
-                                    <div class="list-size list-item">
-                                        <a href="#" class="">xs</a>
-                                        <a href="#" class="">s</a>
-                                        <a href="#" class="active">m</a>
-                                        <a href="#" class="">l</a>
-                                        <a href="#" class="">xl</a>
-                                        <a href="#" class="">xxl</a>
+                                    <div class="list-item">
+                                        <a>温馨提示 ·支持7天无理由退货</a>
+                                        <a>气清商城向您保证所售商品均为正品行货</a>
+                                        <a>平台出租的商品，由平台提供发票和相应的售后服务。请您放心租用！</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="group-button">
                                 <div class="yith-wcwl-add-to-wishlist">
                                     <div class="yith-wcwl-add-button">
-                                        <a href="#">Add to Wishlist</a>
+                                        <a href="#">多数人的选择</a>
                                     </div>
                                 </div>
                                 <div class="size-chart-wrapp">
                                     <div class="btn-size-chart">
-                                        <a id="size_chart" href="./images/size-chart.jpg" class="fancybox">View
-                                            Size Chart</a>
+                                        <a id="size_chart" href="./images/size-chart.jpg" class="fancybox">更加节省费用</a>
                                     </div>
                                 </div>
                                 <div class="quantity-add-to-cart">
@@ -213,7 +211,7 @@
                                             <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                         </div>
                                     </div>
-                                    <button class="single_add_to_cart_button button">Add to cart</button>
+                                    <button class="single_add_to_cart_button button">添加到购物车</button>
                                 </div>
                             </div>
                         </div>
@@ -225,22 +223,10 @@
                             </li>
                         </ul>
                         <div class="tab-container">
-                            <div id="product-descriptions" class="tab-panel active">
-                                <p>
-                                    Quisque quis ipsum venenatis, fermentum ante volutpat, ornare enim.
-                                    Phasellus molestie risus non aliquet cursus.
-                                    Integer
-                                    vestibulum mi lorem, id hendrerit ante lobortis non.
-                                    Nunc ante ante, lobortis non pretium non, vulputate vel nisi.
-                                    Maecenas dolor elit, fringilla nec turpis ac, auctor vulputate nulla. Phasellus sed
-                                    laoreet velit.
-                                </p>
-                                <p>
-                                    Proin fringilla urna vel mattis euismod.
-                                    Etiam sodales, massa non tincidunt iaculis, mauris libero scelerisque justo, ut
-                                    rutrum lectus urna sit amet quam.
-                                    Nulla maximus vestibulum mi vitae accumsan.
-                                </p>
+                            <div id=" itemDesc" class="tab-panel active" >
+
+                                <!--                                   {{product.itemDesc}}-->
+
                             </div>
                         </div>
                     </div>
@@ -250,7 +236,7 @@
     </div>
 </div>
 
-</div>
+
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script src="./js/jquery.plugin-countdown.min.js"></script>
 <script src="./js/jquery-countdown.min.js"></script>
@@ -272,7 +258,7 @@
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 
     var TT = QK = {
         checkLogin: function () {
@@ -290,7 +276,7 @@
                     if (data.status == 200) {
                         //要求获取的是user的JSON串
                         var _data = JSON.parse(data.data);//将JSON串转化为对象
-                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
                         $("#loginbar").html(html);
                     }
                 }
@@ -302,16 +288,58 @@
 
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
-
         TT.checkLogin();
     });
-
+    //搜索功能 点击跳转事件
     $('#searchProduct').click(function () {
-        title =  $('#productName').val();
+        title = $('#productName').val();
         console.log(title);
-        window.location.href="http://www.qk.com/allproducts?"+title;
+        window.location.href = "http://www.qk.com/allproducts?" + title;
     })
 
+
+    //创建一个vue
+    var vm = new Vue({
+        el: '#product',
+        data: {
+            product: null,
+            images: null
+        },
+    });
+
+
+    var url = document.location.toString();
+    var arrayObject = url.split("?")
+    if (arrayObject.length > 1) {
+        var productid = decodeURI(decodeURI(arrayObject[1]));
+    }
+    $.ajax({
+        url: "/product/getProductById/" + productid,    //请求的url地址
+        dataType: "json",   //返回格式为json
+        async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+        data: {"id": productid},    //参数值
+        type: "post",   //请求方式
+        success: function (data) {
+            console.log(data);
+            var product = data.data;
+            vm.product = product;
+            var img = product.image;
+            var m = img.split(",");
+            vm.images = m;
+            console.log(m)
+            $("#itemDesc").html(product.itemDesc)
+            // window.onload = function () {
+            //     if (product.itemDesc != null) {
+            //
+            //         document.getElementById("itemDesc").innerHTML = product.itemDesc;
+            //     }
+            //
+            // }
+
+
+        }
+
+    })
 
 
 </script>

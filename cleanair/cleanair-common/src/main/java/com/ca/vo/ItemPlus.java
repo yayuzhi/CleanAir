@@ -14,13 +14,12 @@ import java.util.Date;
 @Accessors(chain=true)
 public class ItemPlus extends BasePojo {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String sell_point;
     private Long price;
     private Integer num;
     private String image;
-    private Integer status;
     private String itemDesc;
 
 }
