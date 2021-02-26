@@ -113,7 +113,7 @@ public class AdminController {
         } else {
             int page1 = (page - 1) * limit;
             List<Admin> admins = adminService.findAdminByname(name, page1, limit);
-            int count = admins.size();
+            int count = adminService.countbyname(name);
             return new LayUITbale().LayUIResponseByAdmin(count, admins);
         }
     }

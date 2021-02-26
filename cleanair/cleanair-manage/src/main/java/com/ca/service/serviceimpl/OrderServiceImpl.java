@@ -28,6 +28,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public int countbyid(int id) {
+        return orderMapper.countbyid(id);
+    }
+
+    @Override
     public List<Order> findOrderById(int id, int page, int limit) {
         List<Order> orders = orderMapper.findOrderById(id,page,limit);
         return orders;

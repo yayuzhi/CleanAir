@@ -17,6 +17,9 @@ public interface RoleMapper extends BaseMapper<Role> {
     @Select("select count(*) from qk_role")
     int count();
 
+    @Select("select count(*) from qk_role where name like concat('%',#{name},'%')")
+    int countbyname(@Param("name") String name);
+
 
     @Select("select * from qk_role where name like concat('%',#{name},'%') or name = null limit #{page},#{limit} ")
     List<Role>  findPageByName(@Param("name") String name,@Param("page") int page, @Param("limit") int  limit);

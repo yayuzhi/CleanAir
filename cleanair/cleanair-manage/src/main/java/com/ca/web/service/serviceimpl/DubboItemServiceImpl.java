@@ -13,32 +13,50 @@ import java.util.List;
 
 
 @Service(timeout = 3000)
-public class DubboItemServiceImpl implements DubboItemService{
+public class DubboItemServiceImpl implements DubboItemService {
 
     @Autowired
     private ItemMapper itemMapper;
 
+    //列表信息的展现
     @Override
     public PageInfo<Item> getProductPage(Integer page, Integer limit) {
-        List<Item> items = itemMapper.findAllPage(page, limit);
-        List<Item> trueItem =new ArrayList<>();
-        //商品下架后  无法在商品列表分页显示出来
-        for (Item item : items){
-            if (item.getStatus() == 1){
-                trueItem.add(item);
-            }
-        }
+        List<Item> items = itemMapper.findAllPageweb(page, limit);
+
+
+
         //处理首页显示照片
-        for (Item item :trueItem){
+        for (Item item : items) {
             String image = item.getImage();
-            String[] firstImage =  image.split(",");
+            String[] firstImage = image.split(",");
             String trueImage = firstImage[0];
             item.setImage(trueImage);
         }
-        long total = itemMapper.count();
-        PageInfo<Item>  pageInfo = new PageInfo<>();
-        pageInfo.setList(trueItem);
+        long total = itemMapper.countweb();
+        PageInfo<Item> pageInfo = new PageInfo<>();
+        pageInfo.setList(items);
         pageInfo.setTotal(total);
         return pageInfo;
+    }
+
+
+    @Override
+    public PageInfo<Item> getProductPagebytitle(String title, Integer page, Integer limit) {
+        List<Item> items = itemMapper.findAllpageweb(title, page, limit);
+
+
+        //处理首页显示照片
+        for (Item item : items) {
+            String image = item.getImage();
+            String[] firstImage = image.split(",");
+            String trueImage = firstImage[0];
+            item.setImage(trueImage);
+        }
+        long total = itemMapper.findBytitleCount(title);
+        PageInfo<Item> pageInfo = new PageInfo<>();
+        pageInfo.setList(items);
+        pageInfo.setTotal(total);
+        return pageInfo;
+
     }
 }

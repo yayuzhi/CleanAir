@@ -14,6 +14,9 @@ public interface RoleService {
     //查询所有role数量
     int count();
 
+    //查询所有role数量 by name
+    int countbyname(String name);
+
     List<Role> findPageByName(String name,int page, int limit);
 
     //保存一个role和他的,menu

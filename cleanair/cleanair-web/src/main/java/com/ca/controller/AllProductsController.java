@@ -20,15 +20,26 @@ public class AllProductsController {
     private DubboItemService itemService;
 
     @RequestMapping("/getProductPage")
-    public Map<String, Object> getProductPage(@RequestParam("page")Integer page,
-                                              @RequestParam("limit")Integer limit){
-        Map<String,Object> map = new HashMap<String, Object>();
-        int page1 = (page - 1) * limit;
-        PageInfo<Item> pageInfo = itemService.getProductPage(page1, limit);
-        map.put("code", 0);
-        map.put("msg", "操作成功");
-        map.put("count", pageInfo.getTotal());
-        map.put("data", pageInfo.getList());
-        return map;
+    public Map<String, Object> getProductPage(Integer page, Integer limit, String title) {
+        System.out.println(title);
+        if (title == null) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            int page1 = (page - 1) * limit;
+            PageInfo<Item> pageInfo = itemService.getProductPage(page1, limit);
+            map.put("code", 0);
+            map.put("msg", "操作成功");
+            map.put("count", pageInfo.getTotal());
+            map.put("data", pageInfo.getList());
+            return map;
+        }else {
+            Map<String, Object> map = new HashMap<String, Object>();
+            int page1 = (page - 1) * limit;
+            PageInfo<Item> pageInfo = itemService.getProductPagebytitle(title, page1, limit);
+            map.put("code", 0);
+            map.put("msg", "操作成功");
+            map.put("count", pageInfo.getTotal());
+            map.put("data", pageInfo.getList());
+            return map;
+        }
     }
 }

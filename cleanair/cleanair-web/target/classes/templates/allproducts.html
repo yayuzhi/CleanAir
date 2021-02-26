@@ -93,9 +93,9 @@
                             <form class="form-search form-search-width-category">
                                 <div class="form-content">
                                     <div class="inner">
-                                        <input type="text" class="input" name="s" value="" placeholder="输入商品名称">
+                                        <input type="text" class="input" id="productName" value="" placeholder="输入商品名称">
                                     </div>
-                                    <button class="btn-search" type="submit">
+                                    <button class="btn-search" type="button" id="searchProduct">
                                         <span class="icon-search"></span>
                                     </button>
                                 </div>
@@ -210,7 +210,7 @@
     });
     //验证 登录 末
 
-
+    //创建一个vue
     var vm = new Vue({
         el: '#product',
         data: {
@@ -218,36 +218,55 @@
         },
     });
 
-
-    //    定义分页组件
-    layui.use(['jquery', 'laypage'], function () {
-        var $ = layui.jquery,
-            laypage = layui.laypage;
-        laypage.render({
-            elem: 'layuipage'//div的id，不能加#
-            , count: resCount//数据总条数
-            , limit: limit//每页显示多少条数据
-            , limits: [limit]//可选择的 每页显示多少条数据
-            , curr: page//当前页码
-            // , theme: '#FFB800'//分页导航栏的颜色，用了橘色
-            , layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-            , jump: function (obj, first) {
-                console.info(obj);
-                page = obj.curr;
-                if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
-                    renderProduct(page, limit);//关键
-
-                }
-            }
-        });
-    });
-
     var page = 1;//当前页
     var limit = 16;//每页显示的数目
     var resCount, resData;
+    var title;
+    //http://www.qk.com/allproducts?title=小米
+    var url = document.location.toString();
+    var arrayObject = url.split("?")
+    if (arrayObject.length > 1) {
+        var titlelong = arrayObject[1];
+        var truetitle = titlelong.split("=");
+        if (truetitle.length > 1) {
+            title = decodeURI(decodeURI(truetitle[1]));
+            $("#productName").val(title);
+        }
+    }
+
+    init();
+
+    function init() {
+        renderProduct(page, limit, title);
+        loadDate();
+    }
+
+    function loadDate() {
+        //    定义分页组件
+        layui.use(['jquery', 'laypage'], function () {
+            var $ = layui.jquery,
+                laypage = layui.laypage;
+            laypage.render({
+                elem: 'layuipage'//div的id，不能加#
+                , count: resCount//数据总条数
+                , limit: limit//每页显示多少条数据
+                , limits: [limit]//可选择的 每页显示多少条数据
+                , curr: page//当前页码
+                , theme: '#9ce346'//分页导航栏的颜色，用了橘色
+                , layout: ['count', 'prev', 'page', 'next']
+                , jump: function (obj, first) {
+                    // console.info(obj);
+                    page = obj.curr;
+                    if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
+                        renderProduct(page, limit, title);//关键
+                    }
+                }
+            });
+        });
+    }
+
     //同步加载商品数据
-    renderProduct(page,limit);
-    function renderProduct(page, limit) {
+    function renderProduct(page, limit, title) {
         //使用vue for
         // var vm = new Vue({
         //     el: '#product',
@@ -281,10 +300,10 @@
         $.ajax({
             async: false,
             url: '/product/getProductPage',
-            data: {"page": page, "limit": limit},
+            data: {"page": page, "limit": limit, "title": title},
             dataType: 'json',
             success: function (result) {
-                console.info(result);
+                // console.info(result);
                 resCount = result.count;
                 resData = result.data;
                 vm.products = resData;
@@ -292,6 +311,14 @@
             }
         });
     }
+
+    //获取搜索框数据
+    $('#searchProduct').click(function () {
+        title = $('#productName').val();
+        window.location.href = "http://www.qk.com/allproducts?title=" + title;
+        // console.log(title);
+        // init();
+    })
 
 
 </script>

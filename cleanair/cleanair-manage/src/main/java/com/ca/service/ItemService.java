@@ -15,6 +15,8 @@ public interface ItemService {
     List<Item> findAllPage( int page,  int  limit);
     //查询所有item数量
     int count();
+
+    int Countbytitle(String title);
     String LayUIResponse(Integer count,List<Item> items);
     //删除单个item
     void deleteItemById(Integer id);

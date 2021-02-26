@@ -33,7 +33,7 @@ public class RoleController {
 //            System.out.println(name);
             int page1 = (page - 1) * limit;
             List<Role> roles = roleService.findPageByName(name,page1, limit);
-            int count = roles.size();
+            int count = roleService.countbyname(name);
             return  new LayUITbale().LayUIResponseByrole(count, roles);
         }
 

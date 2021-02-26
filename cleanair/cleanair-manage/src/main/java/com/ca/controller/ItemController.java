@@ -49,7 +49,7 @@ public class ItemController {
         } else {
             int page1 = (page - 1) * limit;
             List<Item> items = itemService.findItemByTitle(title, page1, limit);
-            int count = items.size();
+            int count = itemService.Countbytitle(title);
 
             return new LayUITbale().LayUIResponseByitem(count, items);
         }

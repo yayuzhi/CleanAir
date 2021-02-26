@@ -30,7 +30,7 @@ public class LogController {
       }else {
           int page1 = (page - 1) * limit;
           List<Log> logs = logService.findLogByName(username,page1, limit);
-          int count = logs.size();
+          int count = logService.countbyname(username);
 
           return new LayUITbale().LayUIResponseByLog(count, logs);
       }

@@ -40,6 +40,11 @@ public class ItemServiceImpl implements ItemService {
         return itemMapper.count();
     }
 
+    @Override
+    public int Countbytitle(String title) {
+        return itemMapper.Countbytitle(title);
+    }
+
     //根据商品名称查询商品
     @Override
     public List<Item> findItemByTitle(String title, int page, int limit) {

@@ -32,7 +32,7 @@ public class OrderController {
 
            int page1 = (page - 1) * limit;
            List<Order> orders = orderService.findOrderById(id,page1, limit);
-           int count = orders.size();
+           int count = orderService.countbyid(id);
 //        System.out.println(orders);
            return new LayUITbale().LayUIResponseByOrder(count, orders);
        }

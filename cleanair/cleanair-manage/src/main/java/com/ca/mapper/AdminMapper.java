@@ -19,6 +19,9 @@ public interface AdminMapper extends BaseMapper<Admin> {
     @Select("select count(*) from qk_admin")
     int count();
 
+    @Select("select count(*) from qk_admin  WHERE name LIKE concat('%',#{name},'%') ")
+    int countbyname(@Param("name") String name);
+
     @Select("select * from qk_admin where role_id = #{roleId}")
     List<Admin> selectByRoleId(@Param("roleId") Integer roleId);
 

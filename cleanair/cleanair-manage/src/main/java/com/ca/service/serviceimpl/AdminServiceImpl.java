@@ -97,6 +97,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public int countbyname(String name) {
+        return adminMapper.countbyname(name);
+    }
+
+    @Override
     public List<Integer> findMenusByName(String name) {
         //1通过admin 的name 找到role的id
         Admin admin = adminMapper.selectByName(name);

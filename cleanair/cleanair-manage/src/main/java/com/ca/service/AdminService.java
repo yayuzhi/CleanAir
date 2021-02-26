@@ -29,6 +29,8 @@ public interface AdminService {
 
     //模糊查询admin
     List<Admin> findAdminByname(String name,int page, int limit);
+    //模糊查询admin的count
+    int countbyname(String name);
 
     //在登录后的index展示相对应的页面
     List<Integer> findMenusByName(String name);

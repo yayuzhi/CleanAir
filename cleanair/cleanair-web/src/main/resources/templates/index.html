@@ -74,8 +74,8 @@
                         <form class="form-search">
                             <div class="form-content">
                                 <div class="inner">
-                                    <input type="text" class="input" name="s" value="" placeholder="输入商品名称">
-                                    <button class="btn-search" type="submit">
+                                    <input type="text" class="input" name="s" value="" placeholder="输入商品名称" id="productName">
+                                    <button class="btn-search" type="button" id="searchProduct" >
                                         <span class="icon-search"></span>
                                     </button>
                                 </div>
@@ -357,6 +357,13 @@
 
         TT.checkLogin();
     });
+
+    $('#searchProduct').click(function () {
+        title =  $('#productName').val();
+        console.log(title);
+        window.location.href="http://www.qk.com/allproducts?title="+title;
+    })
+
 
 
 </script>

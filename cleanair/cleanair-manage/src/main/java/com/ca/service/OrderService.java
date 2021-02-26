@@ -13,6 +13,8 @@ public interface OrderService {
     int count();
 
 
+    int countbyid(int id);
+
     //查询所有order  by id数据
     List<Order> findOrderById(int id,int page, int  limit);
 

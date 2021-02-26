@@ -8,6 +8,7 @@ public interface LogService {
    List<Log> findLogByPage(int page, int limit);
    Integer count();
 
+   Integer countbyname(String username);
    void savelog(Log log);
 
    void deleteLogById(Integer id);

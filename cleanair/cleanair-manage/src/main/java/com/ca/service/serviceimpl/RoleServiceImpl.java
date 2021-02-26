@@ -41,6 +41,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public int countbyname(String name) {
+        return roleMapper.countbyname(name);
+    }
+
+    @Override
     public List<Role> findPageByName(String name, int page, int limit) {
         List<Role> roles = roleMapper.findPageByName(name,page,limit);
         return roles;

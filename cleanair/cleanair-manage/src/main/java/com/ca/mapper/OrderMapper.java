@@ -19,6 +19,9 @@ public interface OrderMapper extends BaseMapper<Order> {
     @Select("select count(*) from qk_order")
     int count();
 
-    @Select("select * from qk_order where id = #{id} or id = null limit #{page},#{limit} ")
+    @Select("select count(*) from qk_order WHERE id LIKE concat('%',#{id},'%')")
+    int countbyid(@Param("id") int id);
+
+    @Select("select * from qk_order where id LIKE concat('%',#{id},'%') or id = null limit #{page},#{limit} ")
     List<Order> findOrderById(@Param("id") int id,@Param("page") int page, @Param("limit") int  limit);
 }

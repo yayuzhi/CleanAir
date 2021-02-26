@@ -28,6 +28,11 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
+    public Integer countbyname(String username) {
+        return logMapper.countbyname(username);
+    }
+
+    @Override
     public void savelog(Log log) {
         logMapper.insert(log);
     }
