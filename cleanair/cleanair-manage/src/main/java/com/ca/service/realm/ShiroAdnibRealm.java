@@ -100,9 +100,12 @@ public class ShiroAdnibRealm extends AuthorizingRealm {
             }
         }
 //        System.out.println(set);
+
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(set);
         info.setStringPermissions(set);
         return info;
+
+
     }
 
 }

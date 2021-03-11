@@ -20,6 +20,8 @@ public class MvcConfigurer implements WebMvcConfigurer{
 	//配置拦截器策略
 	@Autowired
 	private UserInterceptor userInterceptor;
+
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(userInterceptor)
