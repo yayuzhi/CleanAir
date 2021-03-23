@@ -38,7 +38,7 @@ dubbo:
   scan:
     basePackages: com.ca    #指定dubbo的包路径
   application:              #应用名称
-    name: provider-user     #一个接口对应一个服务名称
+    name: provider-user     #一个接口对应一个服务名称 服务提供者
   registry:
     address: zookeeper://192.168.126.129:2181?backup=192.168.126.129:2182,192.168.126.129:2183
   protocol:  #指定协议

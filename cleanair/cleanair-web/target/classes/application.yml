@@ -20,6 +20,6 @@ dubbo:
   scan:
     basePackages: com.ca
   application:
-    name: consumer-user   #定义消费者名称
+    name: consumer-user   #定义消费者名称  消费者
   registry:               #注册中心地址
     address: zookeeper://192.168.126.129:2181?backup=192.168.126.129:2182,192.168.126.129:2183

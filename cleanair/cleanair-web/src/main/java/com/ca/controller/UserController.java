@@ -44,7 +44,7 @@ public class UserController {
     public JsonResult doLogin(User user, HttpServletResponse response) {
         System.out.println(user);
 
-        System.out.println(response);
+//        System.out.println(response);
         String uuid = dubboUserService.doLogin(user);
         if (StringUtils.isEmpty(uuid)) {
             return JsonResult.fail();

@@ -111,10 +111,10 @@
                 <div class="breadcrumb-trail breadcrumbs">
                     <ul class="trail-items breadcrumb">
                         <li class="trail-item trail-begin">
-                            <a href="#">主页</a>
+                            <a href="http://www.qk.com/index">主页</a>
                         </li>
                         <li class="trail-item">
-                            <a href="#">商品列表</a>
+                            <a href="http://www.qk.com/allproducts">商品列表</a>
                         </li>
                         <li class="trail-item trail-end active" v-cloak>
                             {{product.title}}
@@ -129,8 +129,7 @@
                     <div class="details-product">
                         <div class="details-thumd" v-if="images != null">
                             <div class="image-preview-container image-thick-box image_preview_container">
-                                <img id="img_zoom" data-zoom-image="./images/details-item-1.jpg"
-                                     :src="images[0]" alt="img">
+                                <img :src="images[0]" alt="img">
 
                             </div>
                             <!--                            <div class="product-preview image-small product_preview">-->
@@ -162,7 +161,7 @@
                                 <a href="#">正在火热销售</a>
                             </div>
                             <div class="price" v-cloak>
-                                <span>￥{{product.price}}/天</span>
+                                <span>￥{{product.price*0.01}}/天</span>
                             </div>
                             <div class="product-details-description">
                                 <ul>
@@ -207,11 +206,11 @@
                                         <div class="control">
                                             <a class="btn-number qtyminus quantity-minus" href="#">-</a>
                                             <input type="text" data-step="1" data-min="0" value="1" title="Qty"
-                                                   class="input-qty qty" size="4">
+                                                   class="input-qty qty" size="4" id="productNum">
                                             <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                         </div>
                                     </div>
-                                    <button class="single_add_to_cart_button button">添加到购物车</button>
+                                    <button class="single_add_to_cart_button button" id="AddCar">添加到购物车</button>
                                 </div>
                             </div>
                         </div>
@@ -223,9 +222,10 @@
                             </li>
                         </ul>
                         <div class="tab-container">
-                            <div id=" itemDesc" class="tab-panel active" >
-
-                                <!--                                   {{product.itemDesc}}-->
+                            <div id=" itemDesc" class="tab-panel active">
+                                {{product.itemDesc}}
+                            </div>
+                            <div id=" itemDesc2" class="tab-panel active">
 
                             </div>
                         </div>
@@ -326,20 +326,22 @@
             var img = product.image;
             var m = img.split(",");
             vm.images = m;
-            console.log(m)
-            $("#itemDesc").html(product.itemDesc)
-            // window.onload = function () {
-            //     if (product.itemDesc != null) {
-            //
-            //         document.getElementById("itemDesc").innerHTML = product.itemDesc;
-            //     }
-            //
+
+            // if (product.itemDesc != null) {
+            //     $("#itemDesc").html(product.itemDesc)
+            //     // document.getElementById("itemDesc").innerHTML = product.itemDesc;
             // }
 
-
+            $(function() {
+                $("#itemDesc2").html($("#itemDesc").text());
+            });
         }
 
     })
+
+    //添加购物车
+
+
 
 
 </script>

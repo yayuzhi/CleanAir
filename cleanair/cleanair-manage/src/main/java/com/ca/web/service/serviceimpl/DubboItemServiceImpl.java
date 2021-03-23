@@ -6,7 +6,7 @@ import com.ca.mapper.ItemMapper;
 import com.ca.pojo.Item;
 import com.ca.pojo.ItemDesc;
 import com.ca.service.DubboItemService;
-import com.ca.service.DubboUserService;
+
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
