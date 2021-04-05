@@ -263,7 +263,6 @@
 
     //同步加载商品数据
     function renderProduct(page, limit, title) {
-
         $.ajax({
             async: false,
             url: '/AllProduct/getProductPage',
@@ -274,14 +273,12 @@
                 resCount = result.count;
                 resData = result.data;
                 vm.products = resData;
-
             }
         });
     }
 
     //获取搜索框数据
     $('#searchProduct').click(function () {
-
         title = $('#productName').val();
         window.location.href = "http://www.qk.com/allproducts?" + title;
         // console.log(title);

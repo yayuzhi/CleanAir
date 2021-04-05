@@ -35,9 +35,9 @@ public class UserInterceptor implements HandlerInterceptor {
         String ticket = null;
         //1.判断cookie中是否有记录
         Cookie[] cookies = request.getCookies();
-        if(cookies !=null && cookies.length>0){
-            for (Cookie cookie : cookies){
-                if("QK_TICKET".equals(cookie.getName())){
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if ("QK_TICKET".equals(cookie.getName())) {
                     ticket = cookie.getValue();
                     break;
                 }
@@ -45,21 +45,30 @@ public class UserInterceptor implements HandlerInterceptor {
         }
 
         //2.判断cookie数据是否有效
-        if(!StringUtils.isEmpty(ticket)){
-            if(jedisCluster.exists(ticket)){
+        if (!StringUtils.isEmpty(ticket) || jedisCluster.exists(ticket) ) {
+
                 String userJSON = jedisCluster.get(ticket);
                 User user = ObjectMapperUtil.toObject(userJSON, User.class);
                 //3.利用request对象进行数据的传递    request对象是最为常用的传递参数的媒介.
                 request.setAttribute("QK_USER", user);
                 UserThreadLocal.set(user);
                 return true;    //表示用户已经登录.
-            }
-        }
 
-        //重定向到用户登录页面
-        response.sendRedirect("/login.html");
-        return false;
+        } else {
+            //重定向到用户登录页面
+            //因为ajax的关系，这里我们需要告诉ajax 喂！我这个是重定向哦
+            response.setHeader("Access-Control-Expose-Headers", "REDIRECT,CONTEXTPATH");
+            response.setHeader("REDIRECT", "REDIRECT");
+            //告诉ajax重定向的url
+            String url = "/login";
+            response.setHeader("CONTEXTPATH", url);
+            response.getWriter().write(1);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//        response.sendRedirect("/login.html");
+            return false;
+        }
     }
+
 
     /**
      * 为了满足业务需要将数据删除

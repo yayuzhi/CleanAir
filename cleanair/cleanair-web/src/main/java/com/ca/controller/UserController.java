@@ -42,7 +42,7 @@ public class UserController {
     @RequestMapping("/doLogin")
     @ResponseBody
     public JsonResult doLogin(User user, HttpServletResponse response) {
-        System.out.println(user);
+//        System.out.println(user);
 
 //        System.out.println(response);
         String uuid = dubboUserService.doLogin(user);

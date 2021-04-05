@@ -47,8 +47,6 @@ public class ProductController {
         if (item.getNum() != null){
             itemPlus.setNum(item.getNum());
         }
-
-
         return JsonResult.success(itemPlus);
     }
 }

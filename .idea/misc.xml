@@ -16,6 +16,7 @@
         <option value="$PROJECT_DIR$/cleanair/pom.xml" />
         <option value="$PROJECT_DIR$/cleanair/cleanair-manage/pom.xml" />
         <option value="$PROJECT_DIR$/../test/pom.xml" />
+        <option value="$PROJECT_DIR$/cleanair/cleanair-cart/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

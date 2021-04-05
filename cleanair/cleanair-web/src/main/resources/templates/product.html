@@ -205,12 +205,14 @@
                                     <div class="quantity">
                                         <div class="control">
                                             <a class="btn-number qtyminus quantity-minus" href="#">-</a>
-                                            <input type="text" data-step="1" data-min="0" value="1" title="Qty"
+                                            <input type="text" data-step="1" min="1" value="1" title="Qty"
                                                    class="input-qty qty" size="4" id="productNum">
                                             <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                         </div>
                                     </div>
-                                    <button class="single_add_to_cart_button button" id="AddCar">添加到购物车</button>
+                                    <button class="  single_add_to_cart_button button" id="AddCar"
+                                            onclick="addCart()">添加到购物车
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +228,7 @@
                                 {{product.itemDesc}}
                             </div>
                             <div id=" itemDesc2" class="tab-panel active">
-
+                                <!--                                {{product.itemDesc}}-->
                             </div>
                         </div>
                     </div>
@@ -258,6 +260,7 @@
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
+<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="javascript">
 
     var TT = QK = {
@@ -320,7 +323,7 @@
         data: {"id": productid},    //参数值
         type: "post",   //请求方式
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             var product = data.data;
             vm.product = product;
             var img = product.image;
@@ -332,7 +335,7 @@
             //     // document.getElementById("itemDesc").innerHTML = product.itemDesc;
             // }
 
-            $(function() {
+            $(function () {
                 $("#itemDesc2").html($("#itemDesc").text());
             });
         }
@@ -340,8 +343,49 @@
     })
 
     //添加购物车
-
-
+    function addCart() {
+        var cart ={
+            "itemId": vm.product.id,
+            "itemTitle": vm.product.title,
+            "itemImage": vm.product.image,
+            "itemPrice": vm.product.price,
+            "num": $("#productNum").val()
+        }
+        console.log(cart)
+        $.ajax({
+            url: '/cart/add',
+            data: cart,
+            method: 'post',
+            dataType: 'json',
+            //执行完成回调函数
+            success: function (data) {
+                console.log(data)
+                // window.
+                // if (data.status == 200) {
+                //
+                // } else {
+                //
+                //     window.alert("添加失败")
+                // }
+            },
+            complete : function(xhr, status) {
+                //拦截器实现超时跳转到登录页面
+                // 通过xhr取得响应头
+                var REDIRECT = xhr.getResponseHeader("REDIRECT");
+                //如果响应头中包含 REDIRECT 则说明是拦截器返回的需要重定向的请求
+                if (REDIRECT == "REDIRECT")
+                {
+                    alert("您没有登录，请先登录")
+                    var win = window;
+                    while (win != win.top)
+                    {
+                        win = win.top;
+                    }
+                    win.location.href = xhr.getResponseHeader("CONTEXTPATH");
+                }
+            }
+        })
+    }
 
 
 </script>

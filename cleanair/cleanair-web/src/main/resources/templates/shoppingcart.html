@@ -1,6 +1,6 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>气清商城</title>
+    <title>Shopping Cart</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,8 +27,11 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
     <script src="./js/vue.min.js"></script>
+    <style> [v-cloak] {
+        display: none;
+    } </style>
 </head>
-<body class="productsgrid-page">
+<body class="inblog-page">
 <header class="header style7">
     <div class="top-bar">
         <div class="container">
@@ -37,26 +40,19 @@
                     欢迎来到气清!
                 </div>
             </div>
-            <div id="loginbar" class="top-bar-right">
-                <div class="header-language">
-                    <div class="teamo-language ">
-                        <a href="http://www.qk.com/login" class="active language-toggle">
-								<span>
-									请登录
-								</span>
-                        </a>
-                    </div>
+            <div class="top-bar-right">
+                <div id="loginbar">
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/login">请登录</a>
+                        </li>
+                    </ul>
+                    <ul class="header-user-links">
+                        <li>
+                            <a href="http://www.qk.com/regist">注册</a>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="header-user-links">
-                    <li>
-                        <a href="http://www.qk.com/regist">注册</a>
-                    </li>
-                </ul>
-                <!--                <ul class="header-user-links">-->
-                <!--                    <li>-->
-                <!--                        <a href="#">个人中心</a>-->
-                <!--                    </li>-->
-                <!--                </ul>-->
             </div>
         </div>
     </div>
@@ -108,50 +104,113 @@
     </div>
 </header>
 
-<div class="main-content main-content-product no-sidebar">
-    <div class="container">
-        <div class="row">
-            <div class="content-area shop-grid-content full-width col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="site-main">
-                    <ul class="row list-products auto-clear equal-container product-grid" id="product">
-                        <li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1"
-                            v-for="p in products">
-                            <div class="product-inner equal-element">
-                                <div class="product-thumb">
-                                    <div class="thumb-inner">
-                                        <a :href=" 'product?'+ p.id">
-                                            <img :src='p.image' alt="img">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h5 class="product-name product_title">
-                                        <a >{{p.title}}</a>
-                                    </h5>
-                                    <div class="group-info">
-                                        <div class="price">
-                                            ￥{{p.price/100}}/天
-                                        </div>
-                                    </div>
-                                </div>
+<div class="site-content">
+    <main class="site-main  main-container no-sidebar">
+        <div class="container">
+            <div class="breadcrumb-trail breadcrumbs">
+                <ul class="trail-items breadcrumb">
+                    <li class="trail-item trail-begin">
+                        <a href="">
+								<span>
+									主页
+								</span>
+                        </a>
+                    </li>
+                    <li class="trail-item trail-end active">
+							<span>
+								我的购物车
+							</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="main-content-cart main-content col-sm-12">
+                    <h3 class="custom_blog_title">
+                        购物车
+                    </h3>
+                    <div class="page-main-content">
+                        <div class="shoppingcart-content">
+                            <form action="shoppingcart.html" class="cart-form">
+                                <table class="shop_table">
+                                    <thead>
+                                    <tr>
+                                        <th class="product-remove"></th>
+                                        <th class="product-thumbnail"></th>
+                                        <th class="product-name"></th>
+                                        <th class="product-price"></th>
+                                        <th class="product-quantity"></th>
+                                        <th class="product-subtotal"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="cart_item">
+                                        <td class="product-remove">
+                                            <a href="#" class="remove"></a>
+                                        </td>
+                                        <td class="product-thumbnail">
+                                            <a href="#">
+                                                <img src="./images/cart-item-2.jpg" alt="img"
+                                                     class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
+                                            </a>
+                                        </td>
+                                        <td class="product-name" data-title="Product">
+                                            <a href="#" class="title">Mini swing dress</a>
+                                            <span class="attributes-select attributes-color">Black,</span>
+                                            <span class="attributes-select attributes-size">XXL</span>
+                                        </td>
+                                        <td class="product-quantity" data-title="Quantity">
+                                            <div class="quantity">
+                                                <div class="control">
+                                                    <a class="btn-number qtyminus quantity-minus" href="#">-</a>
+                                                    <input type="text" data-step="1" data-min="1" value="1" title="Qty"
+                                                           class="input-qty qty" size="4">
+                                                    <a href="#" class="btn-number qtyplus quantity-plus">+</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="product-price" data-title="Price">
+													<span class="woocommerce-Price-amount amount">
+														<span class="woocommerce-Price-currencySymbol">
+															￥
+														</span>
+														45/天
+													</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                    <tr>
+                                        <td class="actions">
+                                            
+                                            <div class="order-total">
+														<span class="title">
+															合计单日租用价格:
+														</span>
+                                                <span class="total-price">
+															￥95
+														</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                            <div class="control-cart">
+                                <button class="button btn-continue-shopping">
+                                    继续选购
+                                </button>
+                                <button class="button btn-cart-to-checkout">
+                                    现在下单
+                                </button>
                             </div>
-
-                            <!--商品展示-->
-
-                        </li>
-                    </ul>
-                    <div class="pagination clearfix style2">
-                        <div class="nav-link" id="layuipage"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </div>
 
-<a href="#" class="backtotop">
-    <i class="fa fa-angle-double-up"></i>
-</a>
 
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script src="./js/jquery.plugin-countdown.min.js"></script>
@@ -174,16 +233,12 @@
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
-<script src="./js/axios.min.js"></script>
-<script src="./lib/layui/layui.js"></script>
-
-<script type="text/javascript">
-
-
-    //验证是否登录
+<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="javascript">
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
+
             if (!_ticket) {
                 return;
             }
@@ -203,89 +258,19 @@
             });
         }
     }
+    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
+
 
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
         TT.checkLogin();
     });
-    //验证 登录 末
-
-    //创建一个vue
-    var vm = new Vue({
-        el: '#product',
-        data: {
-            products: null
-        },
-    });
-
-    var page = 1;//当前页
-    var limit = 16;//每页显示的数目
-    var resCount, resData;
-    var title;
-    //http://www.qk.com/allproducts?小米
-    var url = document.location.toString();
-    var arrayObject = url.split("?")
-    if (arrayObject.length > 1) {
-        title = decodeURI(decodeURI(arrayObject[1]));
-        $("#productName").val(title);
-    }
-
-    init();
-
-    function init() {
-        renderProduct(page, limit, title);
-        loadDate();
-    }
-
-    function loadDate() {
-        //    定义分页组件
-        layui.use(['jquery', 'laypage'], function () {
-            var $ = layui.jquery,
-                laypage = layui.laypage;
-            laypage.render({
-                elem: 'layuipage'//div的id，不能加#
-                , count: resCount//数据总条数
-                , limit: limit//每页显示多少条数据
-                , limits: [limit]//可选择的 每页显示多少条数据
-                , curr: page//当前页码
-                , theme: '#9ce346'//分页导航栏的颜色，用了橘色
-                , layout: ['count', 'prev', 'page', 'next']
-                , jump: function (obj, first) {
-                    // console.info(obj);
-                    page = obj.curr;
-                    if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
-                        renderProduct(page, limit, title);//关键
-                    }
-                }
-            });
-        });
-    }
-
-    //同步加载商品数据
-    function renderProduct(page, limit, title) {
-        $.ajax({
-            async: false,
-            url: '/AllProduct/getProductPage',
-            data: {"page": page, "limit": limit, "title": title},
-            dataType: 'json',
-            success: function (result) {
-                // console.info(result);
-                resCount = result.count;
-                resData = result.data;
-                vm.products = resData;
-            }
-        });
-    }
-
-    //获取搜索框数据
+    //搜索功能 点击跳转事件
     $('#searchProduct').click(function () {
         title = $('#productName').val();
+        console.log(title);
         window.location.href = "http://www.qk.com/allproducts?" + title;
-        // console.log(title);
-        // init();
     })
-
-
 </script>
 </body>
 </html>

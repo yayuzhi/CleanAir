@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 public class User extends BasePojo{
     private static final long serialVersionUID = 3958809461305464397L;
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
     private String username;
     private String password;
     private String phone;

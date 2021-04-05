@@ -1,0 +1,52 @@
+server:
+  port: 8049
+  servlet:
+    context-path: /    #在根目录中发布  缺省值.
+spring:
+  datasource:
+    #引入druid数据源
+    #type: com.alibaba.druid.pool.DruidDataSource
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/qkdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: root
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mvc:
+      hiddenmethod:
+        filter:
+          enabled: false
+#mybatis-plush配置
+mybatis-plus:
+  type-aliases-package: com.ca.pojo
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level: 
+    com.ca.mapper: debug
+
+#关于Dubbo配置
+dubbo:
+  scan:
+    basePackages: com.ca    #指定dubbo的包路径
+  application:              #应用名称
+    name: provider-cart     #一个接口对应一个服务名称
+  registry:
+    address: zookeeper://192.168.126.129:2181?backup=192.168.126.129:2182,192.168.126.129:2183
+  protocol:  #指定协议
+    name: dubbo  #使用dubbo协议(tcp-ip)  web-controller直接调用sso-Service
+    port: 20882  #每一个服务都有自己特定的端口 不能重复.
+
+
+
+
+
+
+
+
+
+

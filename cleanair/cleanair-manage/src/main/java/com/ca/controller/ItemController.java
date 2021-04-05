@@ -122,7 +122,7 @@ public class ItemController {
      * 在item-update.html显示itemdesc和item信息
      * 查询item的详细信息
      */
-    @RequestMapping("findItemDescById")
+    @RequestMapping("/findItemDescById")
     public  JsonResult findItemDescById(Integer id){
         ItemDesc itemDesc1 =itemService.findItemDescById(id);
 
@@ -137,7 +137,7 @@ public class ItemController {
      * @param itemDesc
      * @return
      */
-    @RequestMapping("updateItem")
+    @RequestMapping("/updateItem")
     public JsonResult updateItem(Item item,ItemDesc itemDesc){
         System.out.println(item);
         System.out.println(itemDesc);
