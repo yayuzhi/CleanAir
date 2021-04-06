@@ -161,7 +161,7 @@
                                             <div class="quantity">
                                                 <div class="control">
                                                     <a class="btn-number qtyminus quantity-minus" href="#">-</a>
-                                                    <input type="text" data-step="1" data-min="1" value="{{cart.num}}" title="Qty"
+                                                    <input type="text" data-step="1" min="1" v-model="cart.num" title="Qty"
                                                            class="input-qty qty" size="4">
                                                     <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                                 </div>
@@ -181,12 +181,12 @@
                                     <tr>
                                         <td class="actions">
                                             
-                                            <div class="order-total">
+                                            <div class="order-total" id="price"  v-if="pr">
 														<span class="title">
 															合计单日租用价格:
 														</span>
                                                 <span class="total-price">
-															￥95
+															￥{{pr.price/100}}
 														</span>
                                             </div>
                                         </td>
@@ -280,9 +280,16 @@
     var vm = new Vue({
         el: '#cart',
         data: {
-            carts: null
+            carts: null,
         },
     });
+
+    var pr = new Vue({
+        el: '#price',
+        data: {
+            price:"",
+        },
+    })
 
     init();
 
@@ -292,12 +299,28 @@
             url: '/cart/show',
             dataType: 'json',
             success: function (result) {
-                console.info(result.data);
+                // console.info(result.data);
 
                 resData = result.data;
                 vm.carts = resData;
+                var carts = resData;
+                //计算总价
+
+                pr.price = Totalprice(carts);
+                console.log(pr.price);
+
+
             }
         });
+
+    }
+    function Totalprice(carts) {
+        var sumTotalprice = 0;
+        for (var cart in carts ){
+
+            sumTotalprice += carts[cart].itemPrice*carts[cart].num;
+        }
+        return sumTotalprice;
 
     }
 
