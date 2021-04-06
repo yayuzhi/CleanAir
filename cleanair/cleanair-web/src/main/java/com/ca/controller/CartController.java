@@ -47,32 +47,38 @@ public class CartController {
     /**
      * 业务描述:
      *  完成购物车数量的修改操作
-     *  url地址:  http://www.ca.com/cart/update/
+     *  url地址: http://www.qk.com/cart/update/num
      *  参数:     restFul风格
      *  返回值:   void
      */
-     @RequestMapping("/update/num/")
+     @RequestMapping("/update/num")
      @ResponseBody  //让ajax程序结束
-     public void updateNum(Cart cart){//springmvc 针对restFul提供的功能 名称和属性一致
-
+     public JsonResult updateNum(Cart cart){//springmvc 针对restFul提供的功能 名称和属性一致
+//         System.out.println(cart);
          Long userId = UserThreadLocal.get().getId();
-         cart.setUserId(userId);
+         if (userId == cart.getUserId()){
+
+         }else {
+             cart.setUserId(userId);
+         }
          cartService.updateCartNum(cart);
+         return JsonResult.success("update ok!");
      }
 
     /**
      * 实现购物车删除操作
-     * 1.url地址: http://www.ca.com/cart/delete/
+     * 1.url地址: http://www.qk.com/cart/delete/
      * 2.参数:    1474392004 itemId
      * 3.返回值:  String   重定向到列表页面
      */
-     @RequestMapping("/delete/")
+     @RequestMapping("/delete")
      @ResponseBody
-     public String deleteCart(Cart cart){
+     public JsonResult deleteCart(Cart cart){
          Long userId = UserThreadLocal.get().getId();
          cart.setUserId(userId);
+//         System.out.println(cart);
          cartService.deleteCart(cart);
-         return "redirect:/cart/show";
+         return JsonResult.success("delete ok!");
      }
 
     /**

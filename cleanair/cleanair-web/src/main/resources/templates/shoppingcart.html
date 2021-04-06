@@ -1,4 +1,4 @@
-<html lang="en" >
+<html lang="en">
 <head>
     <title>气清商城</title>
     <meta charset="UTF-8">
@@ -62,10 +62,12 @@
                     <div class="container-wapper">
                         <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
                             <li class="menu-item  menu-item-has-children">
-                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title" title="Home">全部商品</a>
+                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title"
+                                   title="Home">全部商品</a>
                             </li>
                             <li class="menu-item menu-item-has-children">
-                                <a href="http://www.qk.com/shoppingcart" class="teamo-menu-item-title" title="Shop">购物车</a>
+                                <a href="http://www.qk.com/shoppingcart" class="teamo-menu-item-title"
+                                   title="Shop">购物车</a>
                             </li>
                             <li class="menu-item  menu-item-has-children item-megamenu">
                                 <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
@@ -132,7 +134,7 @@
                             <form action="shoppingcart.html" class="cart-form">
                                 <table class="shop_table" id="cart">
                                     <thead>
-                                    <tr >
+                                    <tr>
                                         <th class="product-remove"></th>
                                         <th class="product-thumbnail"></th>
                                         <th class="product-name"></th>
@@ -142,28 +144,31 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="cart_item"  v-for="cart in carts">
+                                    <tr class="cart_item" v-for="cart in carts">
                                         <td class="product-remove">
-                                            <a href="#" class="remove"></a>
+                                            <a href="#"  class="remove"  v-on:click="remove(cart)"></a>
                                         </td>
                                         <td class="product-thumbnail">
-                                            <a href="#">
+                                            <a >
                                                 <img :src='cart.itemImage' alt="img"
                                                      class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
                                             </a>
                                         </td>
                                         <td class="product-name" data-title="Product">
-                                            <a href="#" class="title">{{cart.itemTitle}}</a>
-<!--                                            <span class="attributes-select attributes-color">Black,</span>-->
-<!--                                            <span class="attributes-select attributes-size">XXL</span>-->
+                                            <a  class="title">{{cart.itemTitle}}</a>
+                                            <!--                                            <span class="attributes-select attributes-color">Black,</span>-->
+                                            <!--                                            <span class="attributes-select attributes-size">XXL</span>-->
                                         </td>
                                         <td class="product-quantity" data-title="Quantity">
                                             <div class="quantity">
                                                 <div class="control">
-                                                    <a class="btn-number qtyminus quantity-minus" href="#">-</a>
-                                                    <input type="text" data-step="1" min="1" v-model="cart.num" title="Qty"
+                                                    <!--                                                    quantity-minus   quantity-plus-->
+                                                    <a href="#" class="btn-number qtyminus   "
+                                                       v-on:click="subtract(cart)">-</a>
+                                                    <input id="num" type="text" min="1" v-model="cart.num" title="Qty"
                                                            class="input-qty qty" size="4">
-                                                    <a href="#" class="btn-number qtyplus quantity-plus">+</a>
+                                                    <a href="#" class="btn-number qtyplus   "
+                                                       v-on:click="add(cart)">+</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -176,12 +181,12 @@
 													</span>
                                         </td>
                                     </tr>
-                                    
-                                    
+
+
                                     <tr>
                                         <td class="actions">
-                                            
-                                            <div class="order-total" id="price"  v-if="pr">
+
+                                            <div class="order-total" id="price" v-if="pr">
 														<span class="title">
 															合计单日租用价格:
 														</span>
@@ -233,7 +238,7 @@
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
 <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" >
+<script type="text/javascript">
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
@@ -265,7 +270,7 @@
     //搜索功能 点击跳转事件
     $('#searchProduct').click(function () {
         title = $('#productName').val();
-        console.log(title);
+        // console.log(title);
         window.location.href = "http://www.qk.com/allproducts?" + title;
     })
 
@@ -287,11 +292,14 @@
     var pr = new Vue({
         el: '#price',
         data: {
-            price:"",
+            price: "",
         },
     })
 
+
     init();
+
+    var num = 0;
 
     function init() {
         $.ajax({
@@ -307,22 +315,87 @@
                 //计算总价
 
                 pr.price = Totalprice(carts);
-                console.log(pr.price);
+                // console.log(pr.price);
 
 
             }
         });
 
     }
+
     function Totalprice(carts) {
         var sumTotalprice = 0;
-        for (var cart in carts ){
-
-            sumTotalprice += carts[cart].itemPrice*carts[cart].num;
+        for (var cart in carts) {
+            sumTotalprice += carts[cart].itemPrice * carts[cart].num;
         }
         return sumTotalprice;
 
     }
+
+    function add(cart) {
+        console.log(cart.num);
+        num = parseInt(cart.num) + 1;
+        console.log(num);
+        var itemId = cart.itemId;
+        if (num > 0) {
+            $.ajax({
+                async: false,
+                url: '/cart/update/num',
+                dataType: 'json',
+                type: "post",
+                data: {"num": num, "itemId": itemId},
+                success: function (result) {
+                    // console.log("ok")
+                    if (result.status == 200) {
+                        init();
+                    }
+                }
+            });
+        }
+
+    }
+
+    function subtract(cart) {
+        console.log(cart.num);
+        num = parseInt(cart.num) - 1;
+        console.log(num);
+        var itemId = cart.itemId;
+        if (num > 0) {
+            // console.log(cart)
+            $.ajax({
+                async: false,
+                url: '/cart/update/num',
+                dataType: 'json',
+                type: "post",
+                data: {"num": num, "itemId": itemId},
+                success: function (result) {
+                    // console.log(result)
+                    if (result.status == 200) {
+
+                        init();
+                    }
+                }
+            });
+        }
+    }
+
+    function remove(cart) {
+
+        $.ajax({
+            async: false,
+            url: '/cart/delete',
+            dataType: 'json',
+            type: "post",
+            data: {"itemId": cart.itemId},
+            success: function (result) {
+                console.log(result)
+                if (result.status == 200) {
+                    init();
+                }
+            }
+        });
+    }
+
 
 </script>
 </body>
