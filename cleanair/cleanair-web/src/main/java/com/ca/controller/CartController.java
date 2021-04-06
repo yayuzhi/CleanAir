@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/cart")
@@ -28,12 +30,18 @@ public class CartController {
      *  页面取值:  ${cartList}
      */
     @RequestMapping("/show")
-    public String show(Model model, HttpServletRequest request){
+    @ResponseBody
+    public Map<String,Object> show(Model model, HttpServletRequest request){
+        Map<String, Object> map = new HashMap<String, Object>();
         User user = (User) request.getAttribute("QK_USER");
-        Long userId = user.getId();   //暂时写死
+        Long userId = user.getId();
         List<Cart> cartList = cartService.findCartListByUserId(userId);
         model.addAttribute("cartList",cartList);
-        return "shoppingcart";
+        map.put("code", 0);
+        map.put("msg", "操作成功");
+        map.put("data", cartList);
+
+        return map;
     }
 
     /**
@@ -59,6 +67,7 @@ public class CartController {
      * 3.返回值:  String   重定向到列表页面
      */
      @RequestMapping("/delete/")
+     @ResponseBody
      public String deleteCart(Cart cart){
          Long userId = UserThreadLocal.get().getId();
          cart.setUserId(userId);
@@ -73,14 +82,14 @@ public class CartController {
      * 返回值:  重定向到购物车列表页面
      */
     @RequestMapping("/add")
-    public String addCart(Cart cart){
-        System.out.println(cart);
+    @ResponseBody
+    public JsonResult addCart(Cart cart){
+
         Long userId = UserThreadLocal.get().getId();
         cart.setUserId(userId);
         cartService.addCart(cart);
-//        return "redirect:/cart/show.html";
-        return "redirect:/cart/show";
 
+        return  JsonResult.success("add ok!");
     }
 
 }

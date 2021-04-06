@@ -26,6 +26,7 @@ public class DubboItemServiceImpl implements DubboItemService {
     @Override
     public PageInfo<Item> getProductPage(Integer page, Integer limit) {
         List<Item> items = itemMapper.findAllPageweb(page, limit);
+
         //处理首页显示照片
         for (Item item : items) {
             String image = item.getImage();

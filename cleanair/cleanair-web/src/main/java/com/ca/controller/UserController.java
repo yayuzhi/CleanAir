@@ -32,9 +32,9 @@ public class UserController {
     @RequestMapping("/doRegister")
     @ResponseBody
     private JsonResult doRegist(User user) {
-        System.out.println(user);
+//        System.out.println(user);
         dubboUserService.saveUser(user);
-        System.out.println("ok");
+//        System.out.println("ok");
         return JsonResult.success("注册成功!");
     }
 

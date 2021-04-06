@@ -1,6 +1,6 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" >
 <head>
-    <title>Shopping Cart</title>
+    <title>气清商城</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,7 +25,6 @@
     <link rel="stylesheet" href="./css/mobile-menu.css">
     <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
     <script src="./js/vue.min.js"></script>
     <style> [v-cloak] {
         display: none;
@@ -63,10 +62,10 @@
                     <div class="container-wapper">
                         <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
                             <li class="menu-item  menu-item-has-children">
-                                <a href="#" class="teamo-menu-item-title" title="Home">全部商品</a>
+                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title" title="Home">全部商品</a>
                             </li>
                             <li class="menu-item menu-item-has-children">
-                                <a href="#" class="teamo-menu-item-title" title="Shop">购物车</a>
+                                <a href="http://www.qk.com/shoppingcart" class="teamo-menu-item-title" title="Shop">购物车</a>
                             </li>
                             <li class="menu-item  menu-item-has-children item-megamenu">
                                 <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
@@ -131,9 +130,9 @@
                     <div class="page-main-content">
                         <div class="shoppingcart-content">
                             <form action="shoppingcart.html" class="cart-form">
-                                <table class="shop_table">
+                                <table class="shop_table" id="cart">
                                     <thead>
-                                    <tr>
+                                    <tr >
                                         <th class="product-remove"></th>
                                         <th class="product-thumbnail"></th>
                                         <th class="product-name"></th>
@@ -143,26 +142,26 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="cart_item">
+                                    <tr class="cart_item"  v-for="cart in carts">
                                         <td class="product-remove">
                                             <a href="#" class="remove"></a>
                                         </td>
                                         <td class="product-thumbnail">
                                             <a href="#">
-                                                <img src="./images/cart-item-2.jpg" alt="img"
+                                                <img :src='cart.itemImage' alt="img"
                                                      class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
                                             </a>
                                         </td>
                                         <td class="product-name" data-title="Product">
-                                            <a href="#" class="title">Mini swing dress</a>
-                                            <span class="attributes-select attributes-color">Black,</span>
-                                            <span class="attributes-select attributes-size">XXL</span>
+                                            <a href="#" class="title">{{cart.itemTitle}}</a>
+<!--                                            <span class="attributes-select attributes-color">Black,</span>-->
+<!--                                            <span class="attributes-select attributes-size">XXL</span>-->
                                         </td>
                                         <td class="product-quantity" data-title="Quantity">
                                             <div class="quantity">
                                                 <div class="control">
                                                     <a class="btn-number qtyminus quantity-minus" href="#">-</a>
-                                                    <input type="text" data-step="1" data-min="1" value="1" title="Qty"
+                                                    <input type="text" data-step="1" data-min="1" value="{{cart.num}}" title="Qty"
                                                            class="input-qty qty" size="4">
                                                     <a href="#" class="btn-number qtyplus quantity-plus">+</a>
                                                 </div>
@@ -173,7 +172,7 @@
 														<span class="woocommerce-Price-currencySymbol">
 															￥
 														</span>
-														45/天
+														{{cart.itemPrice/100}}/天
 													</span>
                                         </td>
                                     </tr>
@@ -196,7 +195,7 @@
                                 </table>
                             </form>
                             <div class="control-cart">
-                                <button class="button btn-continue-shopping">
+                                <button class="button btn-continue-shopping" onclick="Keepbuying()">
                                     继续选购
                                 </button>
                                 <button class="button btn-cart-to-checkout">
@@ -230,11 +229,11 @@
 <script src="./js/lightbox.min.js"></script>
 <script src="./js/owl.thumbs.min.js"></script>
 <script src="./js/jquery.scrollbar.min.js"></script>
-<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
+<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
 <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
-<script type="text/javascript" th:inline="javascript">
+<script type="text/javascript" >
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
@@ -258,8 +257,6 @@
             });
         }
     }
-    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
-
 
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
@@ -271,6 +268,39 @@
         console.log(title);
         window.location.href = "http://www.qk.com/allproducts?" + title;
     })
+
+    function Keepbuying() {
+        window.location.href = "http://www.qk.com/allproducts";
+
+    }
+
+
+    //渲染出所有的购物车里面的商品
+    //创建一个vue
+    var vm = new Vue({
+        el: '#cart',
+        data: {
+            carts: null
+        },
+    });
+
+    init();
+
+    function init() {
+        $.ajax({
+            async: false,
+            url: '/cart/show',
+            dataType: 'json',
+            success: function (result) {
+                console.info(result.data);
+
+                resData = result.data;
+                vm.carts = resData;
+            }
+        });
+
+    }
+
 </script>
 </body>
 </html>

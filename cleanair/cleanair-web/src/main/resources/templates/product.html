@@ -63,10 +63,10 @@
                     <div class="container-wapper">
                         <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
                             <li class="menu-item  menu-item-has-children">
-                                <a href="#" class="teamo-menu-item-title" title="Home">全部商品</a>
+                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title" title="Home">全部商品</a>
                             </li>
                             <li class="menu-item menu-item-has-children">
-                                <a href="#" class="teamo-menu-item-title" title="Shop">购物车</a>
+                                <a href="http://www.qk.com/shoppingcart" class="teamo-menu-item-title" title="Shop">购物车</a>
                             </li>
                             <li class="menu-item  menu-item-has-children item-megamenu">
                                 <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
@@ -360,13 +360,12 @@
             //执行完成回调函数
             success: function (data) {
                 console.log(data)
-                // window.
-                // if (data.status == 200) {
-                //
-                // } else {
-                //
-                //     window.alert("添加失败")
-                // }
+                if (data.status == 200) {
+                    window.alert("添加成功")
+                } else {
+
+                    window.alert("添加失败")
+                }
             },
             complete : function(xhr, status) {
                 //拦截器实现超时跳转到登录页面

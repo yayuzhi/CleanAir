@@ -4,12 +4,16 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ca.mapper.CartMapper;
 import com.ca.pojo.Cart;
+import com.ca.pojo.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 @Service(timeout = 3000)
-public class DubboCartServiceImpl implements DubboCartService{
+public class DubboCartServiceImpl implements DubboCartService {
 
     @Autowired
     private CartMapper cartMapper;
@@ -17,14 +21,27 @@ public class DubboCartServiceImpl implements DubboCartService{
 
     @Override
     public List<Cart> findCartListByUserId(Long userId) {
-    QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
-    queryWrapper.eq("user_id", userId);
-        return cartMapper.selectList(queryWrapper);
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<Cart> carts = cartMapper.selectList(queryWrapper);
+
+        for (Cart cart : carts) {
+            String image = cart.getItemImage();
+            String[] firstImage = image.split(",");
+            String trueImage = firstImage[0];
+            cart.setItemImage(trueImage);
+
+
+        }
+
+
+        return carts;
     }
 
     /**
      * Sql: update tb_cart set num=#{num},updated=#{updated}
-     *      where user_id=#{userId} and item_id = #{itemId}
+     * where user_id=#{userId} and item_id = #{itemId}
+     *
      * @param cart
      */
     @Override
@@ -33,8 +50,8 @@ public class DubboCartServiceImpl implements DubboCartService{
         cartTemp.setNum(cart.getNum());
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", cart.getUserId())
-                    .eq("item_id", cart.getItemId());
-        cartMapper.update(cartTemp,queryWrapper);
+                .eq("item_id", cart.getItemId());
+        cartMapper.update(cartTemp, queryWrapper);
         //参数1: 封装set条件   参数2:封装where条件
     }
 
@@ -56,12 +73,12 @@ public class DubboCartServiceImpl implements DubboCartService{
         //1.查询购物车信息 userId,itemId
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", cart.getUserId());
-        queryWrapper.eq("item_id",cart.getItemId());
+        queryWrapper.eq("item_id", cart.getItemId());
         Cart cartDB = cartMapper.selectOne(queryWrapper);
-        if(cartDB == null){
+        if (cartDB == null) {
             //第一次新增购物车
             cartMapper.insert(cart);
-        }else{
+        } else {
             //用户已经加购,更新数量
             int num = cartDB.getNum() + cart.getNum();
             Cart cartTemp = new Cart();
