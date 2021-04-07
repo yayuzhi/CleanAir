@@ -7,9 +7,9 @@
     <link rel="shortcut icon" href="./images/favicon.ico"/>
     <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
     <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">
+<!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"-->
+<!--          rel="stylesheet">-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">-->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/owl.carousel.min.css">
@@ -203,7 +203,7 @@
                                 <button class="button btn-continue-shopping" onclick="Keepbuying()">
                                     继续选购
                                 </button>
-                                <button class="button btn-cart-to-checkout">
+                                <button class="button btn-cart-to-checkout" onclick="checkout()">
                                     现在下单
                                 </button>
                             </div>
@@ -234,7 +234,7 @@
 <script src="./js/lightbox.min.js"></script>
 <script src="./js/owl.thumbs.min.js"></script>
 <script src="./js/jquery.scrollbar.min.js"></script>
-<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>
+<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
 <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
@@ -276,6 +276,10 @@
 
     function Keepbuying() {
         window.location.href = "http://www.qk.com/allproducts";
+
+    }
+    function checkout() {
+        window.location.href = "http://www.qk.com/checkout";
 
     }
 
@@ -320,7 +324,6 @@
 
             }
         });
-
     }
 
     function Totalprice(carts) {

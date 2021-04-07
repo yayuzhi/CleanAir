@@ -76,7 +76,7 @@ public class CartController {
      public JsonResult deleteCart(Cart cart){
          Long userId = UserThreadLocal.get().getId();
          cart.setUserId(userId);
-//         System.out.println(cart);
+         System.out.println(cart);
          cartService.deleteCart(cart);
          return JsonResult.success("delete ok!");
      }

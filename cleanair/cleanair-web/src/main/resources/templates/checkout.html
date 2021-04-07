@@ -1,0 +1,403 @@
+<html lang="en">
+<head>
+    <title>气清商城</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="./images/favicon.ico"/>
+    <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
+    <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
+    <!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"-->
+    <!--          rel="stylesheet">-->
+    <!--    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">-->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/owl.carousel.min.css">
+    <link rel="stylesheet" href="./css/animate.min.css">
+    <link rel="stylesheet" href="./css/jquery-ui.css">
+    <link rel="stylesheet" href="./css/slick.css">
+    <link rel="stylesheet" href="./css/chosen.min.css">
+    <link rel="stylesheet" href="./css/pe-icon-7-stroke.css">
+    <link rel="stylesheet" href="./css/magnific-popup.min.css">
+    <link rel="stylesheet" href="./css/lightbox.min.css">
+    <link rel="stylesheet" href="./js/fancybox/source/jquery.fancybox.css">
+    <link rel="stylesheet" href="./css/jquery.scrollbar.min.css">
+    <link rel="stylesheet" href="./css/mobile-menu.css">
+    <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/vue.min.js"></script>
+    <style> [v-cloak] {
+        display: none;
+    } </style>
+</head>
+<body class="inblog-page">
+<header class="header style7">
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <div class="header-message">
+                    欢迎来到气清!
+                </div>
+            </div>
+            <div id="loginbar" class="top-bar-right">
+                <div class="header-language">
+                    <div class="teamo-language ">
+                        <a href="http://www.qk.com/login" class="active language-toggle">
+								<span>
+									请登录
+								</span>
+                        </a>
+                    </div>
+                </div>
+                <ul class="header-user-links">
+                    <li>
+                        <a href="http://www.qk.com/regist">注册</a>
+                    </li>
+                </ul>
+                <!--                <ul class="header-user-links">-->
+                <!--                    <li>-->
+                <!--                        <a href="#">个人中心</a>-->
+                <!--                    </li>-->
+                <!--                </ul>-->
+            </div>
+        </div>
+    </div>
+    <div class="header-nav-container">
+        <div class="container">
+            <div class="header-nav-wapper main-menu-wapper">
+                <div class="header-nav">
+                    <div class="container-wapper">
+                        <ul class="teamo-clone-mobile-menu teamo-nav main-menu " id="menu-main-menu">
+                            <li class="menu-item  menu-item-has-children">
+                                <a href="http://www.qk.com/allproducts" class="teamo-menu-item-title"
+                                   title="Home">全部商品</a>
+                            </li>
+                            <li class="menu-item menu-item-has-children">
+                                <a href="http://www.qk.com/shoppingcart" class="teamo-menu-item-title"
+                                   title="Shop">购物车</a>
+                            </li>
+                            <li class="menu-item  menu-item-has-children item-megamenu">
+                                <a href="#" class="teamo-menu-item-title" title="Pages">订单</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="main-header">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-4 col-md-3 col-xs-7 col-ts-12 header-element">
+                        <div class="logo">
+                            <a href="http://www.qk.com/index">
+                                <img src="./images/logo.png" alt="img">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-sm-8 col-md-6 col-xs-5 col-ts-12">
+                        <div class="block-search-block">
+                            <form class="form-search form-search-width-category">
+                                <div class="form-content">
+                                    <div class="inner">
+                                        <input type="text" class="input" id="productName" value="" placeholder="输入商品名称">
+                                    </div>
+                                    <button class="btn-search" type="button" id="searchProduct">
+                                        <span class="icon-search"></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="main-content main-content-checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-trail breadcrumbs">
+                    <ul class="trail-items breadcrumb">
+                        <li class="trail-item trail-begin">
+                            <a href="index.html">主页</a>
+                        </li>
+                        <li class="trail-item trail-end active">
+                            确认订单
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <h3 class="custom_blog_title">
+            确认订单
+        </h3>
+        <div class="checkout-wrapp">
+            <div class="shipping-address-form-wrapp">
+                <div class="shipping-address-form  checkout-form">
+                    <div class="row-col-1 row-col">
+                        <div class="shipping-address">
+                            <h3 class="title-form">
+                                订单信息
+                            </h3>
+                            <p class="form-row form-row-first">
+                                <label class="text">姓名</label>
+                                <input title="first" type="text" class="input-text" id="name">
+                            </p>
+                            <p class="form-row form-row-last">
+                                <label class="text">手机号码</label>
+                                <input title="last" type="text" class="input-text" id="phone">
+                            </p>
+                            <p class="form-row form-row-first ">
+                                <label class="text">城市（请注意所在城市是否支持气清业务）</label>
+                                <select title="state" data-placeholder="London" class="chosen-select" tabindex="1 "
+                                        id="address1">
+                                    <option value="张家界">张家界</option>
+                                    <option value="长沙">长沙</option>
+                                    <option value="北京">北京</option>
+                                    <option value="上海">上海</option>
+                                    <option value="广东">广东</option>
+                                    <option value="深圳">深圳</option>
+                                    <option value="成都">成都</option>
+                                    <option value="石家庄">石家庄</option>
+                                    <option value="重庆">重庆</option>
+                                    <option value="杭州">杭州</option>
+                                    <option value="天津">天津</option>
+                                    <option value="衡阳">衡阳</option>
+                                    <option value="耒阳">耒阳</option>
+                                    <option value="台北">台北</option>
+                                </select>
+                            </p>
+                            <p class="form-row forn-row-first">
+                                <label class="text">收货地址</label>
+                                <input title="address" type="text" class="input-text" id="address2">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row-col-2 row-col">
+                        <div class="your-order">
+                            <h3 class="title-form">
+                                你的订单
+                            </h3>
+                            <ul class="list-product-order" id="cart">
+                                <li class="product-item-order" v-for="cart in carts">
+                                    <div class="product-thumb">
+                                        <a href="#">
+                                            <img :src='cart.itemImage' alt="img">
+                                        </a>
+                                    </div>
+                                    <div class="product-order-inner">
+                                        <h5 class="product-name">
+                                            <a href="#">{{cart.itemTitle}}</a>
+                                        </h5>
+                                        <!--                                        <span class="attributes-select attributes-color">Black,</span>-->
+                                        <!--                                        <span class="attributes-select attributes-size">XXL</span>-->
+                                        <div class="price">
+                                            ￥{{cart.itemPrice/100}}/天
+                                            <span class="count">x{{cart.num}}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="order-total" id="price" v-if="price">
+									    <span class="title">
+									    	合计单日租用价格:
+									    </span>
+                                <span class="total-price">
+										    ￥{{pr.price/100}}
+									    </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="button button-payment" onclick="pay()">支付</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a href="#" class="backtotop">
+    <i class="fa fa-angle-double-up"></i>
+</a>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/jquery.plugin-countdown.min.js"></script>
+<script src="./js/jquery-countdown.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/owl.carousel.min.js"></script>
+<script src="./js/magnific-popup.min.js"></script>
+<script src="./js/isotope.min.js"></script>
+<script src="./js/jquery.scrollbar.min.js"></script>
+<script src="./js/jquery-ui.min.js"></script>
+<script src="./js/mobile-menu.js"></script>
+<script src="./js/chosen.min.js"></script>
+<script src="./js/slick.js"></script>
+<script src="./js/jquery.elevateZoom.min.js"></script>
+<script src="./js/jquery.actual.min.js"></script>
+<script src="./js/fancybox/source/jquery.fancybox.js"></script>
+<script src="./js/lightbox.min.js"></script>
+<script src="./js/owl.thumbs.min.js"></script>
+<script src="./js/jquery.scrollbar.min.js"></script>
+<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
+<script src="./js/frontend-plugin.js"></script>
+<script src="./js/jquery.cookie.js"></script>
+<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+    var TT = QK = {
+        checkLogin: function () {
+            var _ticket = $.cookie("QK_TICKET");
+
+            if (!_ticket) {
+                return;
+            }
+            //当dataType类型为jsonp时，jQuery就会自动在请求链接上增加一个callback的参数
+            $.ajax({
+                url: "http://sso.qk.com/user/query/" + _ticket,
+                dataType: "jsonp",
+                type: "GET",
+                success: function (data) {
+                    if (data.status == 200) {
+                        //要求获取的是user的JSON串
+                        var _data = JSON.parse(data.data);//将JSON串转化为对象
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        $("#loginbar").html(html);
+                    }
+                }
+            });
+        }
+    }
+    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
+
+
+    $(function () {
+        // 查看是否已经登录，如果已经登录查询登录信息
+
+        TT.checkLogin();
+    });
+
+    $('#searchProduct').click(function () {
+        title = $('#productName').val();
+        console.log(title);
+        window.location.href = "http://www.qk.com/allproducts?" + title;
+    })
+
+    //渲染出所有的购物车里面的商品
+    //创建一个vue
+    var vm = new Vue({
+        el: '#cart',
+        data: {
+            carts: null,
+        },
+    });
+
+    var pr = new Vue({
+        el: '#price',
+        data: {
+            price: "",
+        },
+    })
+    init();
+
+    function init() {
+        $.ajax({
+            async: false,
+            url: '/order/create',
+            dataType: 'json',
+            success: function (result) {
+                console.info(result.data);
+                resData = result.data;
+                vm.carts = resData;
+                var carts = resData;
+                //计算总价
+                pr.price = Totalprice(carts);
+                // console.log(pr.price);
+            }
+        });
+    }
+
+    function Totalprice(carts) {
+        var sumTotalprice = 0;
+        for (var cart in carts) {
+            sumTotalprice += carts[cart].itemPrice * carts[cart].num;
+        }
+        return sumTotalprice;
+
+    }
+
+    //对phone进行check
+    function checkPhone(phone) {
+        if (phone == null || phone == "") {
+            alert("手机号码不能为空!");
+            $('#phone').focus();
+            return false;
+        } else if (!isPhone(phone)) {
+            alert("您输入的手机号码有误,请重新核对后再输入!");
+            $('#phone').focus();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //判断phone的正则表达式
+    function isPhone(str) {
+        var reg = /^1[0-9]{10}$/;
+        return reg.test(str);
+    }
+
+    function checkaddress(address) {
+        if (address == null || address == "") {
+            alert("收货地址不能为空!");
+            return false;
+        } else {
+            return true
+        }
+    }
+
+    //判断name
+    function checkuserName(name) {
+        if (name == null || name == "") {
+            alert("收货人姓名不能为空!");
+            return false;
+        } else {
+            return true
+        }
+
+    }
+
+    //订单确认
+    function pay() {
+        var order = {
+            "payment": pr.price,
+            "address": $('#address1').val() + $('#address2').val(),
+            "phone": $('#phone').val(),
+            "userName": $('#name').val(),
+        }
+        if (checkuserName(order.userName) && checkPhone(order.phone) && checkaddress($('#address2').val())) {
+            console.log(order)
+            $.ajax({
+                url: '/order/submit',
+                data: order,
+                method: 'post',
+                dataType: 'json',
+                //执行完成回调函数
+                success: function (data) {
+                    console.log(data)
+                    if (data.status == 200) {
+
+
+                        window.location.href = "http://www.qk.com/payok";
+                    } else {
+                        window.alert("支付失败")
+                    }
+                },
+            })
+        }
+    }
+
+
+</script>
+</body>
+</html>

@@ -25,10 +25,12 @@
     <link rel="stylesheet" href="./css/mobile-menu.css">
     <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./lib/layui/css/layui.css"></link>
     <script src="./js/vue.min.js"></script>
+    <style> [v-cloak] {
+        display: none;
+    } </style>
 </head>
-<body class="productsgrid-page">
+<body class="inblog-page">
 <header class="header style7">
     <div class="top-bar">
         <div class="container">
@@ -107,52 +109,47 @@
         </div>
     </div>
 </header>
-
-<div class="main-content main-content-product no-sidebar">
+<div class="main-content main-content-checkout">
     <div class="container">
         <div class="row">
-            <div class="content-area shop-grid-content full-width col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="site-main">
-                    <ul class="row list-products auto-clear equal-container product-grid" id="product">
-                        <li class="product-item  col-lg-3 col-md-4 col-sm-6 col-xs-6 col-ts-12 style-1"
-                            v-for="p in products">
-                            <div class="product-inner equal-element">
-                                <div class="product-thumb">
-                                    <div class="thumb-inner">
-                                        <a :href=" 'product?'+ p.id">
-                                            <img :src='p.image' alt="img">
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="product-info">
-                                    <h5 class="product-name product_title">
-                                        <a >{{p.title}}</a>
-                                    </h5>
-                                    <div class="group-info">
-                                        <div class="price">
-                                            ￥{{p.price/100}}/天
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--商品展示-->
-
+            <div class="col-lg-12">
+                <div class="breadcrumb-trail breadcrumbs">
+                    <ul class="trail-items breadcrumb">
+                        <li class="trail-item trail-begin">
+                            <a href="index.html">主页</a>
+                        </li>
+                        <li class="trail-item trail-end active">
+                            支付成功
                         </li>
                     </ul>
-                    <div class="pagination clearfix style2">
-                        <div class="nav-link" id="layuipage"></div>
+                </div>
+            </div>
+        </div>
+        <h3 class="custom_blog_title">
+            支付成功
+        </h3>
+        <div class="checkout-wrapp">
+            <div class="end-checkout-wrapp">
+                <div class="end-checkout checkout-form">
+<!--                    <div class="icon">-->
+<!--                    </div>-->
+                    <h3 class="title-checkend">   
+                        恭喜你！您的订单已处理完毕。
+                    </h3>
+                    <div class="sub-title">
+                       
                     </div>
+                    <a href="http://www.qk.com/allproducts" class="button btn-return">返回商店</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <a href="#" class="backtotop">
     <i class="fa fa-angle-double-up"></i>
 </a>
-
 <script src="./js/jquery-1.12.4.min.js"></script>
 <script src="./js/jquery.plugin-countdown.min.js"></script>
 <script src="./js/jquery-countdown.min.js"></script>
@@ -173,17 +170,14 @@
 <script src="./js/jquery.scrollbar.min.js"></script>
 <!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
+<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 <script src="./js/jquery.cookie.js"></script>
-<script src="./js/axios.min.js"></script>
-<script src="./lib/layui/layui.js"></script>
-
 <script type="text/javascript">
 
-
-    //验证是否登录
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
+
             if (!_ticket) {
                 return;
             }
@@ -196,95 +190,28 @@
                     if (data.status == 200) {
                         //要求获取的是user的JSON串
                         var _data = JSON.parse(data.data);//将JSON串转化为对象
-                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
                         $("#loginbar").html(html);
                     }
                 }
             });
         }
     }
+    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
+
 
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
+
         TT.checkLogin();
     });
-    //验证 登录 末
 
-    //创建一个vue
-    var vm = new Vue({
-        el: '#product',
-        data: {
-            products: null
-        },
-    });
-
-    var page = 1;//当前页
-    var limit = 16;//每页显示的数目
-    var resCount, resData;
-    var title;
-
-    //http://www.qk.com/allproducts?小米
-    var url = document.location.toString();
-    var arrayObject = url.split("?")
-    if (arrayObject.length > 1) {
-        title = decodeURI(decodeURI(arrayObject[1]));
-        $("#productName").val(title);
-    }
-
-    init();
-
-    function init() {
-        renderProduct(page, limit, title);
-        loadDate();
-    }
-
-    function loadDate() {
-        //    定义分页组件
-        layui.use(['jquery', 'laypage'], function () {
-            var $ = layui.jquery,
-                laypage = layui.laypage;
-            laypage.render({
-                elem: 'layuipage'//div的id，不能加#
-                , count: resCount//数据总条数
-                , limit: limit//每页显示多少条数据
-                , limits: [limit]//可选择的 每页显示多少条数据
-                , curr: page//当前页码
-                , theme: '#9ce346'//分页导航栏的颜色，用了橘色
-                , layout: ['count', 'prev', 'page', 'next']
-                , jump: function (obj, first) {
-                    // console.info(obj);
-                    page = obj.curr;
-                    if (!first) {//如果不是首次加载，那么进行ajax同步获取数据请求
-                        renderProduct(page, limit, title);//关键
-                    }
-                }
-            });
-        });
-    }
-
-    //同步加载商品数据
-    function renderProduct(page, limit, title) {
-        $.ajax({
-            async: false,
-            url: '/AllProduct/getProductPage',
-            data: {"page": page, "limit": limit, "title": title},
-            dataType: 'json',
-            success: function (result) {
-                // console.info(result);
-                resCount = result.count;
-                resData = result.data;
-                vm.products = resData;
-            }
-        });
-    }
-
-    //获取搜索框数据
     $('#searchProduct').click(function () {
-        title = $('#productName').val();
-        window.location.href = "http://www.qk.com/allproducts?" + title;
-        // console.log(title);
-        // init();
+        title =  $('#productName').val();
+        console.log(title);
+        window.location.href="http://www.qk.com/allproducts?"+title;
     })
+
 
 
 </script>

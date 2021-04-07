@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class Cart extends BasePojo{
+    private static final long serialVersionUID = -4440774019861086917L;
     @TableId(type = IdType.AUTO)     //主键自增
     private Long id; //购物车Id号
     private Long userId; //用户Id号

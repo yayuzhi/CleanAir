@@ -7,14 +7,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="test" />
         <module name="cleanair-web" />
-        <module name="cleanair-manage" />
-        <module name="aprm" />
+        <module name="test" />
         <module name="cleanair-cart" />
         <module name="as-manage" />
-        <module name="cleanair-common" />
+        <module name="aprm" />
         <module name="cleanair-sso" />
+        <module name="cleanair-order" />
+        <module name="cleanair-manage" />
+        <module name="cleanair-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,6 +28,7 @@
       <module name="cleanair-cart" target="1.8" />
       <module name="cleanair-common" target="1.8" />
       <module name="cleanair-manage" target="1.8" />
+      <module name="cleanair-order" target="1.8" />
       <module name="cleanair-sso" target="1.8" />
       <module name="cleanair-web" target="1.8" />
       <module name="test" target="1.5" />
@@ -42,6 +44,7 @@
       <module name="cleanair-cart" options="-parameters" />
       <module name="cleanair-common" options="-parameters" />
       <module name="cleanair-manage" options="-parameters" />
+      <module name="cleanair-order" options="-parameters" />
       <module name="cleanair-sso" options="-parameters" />
       <module name="cleanair-web" options="-parameters" />
       <module name="test" options="-parameters" />
