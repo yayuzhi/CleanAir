@@ -179,13 +179,13 @@
                                     <tr>
                                         <td class="actions">
                                             <span>租用起始：{{date("YYY-mm-dd",order.start)}} </span>
-                                            <span>租用结束：{{order.end}}</span>
-                                            <div class="order-total" id="price" v-if="pr">
+                                            <span>租用结束：{{date("YYY-mm-dd",order.end)}}</span>
+                                            <div class="order-total" >
                                     					<span class="title">
                                     						单日租金:
                                     					</span>
                                                 <span class="total-price">
-                                    						￥{{pr.price/100}}
+                                    						￥{{dayPrice(order)}}
                                     					</span>
                                             </div>
                                         </td>
@@ -196,7 +196,7 @@
 															支付租金:
 														</span>
                                                 <span class="total-price">
-															￥--
+															￥{{payAll(order.payment/100)}}
 														</span>
                                             </div>
                                         </td>
@@ -205,7 +205,7 @@
                                 </table>
                             </form>
                             <div class="control-cart">
-                                <button class="button btn-continue-shopping" v-on:click="update(order,pr.price)">
+                                <button class="button btn-continue-shopping" v-on:click="update(order)">
                                     {{showstatus(order.status)}}
                                 </button>
                             </div>
@@ -288,12 +288,8 @@
         },
     });
 
-    var pr = new Vue({
-        el: '#price',
-        data: {
-            price: "",
-        },
-    })
+
+
 
 
     init();
@@ -305,14 +301,13 @@
             url: '/order/show',
             dataType: 'json',
             success: function (result) {
-                console.info(result.data);
+                // console.info(result.data);
                 vm.orders = result.data;
                 var orders = result.data;
                 for (var order in orders){
-                    console.log(order)
+                    // console.log(order)
                     var orderItems = orders[order].orderItems;
-                    console.log(orderItems);
-                    pr.price = Totalprice(orderItems);
+                    // console.log(orderItems);
                 }
                 //计算总价
 
@@ -323,16 +318,18 @@
     function Totalprice(orderItems) {
         var sumTotalprice = 0;
         for (var orderItem in orderItems) {
+
             sumTotalprice += orderItems[orderItem].price* orderItems[orderItem].num;
         }
+        console.log(sumTotalprice)
         return sumTotalprice;
     }
 
     
-    function update(order,price) {
-        console.log(order)
+    function update(order) {
+        // console.log(order)
         var orderId = order.orderId;
-        console.log(order.orderId)
+        // console.log(order.orderId)
 
         $.ajax({
             async: false,
@@ -383,6 +380,16 @@
            }
            return fmt
        }
+    }
+    function payAll(price) {
+        if (price == null){
+            return "--";
+        }else{
+            return price;
+        }
+    }
+    function dayPrice(order) {
+       return  Totalprice(order.orderItems)/100;
     }
 
 </script>

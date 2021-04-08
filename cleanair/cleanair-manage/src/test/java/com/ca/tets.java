@@ -26,27 +26,5 @@ import java.util.Map;
 
 public class tets {
 
-    @Autowired
-    private ItemService itemService;
-    @Autowired
-    private ItemMapper itemMapper;
 
-    @Autowired
-    private MenuMapper menuMapper;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private MenuService menuService;
-
-    @Autowired
-    private RoleMenuMapper roleMenuMapper;
-
-    @Autowired
-    private AdminMapper adminMapper;
-
-    @Test
-    void tesa() throws IllegalAccessException {
-//        System.out.println(roleService.findRoleNameByRoleId(1));
-
-    }
 }

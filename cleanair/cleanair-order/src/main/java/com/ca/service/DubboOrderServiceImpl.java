@@ -99,17 +99,20 @@ public class DubboOrderServiceImpl implements DubboOrderService {
             queryWrapper1.eq("order_id", order.getOrderId());
             List<OrderItem> orderItems = orderItemMapper.selectList(queryWrapper1);
             //单日一个订单 总价
-            Long price = null;
+            Long price = 0L;
             for (OrderItem orderItem : orderItems){
-                price =price + orderItem.getPrice()*orderItem.getNum();
+                System.out.println(orderItem);
+                price += orderItem.getPrice()*orderItem.getNum();
             }
             //总共租用了多少天
+            System.out.println(price);
             Double day =Math.floor((orderTemp.getEnd().getTime() - oldorder.getStart().getTime())/86400000) ;
+            System.out.println(day);
             Long payment = day.longValue()*price;
             orderTemp.setPayment(payment);
 
 
-            //            orderMapper.update(orderTemp, queryWrapper);
+            orderMapper.update(orderTemp, queryWrapper);
         }
 
 
