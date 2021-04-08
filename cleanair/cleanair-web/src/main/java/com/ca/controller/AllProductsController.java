@@ -22,6 +22,7 @@ public class AllProductsController {
     @RequestMapping("/getProductPage")
     public Map<String, Object> getProductPage(Integer page, Integer limit, String title) {
         System.out.println(title);
+        //这里的问题是 搜索和第一次渲染查询 使用的一个接口 可能会导致 title为空导致 第一次渲染时候 空指针异常
         if (title == null) {
             Map<String, Object> map = new HashMap<String, Object>();
             int page1 = (page - 1) * limit;

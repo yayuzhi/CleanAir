@@ -8,11 +8,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown=true) //表示JSON转化时忽略未知属性
 @TableName("qk_admin_role")
 @Data
 @Accessors(chain=true)
-public class AdminRole {
+public class AdminRole implements Serializable {
+    private static final long serialVersionUID = -4658539344415213638L;
     @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer adminId;

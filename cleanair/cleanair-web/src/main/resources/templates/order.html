@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>气清商城</title>
@@ -5,11 +6,10 @@
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./images/favicon.ico"/>
-    <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
-    <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
-<!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"-->
-<!--          rel="stylesheet">-->
-<!--    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">-->
+
+    <!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"-->
+    <!--          rel="stylesheet">-->
+    <!--    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">-->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/owl.carousel.min.css">
@@ -119,7 +119,7 @@
                     </li>
                     <li class="trail-item trail-end active">
 							<span>
-								我的购物车
+								我的订单
 							</span>
                     </li>
                 </ul>
@@ -127,12 +127,15 @@
             <div class="row">
                 <div class="main-content-cart main-content col-sm-12">
                     <h3 class="custom_blog_title">
-                        购物车
+                        订单
                     </h3>
-                    <div class="page-main-content">
-                        <div class="shoppingcart-content">
+                    <div class="page-main-content" id="orders">
+                        <!-- 这里是一个订单 -->
+                        <div class="shoppingcart-content" v-for="order in orders">
+                            <span>订单编号：{{order.orderId}}</span>
+
                             <form action="shoppingcart.html" class="cart-form">
-                                <table class="shop_table" id="cart">
+                                <table class="shop_table">
                                     <thead>
                                     <tr>
                                         <th class="product-remove"></th>
@@ -144,54 +147,56 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr class="cart_item" v-for="cart in carts">
-                                        <td class="product-remove">
-                                            <a href="#"  class="remove"  v-on:click="remove(cart)"></a>
-                                        </td>
+                                    <tr class="cart_item" v-for=" orderItem in order.orderItems">
+                                        <!-- <td class="product-remove">
+                                             <a href="#" class="remove"></a>
+                                         </td> -->
                                         <td class="product-thumbnail">
-                                            <a >
-                                                <img :src='cart.itemImage' alt="img"
+                                            <a href="#">
+                                                <img :src='orderItem.image' alt="img"
                                                      class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
                                             </a>
                                         </td>
                                         <td class="product-name" data-title="Product">
-                                            <a  class="title">{{cart.itemTitle}}</a>
-                                            <!--                                            <span class="attributes-select attributes-color">Black,</span>-->
-                                            <!--                                            <span class="attributes-select attributes-size">XXL</span>-->
+                                            <a href="#" class="title">{{orderItem.title}}</a>
+                                            <!-- <span class="attributes-select attributes-color">Black,</span>
+                                             <span class="attributes-select attributes-size">XXL</span> -->
                                         </td>
-                                        <td class="product-quantity" data-title="Quantity">
-                                            <div class="quantity">
-                                                <div class="control">
-                                                    <!--                                                    quantity-minus   quantity-plus-->
-                                                    <a href="#" class="btn-number qtyminus   "
-                                                       v-on:click="subtract(cart)">-</a>
-                                                    <input id="num" type="text" min="1" v-model="cart.num" title="Qty"
-                                                           class="input-qty qty" size="4">
-                                                    <a href="#" class="btn-number qtyplus   "
-                                                       v-on:click="add(cart)">+</a>
-                                                </div>
-                                            </div>
+                                        <td class="product-price" data-title="Price">
+													<span class="woocommerce-Price-amount amount">
+														{{orderItem.num}}台
+													</span>
                                         </td>
                                         <td class="product-price" data-title="Price">
 													<span class="woocommerce-Price-amount amount">
 														<span class="woocommerce-Price-currencySymbol">
 															￥
 														</span>
-														{{cart.itemPrice/100}}/天
+														{{orderItem.price/100}}/天
 													</span>
                                         </td>
                                     </tr>
-
-
                                     <tr>
                                         <td class="actions">
-
+                                            <span>租用起始：{{date("YYY-mm-dd",order.start)}} </span>
+                                            <span>租用结束：{{order.end}}</span>
                                             <div class="order-total" id="price" v-if="pr">
+                                    					<span class="title">
+                                    						单日租金:
+                                    					</span>
+                                                <span class="total-price">
+                                    						￥{{pr.price/100}}
+                                    					</span>
+                                            </div>
+                                        </td>
+                                        <td class="actions">
+
+                                            <div class="order-total">
 														<span class="title">
-															合计单日租用价格:
+															支付租金:
 														</span>
                                                 <span class="total-price">
-															￥{{pr.price/100}}
+															￥--
 														</span>
                                             </div>
                                         </td>
@@ -200,14 +205,12 @@
                                 </table>
                             </form>
                             <div class="control-cart">
-                                <button class="button btn-continue-shopping" onclick="Keepbuying()">
-                                    继续选购
-                                </button>
-                                <button class="button btn-cart-to-checkout" onclick="checkout()">
-                                    现在下单
+                                <button class="button btn-continue-shopping" v-on:click="update(order,pr.price)">
+                                    {{showstatus(order.status)}}
                                 </button>
                             </div>
                         </div>
+                        <!-- 订单结束 -->
                     </div>
                 </div>
             </div>
@@ -234,11 +237,11 @@
 <script src="./js/lightbox.min.js"></script>
 <script src="./js/owl.thumbs.min.js"></script>
 <script src="./js/jquery.scrollbar.min.js"></script>
-<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
+<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
-<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript">
+
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
@@ -262,34 +265,26 @@
             });
         }
     }
-
+    // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
         TT.checkLogin();
     });
-    //搜索功能 点击跳转事件
+
     $('#searchProduct').click(function () {
         title = $('#productName').val();
-        // console.log(title);
+        console.log(title);
         window.location.href = "http://www.qk.com/allproducts?" + title;
     })
 
-    function Keepbuying() {
-        window.location.href = "http://www.qk.com/allproducts";
 
-    }
-    function checkout() {
-        window.location.href = "http://www.qk.com/checkout";
-
-    }
-
-
+    //这里请求到订单数据进行渲染
     //渲染出所有的购物车里面的商品
     //创建一个vue
     var vm = new Vue({
-        el: '#cart',
+        el: '#orders',
         data: {
-            carts: null,
+            orders: null,
         },
     });
 
@@ -303,102 +298,92 @@
 
     init();
 
-    var num = 0;
 
     function init() {
         $.ajax({
             async: false,
-            url: '/cart/show',
+            url: '/order/show',
             dataType: 'json',
             success: function (result) {
-                // console.info(result.data);
-
-                resData = result.data;
-                vm.carts = resData;
-                var carts = resData;
+                console.info(result.data);
+                vm.orders = result.data;
+                var orders = result.data;
+                for (var order in orders){
+                    console.log(order)
+                    var orderItems = orders[order].orderItems;
+                    console.log(orderItems);
+                    pr.price = Totalprice(orderItems);
+                }
                 //计算总价
-
-                pr.price = Totalprice(carts);
-                // console.log(pr.price);
-
 
             }
         });
     }
 
-    function Totalprice(carts) {
+    function Totalprice(orderItems) {
         var sumTotalprice = 0;
-        for (var cart in carts) {
-            sumTotalprice += carts[cart].itemPrice * carts[cart].num;
+        for (var orderItem in orderItems) {
+            sumTotalprice += orderItems[orderItem].price* orderItems[orderItem].num;
         }
         return sumTotalprice;
-
     }
 
-    function add(cart) {
-        console.log(cart.num);
-        num = parseInt(cart.num) + 1;
-        console.log(num);
-        var itemId = cart.itemId;
-        if (num > 0) {
-            $.ajax({
-                async: false,
-                url: '/cart/update/num',
-                dataType: 'json',
-                type: "post",
-                data: {"num": num, "itemId": itemId},
-                success: function (result) {
-                    // console.log("ok")
-                    if (result.status == 200) {
-                        init();
-                    }
-                }
-            });
-        }
-
-    }
-
-    function subtract(cart) {
-        console.log(cart.num);
-        num = parseInt(cart.num) - 1;
-        console.log(num);
-        var itemId = cart.itemId;
-        if (num > 0) {
-            // console.log(cart)
-            $.ajax({
-                async: false,
-                url: '/cart/update/num',
-                dataType: 'json',
-                type: "post",
-                data: {"num": num, "itemId": itemId},
-                success: function (result) {
-                    // console.log(result)
-                    if (result.status == 200) {
-
-                        init();
-                    }
-                }
-            });
-        }
-    }
-
-    function remove(cart) {
+    
+    function update(order,price) {
+        console.log(order)
+        var orderId = order.orderId;
+        console.log(order.orderId)
 
         $.ajax({
             async: false,
-            url: '/cart/delete',
+            url: '/order/update',
             dataType: 'json',
             type: "post",
-            data: {"itemId": cart.itemId},
+            data:{"status":order.status,"orderId":orderId},
             success: function (result) {
-                console.log(result)
-                if (result.status == 200) {
-                    init();
-                }
+                init();
             }
         });
     }
 
+
+    function showstatus(status) {
+        if (status ==1){
+            return "确认收货";
+        }else if (status ==2){
+            return  "结束租用";
+        }else if (status == 3){
+            return "等待取回";
+        }else if (status == 4){
+            return "订单结束";
+        }
+    }
+
+    function date(fmt,date){
+       if (date != null){
+           let ret="";
+           date=new Date(date);
+           const opt = {
+               'Y+': date.getFullYear().toString(), // 年
+               'm+': (date.getMonth() + 1).toString(), // 月
+               'd+': date.getDate().toString(), // 日
+               'H+': date.getHours().toString(), // 时
+               'M+': date.getMinutes().toString(), // 分
+               'S+': date.getSeconds().toString() // 秒
+               // 有其他格式化字符需求可以继续添加，必须转化成字符串
+           }
+           for (let k in opt) {
+               ret = new RegExp('(' + k + ')').exec(fmt)
+               if (ret) {
+                   fmt = fmt.replace(
+                       ret[1],
+                       ret[1].length == 1 ? opt[k] : opt[k].padStart(ret[1].length, '0')
+                   )
+               }
+           }
+           return fmt
+       }
+    }
 
 </script>
 </body>

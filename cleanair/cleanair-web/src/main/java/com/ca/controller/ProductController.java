@@ -29,6 +29,7 @@ public class ProductController {
 
         ItemPlus itemPlus = new ItemPlus();
         itemPlus.setId(id);
+        //这里主要是判断item商品信息是否为空，避免null 传值报错
         if (item.getTitle() != null) {
             itemPlus.setTitle(item.getTitle());
         }

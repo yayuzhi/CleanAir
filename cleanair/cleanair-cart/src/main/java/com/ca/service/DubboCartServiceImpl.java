@@ -30,11 +30,7 @@ public class DubboCartServiceImpl implements DubboCartService {
             String[] firstImage = image.split(",");
             String trueImage = firstImage[0];
             cart.setItemImage(trueImage);
-
-
         }
-
-
         return carts;
     }
 

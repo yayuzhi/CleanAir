@@ -3,6 +3,8 @@ package com.ca.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.ca.pojo.Cart;
 import com.ca.pojo.Order;
+import com.ca.pojo.OrderItem;
+import com.ca.pojo.User;
 import com.ca.service.DubboCartService;
 import com.ca.service.DubboOrderService;
 import com.ca.util.UserThreadLocal;
@@ -10,15 +12,17 @@ import com.ca.vo.JsonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 
@@ -29,13 +33,7 @@ public class OrderController {
     private DubboOrderService orderService;
 
 
-    /**
-     * 跳转订单确认页面
-     * url:http://www.qk.com/order/create
-     * 参数: 暂时没有
-     * 返回值:
-     * 页面取值:
-     */
+
     @RequestMapping("/create")
     @ResponseBody
     public Map<String, Object> create(Model model, HttpServletRequest request) {
@@ -50,12 +48,6 @@ public class OrderController {
     }
 
 
-    /**
-     * 完成订单入库操作
-     * url地址:   http://www.qk.com/order/submit
-     * 参数:      整个表单对象  用order对象接收
-     * 返回值:    SysResult对象(orderId)
-     */
     @RequestMapping("/submit")
     @ResponseBody
     public JsonResult saveOrder(Order order) {
@@ -67,6 +59,7 @@ public class OrderController {
         if (StringUtils.isEmpty(orderId)) {
             return JsonResult.fail();
         } else {
+            //清空购物车
             for (Cart cart : cartList) {
                 Cart delcart = new  Cart();
                 delcart.setUserId(cart.getUserId());
@@ -78,20 +71,30 @@ public class OrderController {
     }
 
 
-    /**
-     * 完成订单查询
-     * url地址: http://www.qk.com/order/success.html?id=71605862296712
-     * 参数:    orderId
-     * 返回值:  订单成功页面
-     * 页面取值: ${order.orderId}
-     */
-    @RequestMapping("/success")
-    public String success(String id, Model model) {
+    @RequestMapping("/show")
+    @ResponseBody
+    public Map<String, Object> show(Model model, HttpServletRequest request) {
 
-        Order order = orderService.findOrderId(id);
-        model.addAttribute("order", order);
-        return "success";
+        Map<String, Object> map = new HashMap<String, Object>();
+        User user = (User) request.getAttribute("QK_USER");
+        Long userId = user.getId();
+
+        List<Order> orderList = orderService.findOrderUserId(userId);
+
+//        model.addAttribute("oderList",orderList);
+        map.put("code", 0);
+        map.put("msg", "操作成功");
+        map.put("data", orderList);
+        return map;
     }
 
+
+    @RequestMapping("/update")
+    public JsonResult updateStatus(Order order){
+        System.out.println(order);
+        orderService.updateStatus(order);
+
+        return JsonResult.success("update ok!");
+    }
 
 }
