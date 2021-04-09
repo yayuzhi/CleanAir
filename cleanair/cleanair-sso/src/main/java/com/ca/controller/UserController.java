@@ -27,7 +27,7 @@ public class UserController {
      * 需求:实现用户信息校验
      * 校验步骤:  需要接收用户的请求,之后利用RestFul获取数据,
      * 实现数据库校验,按照JSONP的方式返回数据.
-     * url地址:   http://sso.jt.com/user/check/
+     * url地址:   http://sso.qk.com/user/check/
      * 参数:      restFul方式获取
      * 返回值:    JSONPObject
      */

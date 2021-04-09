@@ -326,7 +326,7 @@
                     if (data.status == 200) {
                         //要求获取的是user的JSON串
                         var _data = JSON.parse(data.data);//将JSON串转化为对象
-                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> "+  _data.username  +",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/personal\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
                         $("#loginbar").html(html);
                     }
                 }

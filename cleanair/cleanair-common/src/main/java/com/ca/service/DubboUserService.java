@@ -8,4 +8,9 @@ public interface DubboUserService {
     void saveUser(User user);
 
     String doLogin(User user);
+
+    User findUserByUserId(Long userId );
+
+
+    void updateUser(User user);
 }

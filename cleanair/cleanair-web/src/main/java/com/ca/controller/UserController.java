@@ -1,23 +1,26 @@
 package com.ca.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.ca.pojo.Cart;
+import com.ca.vo.JsonResult;
 import com.ca.pojo.User;
 import com.ca.service.DubboUserService;
-import com.ca.vo.JsonResult;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.JedisCluster;
-import org.springframework.util.StringUtils;
-import javax.servlet.http.HttpServletResponse;
-
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -25,6 +28,7 @@ public class UserController {
 
     @Reference(check = false)   //启动消费者时不去校验是否有生产者
     private DubboUserService dubboUserService;
+
     @Autowired
     private JedisCluster jedisCluster;
 
@@ -50,7 +54,6 @@ public class UserController {
             return JsonResult.fail();
         }
         //判断有没有rememberme
-
         //将uuid保存到Cookie中
         Cookie cookie = new Cookie("QK_TICKET", uuid);
         cookie.setMaxAge(30 * 24 * 60 * 60);  //让cookie 30天有效
@@ -82,8 +85,8 @@ public class UserController {
                 }
             }
         }
-
         return "redirect:/";
     }
+
 
 }

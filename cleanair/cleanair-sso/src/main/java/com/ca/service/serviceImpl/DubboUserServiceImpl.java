@@ -2,6 +2,7 @@ package com.ca.service.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ca.pojo.Cart;
 import com.ca.service.DubboUserService;
 import com.ca.mapper.UserMapper;
 import com.ca.pojo.User;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import redis.clients.jedis.JedisCluster;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service(timeout = 3000)
@@ -52,5 +54,20 @@ public class DubboUserServiceImpl implements DubboUserService {
         jedisCluster.setex(uuid, 30*24*60*60, userJSON);
 
         return uuid;
+    }
+
+    @Override
+    public User findUserByUserId(Long userId) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+        User user = userMapper.selectOne(queryWrapper);
+        return user;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername());
+        userMapper.update(user,queryWrapper);
     }
 }

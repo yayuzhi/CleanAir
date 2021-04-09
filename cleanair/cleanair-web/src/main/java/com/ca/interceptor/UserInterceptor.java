@@ -46,14 +46,12 @@ public class UserInterceptor implements HandlerInterceptor {
 
         //2.判断cookie数据是否有效
         if (!StringUtils.isEmpty(ticket) || jedisCluster.exists(ticket) ) {
-
                 String userJSON = jedisCluster.get(ticket);
                 User user = ObjectMapperUtil.toObject(userJSON, User.class);
                 //3.利用request对象进行数据的传递    request对象是最为常用的传递参数的媒介.
                 request.setAttribute("QK_USER", user);
                 UserThreadLocal.set(user);
                 return true;    //表示用户已经登录.
-
         } else {
             //重定向到用户登录页面
             //因为ajax的关系，这里我们需要告诉ajax 喂！我这个是重定向哦

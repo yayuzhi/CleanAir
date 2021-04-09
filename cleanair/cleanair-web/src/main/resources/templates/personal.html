@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>气清商城</title>
@@ -6,7 +5,8 @@
     <meta http-equiv="X-UA-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./images/favicon.ico"/>
-
+    <!--    <link rel="shortcut icon" type="image/x-icon" href="./images/favicon.png"/>-->
+    <!--    <link rel="shortcut icon" href="./images/favicon.ico"/>-->
     <!--    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"-->
     <!--          rel="stylesheet">-->
     <!--    <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap" rel="stylesheet">-->
@@ -119,98 +119,50 @@
                     </li>
                     <li class="trail-item trail-end active">
 							<span>
-								我的订单
+								我的个人中心
 							</span>
                     </li>
                 </ul>
             </div>
             <div class="row">
                 <div class="main-content-cart main-content col-sm-12">
-                    <h3 class="custom_blog_title">
-                        订单
-                    </h3>
-                    <div class="page-main-content" id="orders">
-                        <!-- 这里是一个订单 -->
-                        <div class="shoppingcart-content" v-for="order in orders">
-                            <span>订单编号：{{order.orderId}}</span>
-
-                            <form action="shoppingcart.html" class="cart-form">
-                                <table class="shop_table">
-                                    <thead>
-                                    <tr>
-                                        <th class="product-remove"></th>
-                                        <th class="product-thumbnail"></th>
-                                        <th class="product-name"></th>
-                                        <th class="product-price"></th>
-                                        <th class="product-quantity"></th>
-                                        <th class="product-subtotal"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="cart_item" v-for=" orderItem in order.orderItems">
-                                        <!-- <td class="product-remove">
-                                             <a href="#" class="remove"></a>
-                                         </td> -->
-                                        <td class="product-thumbnail">
-                                            <a href="#">
-                                                <img :src='orderItem.image' alt="img"
-                                                     class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image">
-                                            </a>
-                                        </td>
-                                        <td class="product-name" data-title="Product">
-                                            <a href="#" class="title">{{orderItem.title}}</a>
-                                            <!-- <span class="attributes-select attributes-color">Black,</span>
-                                             <span class="attributes-select attributes-size">XXL</span> -->
-                                        </td>
-                                        <td class="product-price" data-title="Price">
-													<span class="woocommerce-Price-amount amount">
-														{{orderItem.num}}台
-													</span>
-                                        </td>
-                                        <td class="product-price" data-title="Price">
-													<span class="woocommerce-Price-amount amount">
-														<span class="woocommerce-Price-currencySymbol">
-															￥
-														</span>
-														{{orderItem.price/100}}/天
-													</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="actions">
-                                            <span>租用起始：{{date("YYY-mm-dd",order.start)}} </span>
-                                            <span>租用结束：{{date("YYY-mm-dd",order.end)}}</span>
-                                            <div class="order-total" >
-                                    					<span class="title">
-                                    						单日租金:
-                                    					</span>
-                                                <span class="total-price">
-                                    						￥{{dayPrice(order)}}
-                                    					</span>
-                                            </div>
-                                        </td>
-                                        <td class="actions">
-
-                                            <div class="order-total">
-														<span class="title">
-															支付租金:
-														</span>
-                                                <span class="total-price">
-															￥{{payAll(order.payment/100)}}
-														</span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                            <div class="control-cart">
-                                <button class="button btn-continue-shopping" v-on:click="update(order)">
-                                    {{showstatus(order.status)}}
-                                </button>
+                    <div class="customer_login">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="login-item">
+                                    <h5 class="title-login">个人中心</h5>
+                                    <form class="register" id="personal" v-if="user">
+                                        <p class="form-row form-row-wide">
+                                            <label class="text">邮箱</label>
+                                            <input id="email" title="email" type="email" v-model="user.email"
+                                                   class="input-text">
+                                        </p>
+                                        <p class="form-row form-row-wide">
+                                            <label class="text">手机号码</label>
+                                            <input id="phone" title="phone" type="phone" v-model="user.phone"
+                                                   class="input-text">
+                                        </p>
+                                        <p class="form-row form-row-wide">
+                                            <label class="text">用户名</label>
+                                            <input id="name" title="name" type="text" v-model="user.username"
+                                                   class="input-text" disabled=“disabled”>
+                                        </p>
+                                        <p class="form-row form-row-wide">
+                                            <label class="text">密码</label>
+                                            <input id="password" title="pass" type="password" v-model="user.password"
+                                                   class="input-text">
+                                        </p>
+                                        <p class="form-row form-row-wide">
+                                            <label class="text">确认密码</label>
+                                            <input id="pass2" title="passagain" type="password" class="input-text">
+                                        </p>
+                                    </form>
+                                    <div class="input-group-btn">
+                                        <button onclick="checkForm()" class="button-submit">提交修改</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- 订单结束 -->
                     </div>
                 </div>
             </div>
@@ -237,11 +189,10 @@
 <script src="./js/lightbox.min.js"></script>
 <script src="./js/owl.thumbs.min.js"></script>
 <script src="./js/jquery.scrollbar.min.js"></script>
-<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>
+<!--<script src='https://ditu.google.cn/maps/api/js?key=AIzaSyC3nDHy1dARR-Pa_2jjPCjvsOR4bcILYsM'></script>-->
 <script src="./js/frontend-plugin.js"></script>
 <script src="./js/jquery.cookie.js"></script>
 <script type="text/javascript">
-
     var TT = QK = {
         checkLogin: function () {
             var _ticket = $.cookie("QK_TICKET");
@@ -266,6 +217,8 @@
         }
     }
     // <a href="http://www.jt.com/user/logout" class="link-logout">[退出]</a> <a>个人中心</a>
+
+
     $(function () {
         // 查看是否已经登录，如果已经登录查询登录信息
         TT.checkLogin();
@@ -277,119 +230,154 @@
         window.location.href = "http://www.qk.com/allproducts?" + title;
     })
 
+    function logout() {
+        $.ajax({
+            async: false,
+            url: '/personal/logout',
+            dataType: 'json',
+            success: function (result) {
+               if (result.status ==200){
+                   location.href = 'login';
+               }
+            }
+        })
+    }
 
-    //这里请求到订单数据进行渲染
-    //渲染出所有的购物车里面的商品
-    //创建一个vue
+
     var vm = new Vue({
-        el: '#orders',
+        el: '#personal',
         data: {
-            orders: null,
+            user: null,
         },
     });
 
 
-
-
-
     init();
 
-
+    //渲染个人数据
     function init() {
         $.ajax({
             async: false,
-            url: '/order/show',
+            url: '/personal/show',
             dataType: 'json',
             success: function (result) {
-                // console.info(result.data);
-                vm.orders = result.data;
-                var orders = result.data;
-                for (var order in orders){
-                    // console.log(order)
-                    var orderItems = orders[order].orderItems;
-                    // console.log(orderItems);
-                }
-                //计算总价
-
+                resData = result.data;
+                vm.user = resData;
             }
-        });
+
+        })
     }
 
-    function Totalprice(orderItems) {
-        var sumTotalprice = 0;
-        for (var orderItem in orderItems) {
+    function updatePersonal() {
+        // 对数据进行验证
+        var email = $('#email').val();
+        var phone = $('#phone').val();
+        var name = $('#name').val();
+        var password = $('#pass2').val();
 
-            sumTotalprice += orderItems[orderItem].price* orderItems[orderItem].num;
+
+        var user = {
+            'email': email,
+            'phone': phone,
+            'username': name,
+            'password': password,
         }
-        console.log(sumTotalprice)
-        return sumTotalprice;
-    }
-
-    
-    function update(order) {
-        // console.log(order)
-        var orderId = order.orderId;
-        // console.log(order.orderId)
 
         $.ajax({
             async: false,
-            url: '/order/update',
-            dataType: 'json',
+            url: '/personal/update',
+            dataType: "json",
             type: "post",
-            data:{"status":order.status,"orderId":orderId},
+            data: user,
             success: function (result) {
-                init();
+                console.log(result)
+                if (result.status == 200) {
+                    window.alert("修改成功！")
+                    logout();
+                } else {
+                    window.alert("修改失败！")
+                }
             }
-        });
+        })
     }
 
 
-    function showstatus(status) {
-        if (status ==1){
-            return "确认收货";
-        }else if (status ==2){
-            return  "结束租用";
-        }else if (status == 3){
-            return "等待取回";
-        }else if (status == 4){
-            return "订单结束";
+    function checkForm() {
+        var email = $('#email').val();
+        var phone = $('#phone').val();
+        var password = $('#password').val();
+        var pass2 = $('#pass2').val();
+        var user = {
+            'email': email,
+            'phone': phone,
+            'password': pass2
+        };
+        if (checkEmail(email) && checkPhone(phone) && checkPass(pass2)) {
+
+            return updatePersonal();
+
+        } else {
+            return false;
+        }
+
+
+    }
+
+    //对两个密码进行一样的校验
+    function checkPass(pass2) {
+        if (pass2 == null || pass2 == "") {
+            return true
+        } else if (pass2 != 0 && pass2.length < 6) {
+            alert("密码长度大于6!");
+            $('#pass2').focus();
+            return false;
+        } else {
+            return true
         }
     }
 
-    function date(fmt,date){
-       if (date != null){
-           let ret="";
-           date=new Date(date);
-           const opt = {
-               'Y+': date.getFullYear().toString(), // 年
-               'm+': (date.getMonth() + 1).toString(), // 月
-               'd+': date.getDate().toString(), // 日
-               'H+': date.getHours().toString(), // 时
-               'M+': date.getMinutes().toString(), // 分
-               'S+': date.getSeconds().toString() // 秒
-               // 有其他格式化字符需求可以继续添加，必须转化成字符串
-           }
-           for (let k in opt) {
-               ret = new RegExp('(' + k + ')').exec(fmt)
-               if (ret) {
-                   fmt = fmt.replace(
-                       ret[1],
-                       ret[1].length == 1 ? opt[k] : opt[k].padStart(ret[1].length, '0')
-                   )
-               }
-           }
-           return fmt
-       }
-    }
-    function payAll(price) {
-        if (price == null){
-            return "--";
-        }else{
-            return price;
+    //对phone进行check
+    function checkPhone(phone) {
+        if (phone == null || phone == "") {
+            alert("手机号码不能为空!");
+            $('#phone').focus();
+            return false;
+        } else if (!isPhone(phone)) {
+            alert("您输入的手机号码有误,请重新核对后再输入!");
+            $('#phone').focus();
+            return false;
+        } else {
+            return true;
         }
     }
-    function dayPrice(order) {
-       return  Totalprice(order.orderItems)/100;
+
+    //判断phone的正则表达式
+    function isPhone(str) {
+        var reg = /^1[0-9]{10}$/;
+        return reg.test(str);
+    }
+
+
+    //对email进行check
+    function checkEmail(email) {
+        if (email == null || email == "") {
+            alert("邮箱不能为空!");
+            $('#email').focus();
+            return false;
+        } else if (!isEmail(email)) {
+            alert("您输入的邮箱有误,请重新核对后再输入!");
+            $('#email').focus();
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    //判断email的正则表达式
+    function isEmail(email) {
+        var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        return reg.test(email);
     }
 
 </script>

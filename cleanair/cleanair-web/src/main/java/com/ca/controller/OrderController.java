@@ -33,7 +33,6 @@ public class OrderController {
     private DubboOrderService orderService;
 
 
-
     @RequestMapping("/create")
     @ResponseBody
     public Map<String, Object> create(Model model, HttpServletRequest request) {
@@ -61,7 +60,7 @@ public class OrderController {
         } else {
             //清空购物车
             for (Cart cart : cartList) {
-                Cart delcart = new  Cart();
+                Cart delcart = new Cart();
                 delcart.setUserId(cart.getUserId());
                 delcart.setItemId(cart.getItemId());
                 cartService.deleteCart(delcart);
@@ -77,8 +76,8 @@ public class OrderController {
 
         Map<String, Object> map = new HashMap<String, Object>();
         User user = (User) request.getAttribute("QK_USER");
-        Long userId = user.getId();
 
+        Long userId = user.getId();
         List<Order> orderList = orderService.findOrderUserId(userId);
 
 //        model.addAttribute("oderList",orderList);
@@ -90,11 +89,13 @@ public class OrderController {
 
 
     @RequestMapping("/update")
-    public JsonResult updateStatus(Order order){
+    public JsonResult updateStatus(Order order) {
         System.out.println(order);
         orderService.updateStatus(order);
 
         return JsonResult.success("update ok!");
     }
+
+
 
 }

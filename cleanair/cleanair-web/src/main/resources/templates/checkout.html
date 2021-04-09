@@ -135,17 +135,17 @@
             <div class="shipping-address-form-wrapp">
                 <div class="shipping-address-form  checkout-form">
                     <div class="row-col-1 row-col">
-                        <div class="shipping-address">
+                        <div class="shipping-address" id="user" v-if="user">
                             <h3 class="title-form">
                                 订单信息
                             </h3>
                             <p class="form-row form-row-first">
                                 <label class="text">姓名</label>
-                                <input title="first" type="text" class="input-text" id="name">
+                                <input title="first" type="text" class="input-text" id="name" v-model="user.username">
                             </p>
                             <p class="form-row form-row-last">
                                 <label class="text">手机号码</label>
-                                <input title="last" type="text" class="input-text" id="phone">
+                                <input title="last" type="text" class="input-text" id="phone" v-model="user.phone">
                             </p>
                             <p class="form-row form-row-first ">
                                 <label class="text">城市（请注意所在城市是否支持气清业务）</label>
@@ -211,7 +211,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" class="button button-payment" onclick="pay()">支付</a>
+                <a href="#" class="button button-payment" onclick="pay()">开始租用</a>
             </div>
         </div>
     </div>
@@ -261,7 +261,7 @@
                     if (data.status == 200) {
                         //要求获取的是user的JSON串
                         var _data = JSON.parse(data.data);//将JSON串转化为对象
-                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/user/setting\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
+                        var html = "<div class='top-bar-right'><div id='loginbar'><ul class='header-user-links'><li><a href=\"/user/logout\" class=\"link-logout\"> " + _data.username + ",[退出]</a></li></ul><ul class=\"header-user-links\"> <li><a href=\"http://www.qk.com/personal\" class=\"link-setting\">个人中心</a></li></ul> </div> </div> ";
                         $("#loginbar").html(html);
                     }
                 }
@@ -298,8 +298,15 @@
             price: "",
         },
     })
-    init();
 
+    var vm = new Vue({
+        el: '#user',
+        data: {
+            user: null,
+        },
+    });
+    init();
+    init2();
     function init() {
         $.ajax({
             async: false,
@@ -317,6 +324,19 @@
         });
     }
 
+    function init2() {
+        $.ajax({
+            async: false,
+            url: '/personal/show',
+            dataType: 'json',
+            success: function (result) {
+                console.info(result.data);
+                resData = result.data;
+                vm.user = resData;
+
+            }
+        });
+    }
     function Totalprice(carts) {
         var sumTotalprice = 0;
         for (var cart in carts) {
@@ -386,8 +406,6 @@
                 success: function (data) {
                     console.log(data)
                     if (data.status == 200) {
-
-
                         window.location.href = "http://www.qk.com/payok";
                     } else {
                         window.alert("支付失败")
