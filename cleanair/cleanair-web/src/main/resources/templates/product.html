@@ -366,24 +366,24 @@
 
                     window.alert("添加失败")
                 }
-            },
-            complete : function(xhr, status) {
-                //拦截器实现超时跳转到登录页面
-                // 通过xhr取得响应头
-                var REDIRECT = xhr.getResponseHeader("REDIRECT");
-                //如果响应头中包含 REDIRECT 则说明是拦截器返回的需要重定向的请求
-                if (REDIRECT == "REDIRECT")
-                {
-                    alert("您没有登录，请先登录")
-                    var win = window;
-                    while (win != win.top)
-                    {
-                        win = win.top;
+            }, complete : function(XMLHttpRequest, textStatus) {
+                    // 通过XMLHttpRequest取得响应头，sessionstatus
+                    var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
+                    if (sessionstatus == "TIMEOUT") {
+                        var win = window;
+                        while (win != win.top){
+                            win = win.top;
+                        }
+
+                        win.location.href= XMLHttpRequest.getResponseHeader("CONTEXTPATH");
                     }
-                    win.location.href = xhr.getResponseHeader("CONTEXTPATH");
                 }
-            }
         })
+        // 解决Ajax异步请求 springMvc 不跳转页面的问题
+
+
+
+
     }
 
 
