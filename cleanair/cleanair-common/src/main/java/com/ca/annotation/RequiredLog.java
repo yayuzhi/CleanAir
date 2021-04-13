@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD) //定义我们的注解可以修饰谁
 public @interface RequiredLog {//自定义注解
 
+
       String value() default "";
 
 }
