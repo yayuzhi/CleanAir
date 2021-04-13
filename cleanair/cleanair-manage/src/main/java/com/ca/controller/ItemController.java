@@ -125,7 +125,6 @@ public class ItemController {
     @RequestMapping("/findItemDescById")
     public  JsonResult findItemDescById(Integer id){
         ItemDesc itemDesc1 =itemService.findItemDescById(id);
-
         String itemDesc =  itemDesc1.getItemDesc();
         return JsonResult.success(itemDesc);
     }
@@ -143,7 +142,6 @@ public class ItemController {
         System.out.println(itemDesc);
         itemService.updateItem(item,itemDesc);
         return  JsonResult.success("update item ok");
-
     }
 
 

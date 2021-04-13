@@ -33,7 +33,7 @@ public class UserInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("1");
+
         String ticket = null;
         //1.判断cookie中是否有记录
         Cookie[] cookies = request.getCookies();
@@ -45,11 +45,11 @@ public class UserInterceptor implements HandlerInterceptor {
                 }
             }
         }
-        System.out.println("2");
+
         //2.判断cookie数据是否有效
         if (!StringUtils.isEmpty(ticket)) {
             if (jedisCluster.exists(ticket)) {
-                System.out.println("55555");
+
                 String userJSON = jedisCluster.get(ticket);
                 User user = ObjectMapperUtil.toObject(userJSON, User.class);
                 //3.利用request对象进行数据的传递    request对象是最为常用的传递参数的媒介.
@@ -58,7 +58,7 @@ public class UserInterceptor implements HandlerInterceptor {
                 return true;    //表示用户已经登录.
             }
         }
-        System.out.println("3");
+
 //            //重定向到用户登录页面
 //            //因为ajax的关系，这里我们需要告诉ajax 喂！我这个是重定向哦
 //            response.setHeader("Access-Control-Expose-Headers", "REDIRECT,CONTEXTPATH");
