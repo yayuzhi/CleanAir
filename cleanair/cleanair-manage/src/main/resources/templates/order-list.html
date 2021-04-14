@@ -110,7 +110,7 @@
             //删除单个item
             if (obj.event === 'status') {
                 // console.log(data);
-                layer.confirm('订单编号为' + data.id+ '的货物都取到了吗？', function (index) {
+                layer.confirm('订单编号为' + data.orderId+ '的货物都取到了吗？', function (index) {
                     $.ajax({
                         url: '/order-list/updateOrderStatusTo4ById/',
                         data: {'id': data.id},

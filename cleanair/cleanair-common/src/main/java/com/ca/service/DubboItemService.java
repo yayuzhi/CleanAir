@@ -13,4 +13,8 @@ public interface DubboItemService {
     Item getProductById(Integer id);
 
     ItemDesc getProductDescById(Integer id);
+
+    void updateItemDeleteNum(Long itemid,int num);
+
+    void updateItemAddNum(Long itemid,int num);
 }

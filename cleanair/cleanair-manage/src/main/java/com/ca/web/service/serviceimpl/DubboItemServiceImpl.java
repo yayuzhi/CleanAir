@@ -1,6 +1,7 @@
 package com.ca.web.service.serviceimpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ca.mapper.ItemDescMapper;
 import com.ca.mapper.ItemMapper;
 import com.ca.pojo.Item;
@@ -21,6 +22,7 @@ public class DubboItemServiceImpl implements DubboItemService {
     private ItemMapper itemMapper;
     @Autowired
     private ItemDescMapper itemDescMapper;
+
 
     //列表信息的展现
     @Override
@@ -74,4 +76,25 @@ public class DubboItemServiceImpl implements DubboItemService {
         }
         return itemDescMapper.selectById(id);
     }
+
+    @Override
+    public void updateItemDeleteNum(Long itemid, int num) {
+        QueryWrapper<Item> queryWrapper =new QueryWrapper<>();
+        queryWrapper.eq("id", itemid);
+        Item item = itemMapper.selectById(itemid);
+        Item itemnum = new Item();
+        itemnum.setNum(item.getNum()-num);
+        itemMapper.update(itemnum, queryWrapper);
+    }
+
+    @Override
+    public void updateItemAddNum(Long itemid, int num) {
+        QueryWrapper<Item> queryWrapper =new QueryWrapper<>();
+        queryWrapper.eq("id", itemid);
+        Item item = itemMapper.selectById(itemid);
+        Item itemnum = new Item();
+        itemnum.setNum(item.getNum()+num);
+        itemMapper.update(itemnum, queryWrapper);
+    }
+
 }

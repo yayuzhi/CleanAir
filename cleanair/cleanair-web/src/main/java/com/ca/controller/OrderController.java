@@ -1,11 +1,9 @@
 package com.ca.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.ca.pojo.Cart;
-import com.ca.pojo.Order;
-import com.ca.pojo.OrderItem;
-import com.ca.pojo.User;
+import com.ca.pojo.*;
 import com.ca.service.DubboCartService;
+import com.ca.service.DubboItemService;
 import com.ca.service.DubboOrderService;
 import com.ca.util.UserThreadLocal;
 import com.ca.vo.JsonResult;
@@ -32,6 +30,8 @@ public class OrderController {
     @Reference(check = false)
     private DubboOrderService orderService;
 
+    @Reference(check = false)
+    private DubboItemService dubboItemService;
 
     @RequestMapping("/create")
     @ResponseBody
@@ -64,6 +64,10 @@ public class OrderController {
                 delcart.setUserId(cart.getUserId());
                 delcart.setItemId(cart.getItemId());
                 cartService.deleteCart(delcart);
+                //库存修改
+                int num = cart.getNum();
+                Long itemid = cart.getItemId();
+                dubboItemService.updateItemDeleteNum(itemid,num);
             }
             return JsonResult.success(orderId);
         }
