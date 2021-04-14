@@ -94,7 +94,7 @@ public class OrderController {
 
     @RequestMapping("/update")
     public JsonResult updateStatus(Order order) {
-        System.out.println(order);
+//        System.out.println(order);
         orderService.updateStatus(order);
 
         return JsonResult.success("update ok!");
