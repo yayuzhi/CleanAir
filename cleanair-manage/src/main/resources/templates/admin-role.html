@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<!--职位列表-->
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="./zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./ztree/jquery.ztree.all.min.js"></script>
+
+    <script type="text/javascript" src="./js/cookie.js"></script>
+
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">管理员管理</a>
+        <a>
+          <cite>角色管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <div class="layui-inline layui-show-xs-block">
+            <input type="text" name="rolename" id="rolename" placeholder="请输入角色名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline layui-show-xs-block">
+            <button class="layui-btn"  data-type="reload">搜索</button>
+            <!--                                    <i class="layui-icon">&#xe615;</i>-->
+        </div>
+    </div>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" id="delall"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./role-add.html')"><i class="layui-icon"></i>添加
+        </button>
+    </xblock>
+    <table class="admin-list" lay-filter="user">
+    </table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="del">删除</a>
+    </script>
+
+    <div class="x-bodyedit" style="display: none">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form action="" class="layui-form layui-form-pane">
+                    <div class="layui-form-item">
+                        <label for="name" class="layui-form-label">
+                            <span class="x-red">*</span>角色名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="name" name="name" required="" lay-verify="roleId"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">授权</label>
+                        <div class="col-sm-10">
+                            <ul id="ztree" class="ztree"></ul>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item layui-form-text">
+                        <label for="note" class="layui-form-label">
+                            描述
+                        </label>
+                        <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" id="note" name="note" class="layui-textarea"
+                              lay-verify="note"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit="" lay-filter="edit">修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:inline="none">
+    var zTree;
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true, //使用简单数据模式
+                idKey: "id",  //节点数据中保存唯一标识的属性名称
+                pIdKey: "pid",  //节点数据中保存其父节点唯一标识的属性名称
+                rootPId: null  //根节点id
+            }
+        },
+        check: {
+            enable: true,
+            nocheckInherit: true
+        }//此配置提供复选框操作(可查官方zTree)
+    }
+
+    $(function () {
+        //加载后端构建的ZTree树（节点的数据格式已在后端格式化好了）
+        $.ajax({
+            url: '/menus-list/findAllMenus',
+            type: 'get',
+            dataType: "json",
+            success: function (data) {
+                // console.log(data.data);
+                zTree = $.fn.zTree.init($("#ztree"), setting, data.data);
+
+            }
+
+        });
+    });
+
+    //layui自带的渲染网页tble格式
+    layui.use(['layer', 'jquery', 'table', 'form'], function () {
+        $ = layui.jquery;
+        var table = layui.table;
+        var form = layui.form;
+        table.render({
+            elem: '.admin-list',
+            url: '/role-list/findRoleByPage',
+            cellMinWidth: 95,
+            page: true,
+            height: "312",
+            limits: [10, 15, 20, 25],
+            limit:10 ,
+            id: "roleListTable",
+            cols: [[
+                {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
+                {field: 'id', title: '职位/角色ID', minWidth: 80, align: "center", id: 'id'},
+                {field: 'name', title: '职位/角色名称', minWidth: 80, align: "center"},
+                {field: 'note', title: '职位权力', minWidth: 80, align: "center"},
+                {
+                    field: 'created', title: '角色创建时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.created / 1)
+                    }
+                },
+                {
+                    field: ' updated', title: '更新时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.updated / 1)
+                    }
+                },
+                {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
+            ]]
+        });
+
+        //批量删除
+        $("#delall").click(function () {
+            var checkStatus = table.checkStatus("roleListTable")
+            if (checkStatus.data.length != 0) {
+                var names = [];
+                var ids= [];
+                for (var i = 0; i < checkStatus.data.length; i++) {
+                    names.push(checkStatus.data[i].name);
+                    ids.push(checkStatus.data[i].id);
+                }
+                var id = ids.join(",")
+                var name =names.join(",")
+                layer.confirm('真的删除职位/角色为' + name + '的职位/角色吗？', function () {
+                    $.post("/role-list/deleteRolesById", {"ids": id},
+                        function (index) {
+                           if (index.status == 200){
+                               layer.msg("删除成功", {icon: 6});
+                               table.reload('roleListTable', {})
+                               parent.location.reload();
+                           }else {
+                               layer.alert(index.data)
+                           }
+
+
+
+                        }, "json",);
+                })
+            } else {
+                layer.msg("请勾选要删除的职位/角色", {icon: 5})
+            }
+
+        });
+
+        //按照title搜索
+        var $=layui.$, active = {
+            reload:function () {
+                var name = $('#rolename');
+                if (name.val() == ""){
+
+                    layer.msg("搜索角色名不能为空");
+                    return ;
+                }else {
+                    table.reload('roleListTable',{
+                        where:{
+                            name:name.val(),
+                        }
+                    });
+                }
+            }
+        }
+
+        //绑定点击事件
+        $(' .layui-btn ').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        table.on('tool(user)', function (obj) {
+            var data = obj.data;
+            //删除单个role
+            if (obj.event == 'del') {
+                console.log(data.id);
+                layer.confirm('真的删除职位/角色为' + data.name + '的职位/角色吗？', function (index) {
+                    $.ajax({
+                        url: '/role-list/deleteRoleById/',
+                        data: {'id': data.id},
+                        method: 'get',
+                        contentType: 'json',
+                        //执行完成回调函数
+                        success: function (data) {
+                            console.log(data)
+                            if (data.status == 200) {
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                //表格刷新
+                                table.reload('roleListTable', {});
+                                parent.location.reload();
+                            } else {
+                                layer.msg("删除失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(data.data)
+                            }
+                        }
+                    })
+                    layer.close(index);
+                })
+
+            } else if (obj.event === 'edit') {
+                layer.open({
+                    type: 1,
+                    area: [600 + 'px', 400 + 'px'],
+                    fix: false, //不固定
+                    //maxmin: true,
+                    //shadeClose: true,
+                    skin: 'layui-layer-rim',
+                    shade: 0.6,
+                    title: '修改职位',
+                    content: $('.x-bodyedit'),
+                    cancel : function() {
+                        // 你点击右上角 X 取消后要做什么
+                        zTree.checkAllNodes(false);
+
+                    },
+                    success: function (layero, index) {
+                        // console.log(obj.data)
+                        // console.log(data)
+                        //给tree里面赋值
+                        $.ajax({
+                            url: '/role-list/findMenusByRoleId',
+                            type: 'post',
+                            dataType: "json",
+                            data: {"id": data.id},
+                            success: function (data) {
+                                var RoleMenus = data.data;
+                                for (var i = 0; i < RoleMenus.length; i++) {
+                                    var menu = RoleMenus[i].menuId;
+                                    var node = zTree.getNodeByParam("id", menu);
+                                    //让节点选中
+                                    zTree.checkNode(node, true, false);
+                                }
+
+                            }
+
+                        });
+
+                        //给input框里面赋值
+                        $('#name').val(data.name);
+                        $('#note').val(data.note);
+
+                        //自定义验证规则
+                        form.verify({
+                            roleId: function (value) {
+                                if (value.length <= 0) {
+                                    return '角色名不能为空'
+                                }
+                            }
+                        });
+                        form.on('submit(edit)', function (obj) {
+                            console.log(obj.field)
+                            var menuIds = [];
+                            var treeNodes = zTree.getCheckedNodes(true);
+
+                            for (var i in treeNodes) {
+                                //注意这里的id是menus的id 到时候在后端写做menuid进行保存 类似订单表
+                                menuIds.push(treeNodes[i].id)
+                            }
+                            console.log(menuIds)
+                            var parems = {
+                                id: data.id,
+                                name: obj.field.name,
+                                note: obj.field.note,
+                                menuIds: menuIds.toString()
+                            }
+                            console.log(parems.menuIds);
+                            $.ajax({
+                                url: "/role-list/updateRole",
+                                data: parems,
+                                dataType: "json",
+                                type: "post",
+                                // async: false,
+                                success: function (data) {
+                                    console.log(data)
+                                    if (data.status == 200) {
+                                        layer.msg("修改成功", {icon: 20});
+
+                                        parent.location.reload();
+                                    } else {
+                                        layer.msg("修改失败", {icon: 5})
+                                        layer.alert(data.data)
+                                    }
+                                }
+                            })
+                            return false;
+                        });
+                        // //初始化tree
+                        // $.ajax({
+                        //     url: '/menus-list/findAllMenus',
+                        //     type: 'get',
+                        //     dataType: "json",
+                        //     success: function (data) {
+                        //         console.log(data);
+                        //         zTree = $.fn.zTree.init($("#ztree"), setting, data.data);
+                        //
+                        //     }
+                        // })
+                    }
+                });
+            }
+        });
+    })
+
+
+</script>
+</body>
+</html>

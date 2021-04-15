@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<!--添加管理员页面-->
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>登录名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="name" required="" lay-verify="name"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>将会成为该账户唯一的登入名，且不能修改
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="phone" class="layui-form-label">
+                <span class="x-red">*</span>手机
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="phone" name="phone" required="" lay-verify="phone"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_email" class="layui-form-label">
+                <span class="x-red">*</span>邮箱
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>角色</label>
+            <div class="layui-input-block">
+                <select name="roleId" id="roleId" lay-verify="required" lay-filter="xmFilter">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_pass" class="layui-form-label">
+                <span class="x-red">*</span>密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                6到16个字符
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+                <span class="x-red">*</span>确认密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">
+                增加
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['form', 'layer'], function () {
+        $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer;
+        //下拉框里的角色名称
+        $.ajax({
+            url: '/role-list/findAllRole',
+            dataType: 'json',
+            type: 'get',
+            success: function (data) {
+                //这里要role的id和name 一方面是要显示出来，另一方面作为admin的属性进行保存
+                // console.log(data)
+                $.each(data.data, function (index, value) {
+                    // console.log(value.name);
+                    $('#roleId').append(new Option(value.name, value.id));// 下拉菜单里添加元素
+                });
+                layui.form.render("select");
+            }
+        })
+        //自定义验证规则
+        form.verify({
+            name: function (value) {
+                if (value.length < 5) {
+                    return '昵称至少得5个字符啊';
+                }
+                // console.log(value)
+                var back;
+                $.ajax({
+                    url: '/admin-list/findAdminByName',
+                    dataType: "json",
+                    type: "get",
+                    data: {"value": value},
+                    async: false,
+                    success: function (data) {
+                       return  back = data.data;
+                    }
+                })
+                // console.log(back);
+                if (back) {
+                    return '用户id已存在';
+                }
+            }
+            , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            , repass: function (value) {
+                if ($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(add)', function (data) {
+            // console.log(data);
+            //发异步，把数据提交给php
+            $.ajax({
+                url: '/admin-list/addAdmin',
+                dataType: "json",
+                type: "get",
+                data: data.field,
+                success: function (result) {
+                    if (result.status == 200) {
+                        layer.alert("增加成功", {icon: 6}, function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                            // 可以对父窗口进行刷新
+                            x_admin_father_reload();
+                        })
+                    } else {
+                        layer.alert("增加失败", {icon: 6})
+                        layer.alert(result.data)
+                    }
+                }
+            })
+
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+
+</html>

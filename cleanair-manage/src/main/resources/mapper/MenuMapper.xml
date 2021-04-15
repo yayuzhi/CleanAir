@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ca.mapper.MenuMapper">
+    <!--查询所有菜单以及菜单对应的上级菜单,当没有上级菜单时,当前菜单的上级菜单显示为null-->
+    <select id="findObjects" resultType="map">
+        <!--方法2 (嵌套查询)-->
+
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+package com.ca.service;
+
+import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ca.mapper.CartMapper;
+import com.ca.pojo.Cart;
+import com.ca.pojo.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+@Service(timeout = 3000)
+public class DubboCartServiceImpl implements DubboCartService {
+
+    @Autowired
+    private CartMapper cartMapper;
+
+
+    @Override
+    public List<Cart> findCartListByUserId(Long userId) {
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<Cart> carts = cartMapper.selectList(queryWrapper);
+
+        for (Cart cart : carts) {
+            String image = cart.getItemImage();
+            String[] firstImage = image.split(",");
+            String trueImage = firstImage[0];
+            cart.setItemImage(trueImage);
+        }
+        return carts;
+    }
+
+    /**
+     * Sql: update tb_cart set num=#{num},updated=#{updated}
+     * where user_id=#{userId} and item_id = #{itemId}
+     *
+     * @param cart
+     */
+    @Override
+    public void updateCartNum(Cart cart) {
+        Cart cartTemp = new Cart();
+        cartTemp.setNum(cart.getNum());
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", cart.getUserId())
+                .eq("item_id", cart.getItemId());
+        cartMapper.update(cartTemp, queryWrapper);
+        //参数1: 封装set条件   参数2:封装where条件
+    }
+
+    @Override
+    public void deleteCart(Cart cart) { //userId/itemId
+
+        cartMapper.delete(new QueryWrapper<>(cart));
+        //根据对象中不为null的属性当做where条件.
+    }
+
+    /**
+     * 如果购物车已存在,则更新数量,否则新增.
+     * 如何判断购物车数据是否存在   userId itemId
+     *
+     * @param cart
+     */
+    @Override
+    public void addCart(Cart cart) {
+        //1.查询购物车信息 userId,itemId
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", cart.getUserId());
+        queryWrapper.eq("item_id", cart.getItemId());
+        Cart cartDB = cartMapper.selectOne(queryWrapper);
+        if (cartDB == null) {
+            //第一次新增购物车
+            cartMapper.insert(cart);
+        } else {
+            //用户已经加购,更新数量
+            int num = cartDB.getNum() + cart.getNum();
+            Cart cartTemp = new Cart();
+            cartTemp.setNum(num).setId(cartDB.getId());
+            cartMapper.updateById(cartTemp);
+        }
+    }
+
+
+}

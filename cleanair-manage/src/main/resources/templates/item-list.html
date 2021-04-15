@@ -1,0 +1,567 @@
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<!--商品列表-->
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">商品管理</a>
+        <a>
+          <cite>商品列表</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <div class="layui-inline layui-show-xs-block">
+            <input type="text" name="title" id="itemtitle" placeholder="请输入商品名" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-inline layui-show-xs-block">
+            <button class="layui-btn" data-type="reload">搜索</button>
+            <!--                                    <i class="layui-icon">&#xe615;</i>-->
+        </div>
+    </div>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" id="delall"><i class="layui-icon"></i>批量删除
+        </button>
+        <button class="layui-btn" onclick="x_admin_show('增加商品 ','./item-add.html',600,400)"><i class="layui-icon"></i>添加
+        </button>
+        <span class="x-right" style="line-height:40px"></span>
+    </xblock>
+    <table class="item-list" lay-filter="user">
+    </table>
+    <script type="text/html" id="barDemo">
+
+        {{#  if(d.status ==1 ){ }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini " lay-event="detail" style="background-color: red">下架</a>
+        {{#  }else{ }}
+        <a class="layui-btn layui-btn-primary layui-btn-mini   layui-btn-normal " lay-event="detail">上架</a>
+        {{#  }  }}
+        <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="del">删除</a>
+    </script>
+    <div class="x-bodyedit" style="display: none">
+        <form class="layui-form" lay-filter="item-edit" id="item-edit">
+            <!--        <div class="layui-form-item">-->
+            <!--            <label for="item_id" class="layui-form-label">-->
+            <!--                <span class="x-red">*</span>商品编码-->
+            <!--            </label>-->
+            <!--            <div class="layui-input-inline">-->
+            <!--                <input type="text" id="item_id" name="id" required="" lay-verify="item_id"-->
+            <!--                       autocomplete="off" class="layui-input">-->
+            <!--            </div>-->
+            <!--            <div class="layui-form-mid layui-word-aux">-->
+            <!--                <span class="x-red">*</span>商品编码唯一，且只能由数字组成-->
+            <!--            </div>-->
+            <!--        </div>-->
+            <div class="layui-form-item">
+                <label for="item_sell_point" class="layui-form-label">
+                    <span class="x-red">*</span>商品名称
+                </label>
+                <div class="layui-input-inline">
+                    <input id="item_title" name="title" required="" lay-verify="item_title"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="item_num" class="layui-form-label">
+                    <span class="x-red">*</span>商品库存
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="item_num" name="num" required="" lay-verify="item_num"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>必须是大于0的整数，单位为个
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="item_sell_point" class="layui-form-label">
+                    <span class="x-red">*</span>商品卖点
+                </label>
+                <div class="layui-input-inline">
+                    <input id="item_sell_point" name="sell_point" required="" lay-verify="item_sell_point"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="item_price" class="layui-form-label">
+                    <span class="x-red">*</span>商品价格
+                </label>
+                <div class="layui-input-inline">
+                    <input id="item_price" name="price" required="" lay-verify="item_price"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>最小单位为分，单价为元/一天
+                </div>
+            </div>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                <div id="uploadImg" class="layui-upload">
+                    <button type="button" class="layui-btn" id="upload">
+                        <i class="layui-icon">&#xe67c;</i>上传商品图片<span style="color: red;font-size: 20px;">*</span>
+                    </button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table" style="text-align: center;">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center;">图片预览</th>
+                                <th style="text-align: center;">大小</th>
+                                <th style="text-align: center;">状态</th>
+                                <th style="text-align: center;">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="imgList"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="startUpload">开始上传</button>
+                    <div style="color: #c2c2c2;margin:10px 0;">温馨提示: 每次最多上传六张图片, 单张图片的大小不超过5MB, 长宽比例推荐1.5:1,
+                        推荐上传图片长675px,宽450px，但是商品只会显示第一张照片。
+                    </div>
+                </div>
+                <input type="text" name="image" style="display: none;">
+                <input type="text" name="image" id="imgInput" lay-verify="" style="display: none;">
+            </blockquote>
+            <p style="color: #2fbdbd;size: 12px;">商品照片</p>
+            <div id="item-img">
+
+                <ul id="img"></ul>
+            </div>
+
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 40px;">
+                <legend>商品详细介绍</legend>
+            </fieldset>
+            <textarea name="itemDesc" class="layui-textarea" id="LAY_demo1" style="display: none" lay-verify="itemDesc">
+
+        </textarea>
+            <div class="layui-form-item">
+                <label for="item_title" class="layui-form-label">
+                </label>
+                <button class="layui-btn" lay-filter="edit" lay-submit="">
+                    修改
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:inline="none">
+
+    //layui自带的渲染网页tble格式
+    layui.use(['layer', 'jquery', 'table', 'form', 'layedit','upload'], function () {
+        var layedit = layui.layedit;
+        $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+        var upload = layui.upload;
+
+        table.render({
+            elem: '.item-list',
+            url: '/item-list/findItemByPage',
+            cellMinWidth: 95,
+            page: true,
+            height: "312",
+            limits: [10, 15, 20, 25],
+            limit: 10,
+            id: "itemListTable",
+            cols: [[
+                {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
+                {field: 'id', title: '商品编号', minWidth: 80, align: "center", id: 'id'},
+                {field: 'title', title: '商品名称', minWidth: 80, align: "center"},
+                {
+                    field: 'price', title: '商品单价(元/一天)', minWidth: 80, align: "center", templet: function (d) {
+                        return d.price / 100;
+                    }
+                },
+                {field: 'num', title: '商品库存', minWidth: 80, align: "center"},
+                {
+                    field: 'created', title: '商品创建时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.created / 1)
+                    }
+                },
+                {
+                    field: ' updated', title: '更新时间', minWidth: 80, align: 'center', templet: function (d) {
+                        return layui.util.toDateString(d.updated / 1)
+                    }
+                },
+                {
+                    field: 'status', title: '商品状态', minWidth: 80, align: 'center', templet: function (d) {
+                        return d.status == '1' ? "在售" : "<span style='color: #FF5722'>下架</span>";
+                    }
+                },
+                {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
+
+            ]]
+        });
+        //批量删除
+        $("#delall").click(function () {
+            var checkStatus = table.checkStatus("itemListTable")
+            if (checkStatus.data.length != 0) {
+                var ids = [];
+                var titles = []
+                for (var i = 0; i < checkStatus.data.length; i++) {
+                    ids.push(checkStatus.data[i].id);
+                    titles.push(checkStatus.data[i].title)
+                }
+                var id = ids.join(",")
+                var title = titles.join(",")
+                layer.confirm('真的删除商品编号为' + title + '的商品吗？', function () {
+                    $.post("/item-list/deleteItemsById", {"ids": id},
+                        function (index) {
+                            if (index.status == 200) {
+                                layer.msg("删除成功", {icon: 6});
+                                table.reload('itemListTable', {})
+                            } else {
+                                layer.msg("删除失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(index.data)
+                            }
+                        }, "json",);
+                })
+            } else {
+                layer.msg("请勾选要删除的商品", {icon: 5})
+            }
+        });
+        //按照title搜索
+        var $ = layui.$, active = {
+            reload: function () {
+                var title = $('#itemtitle');
+                if (title.val() == "") {
+
+                    layer.msg("搜索商品名不能为空");
+                    return;
+                } else {
+                    table.reload('itemListTable', {
+                        where: {
+                            title: title.val(),
+                        }
+                    });
+                }
+            }
+        }
+
+        //绑定点击事件
+        $(' .layui-btn ').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        //自定义验证规则
+        form.verify({
+            // //判断商品编码是否符合规定
+            // item_id: function (value) {
+            //     if (value.length > 0) {
+            //         if (!(/(^[0-9]\d*$)/.test(value))) {
+            //             return '商品编号必须全部由数字组成';
+            //         }
+            //     } else {
+            //         return '商品编号不能为空'
+            //     }
+            // }
+            //判断商品库存是否符合规定
+            item_num: function (value) {
+                if (value.length > 0) {
+                    if (value == 0) {
+                        return '商品库存不能为空'
+                    } else if (!(/(^[1-9]\d*$)/.test(value))) {
+                        return '商品库存必须为正整数';
+                    }
+                } else {
+                    return '商品库存不能为空'
+                }
+            }
+            , item_title: function (value) {
+                if (value.length <= 0) {
+                    return '商品名称不能为空'
+                }
+            }
+            , item_sell_point: function (value) {
+                if (value.length <= 0) {
+                    return '商品卖点不能为空'
+                }
+            }
+            , item_price: function (value) {
+                if (value.length <= 0) {
+                    return '商品价格不能为空'
+                } else if (!/(^[1-9]\d*(\.\d{1,2})?$)/.test(value)) {
+                    return '价格不能为负，小数点后只能保留两位,不能以0开头'
+                }
+            }
+        });
+
+        // 多文件列表示例
+        var demoListView = $('#imgList');
+        var totalArray = new Array();
+        var uploadListIns = upload.render({
+            elem: '#upload' //绑定元素
+            , url: '/image/upload/' //上传接口
+            , accept: 'images'  // 允许上传的文件类型
+            // , acceptMime: 'image/jpg,image/png'   // (只支持jpg和png格式，多个用逗号隔开),
+            , size: 5120        // 最大允许上传的文件大小  单位 KB
+            , auto: false //选择文件后不自动上传
+            , bindAction: '#startUpload' //指向一个按钮触发上传
+            , multiple: true   // 开启多文件上传
+            , number: 6    //  同时上传文件的最大个数
+            , choose: function (obj) {
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                var arr = Object.keys(files);
+                totalArray = totalArray.concat(arr);
+                // 检查上传文件的个数
+                if (totalArray.length <= 6) {
+                    //读取本地文件
+                    obj.preview(function (index, file, result) {
+                        var tr = $(['<tr id="upload-' + index + '">'
+                            , '<td><img src="' + result + '" alt="' + file.name + '" class="layui-upload-img" style="height: 66px;width:100px;"></td>'
+                            , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                            , '<td>等待上传</td>'
+                            , '<td>'
+                            , '<button class="layui-btn demo-reload layui-hide">重传</button>'
+                            , '<button class="layui-btn layui-btn-danger demo-delete">删除</button>'
+                            , '</td>'
+                            , '</tr>'].join(''));
+
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function () {
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function () {
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = '';
+                        });
+
+                        demoListView.append(tr);
+                    });
+                } else {
+                    // 超出上传最大文件
+                    layer.msg("上传文件最大不超过6个")
+                }
+
+            }
+            , done: function (res, index, upload) {
+                console.log("res", res);
+                if (res.error == 0) { //上传成功
+                    // 上传成功后将图片路径拼接到input中，多个路径用","分割
+                    var inputVal = document.getElementById("imgInput").value;
+
+                    var valData = "";
+                    if (inputVal) {
+                        valData = inputVal + "," + res.url;
+                        console.log(valData)
+                    } else {
+                        valData = res.url;
+                    }
+                    document.getElementById("imgInput").value = valData;
+                    var tr = demoListView.find('tr#upload-' + index)
+                        , tds = tr.children();
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    tds.eq(3).html(''); //清空操作
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                }
+                this.error(index, upload);
+            }
+            , error: function (index, upload) {
+                var tr = demoListView.find('tr#upload-' + index)
+                    , tds = tr.children();
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+        });
+
+
+        table.on('tool(user)', function (obj) {
+            var data = obj.data;
+            //删除单个item
+            if (obj.event === 'del') {
+                // console.log(data);
+                layer.confirm('真的删除商品名称为' + data.title + '的商品吗？', function (index) {
+                    $.ajax({
+                        url: '/item-list/deleteItemById/',
+                        data: {'id': data.id},
+                        method: 'get',
+                        contentType: 'json',
+                        //执行完成回调函数
+                        success: function (data) {
+                            console.log(data)
+                            if (data.status == 200) {
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                                //表格刷新
+                                table.reload('itemListTable', {});
+                            } else {
+                                layer.msg("删除失败", {icon: 5})
+                                // table.reload('itemListTable', {});
+                                layer.alert(data.data)
+                            }
+                        }
+                    })
+                    layer.close(index);
+                });
+            }
+            //更新item的status
+            else if (obj.event === 'detail') {
+                console.log(data.id)
+                $.ajax({
+                    url: '/item-list/updateStatusById/',
+                    data: {"id": data.id},
+                    method: 'get',
+                    contentType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        if (data.status == 200) {
+                            layer.msg("更新成功", {icon: 6});
+                            //表格刷新
+                            table.reload('itemListTable', {});
+                        } else {
+                            layer.msg("更新失败", {icon: 5})
+                            // table.reload('itemListTable', {});
+
+                            layer.alert(data.data)
+                        }
+
+                    }
+                })
+            }
+            else if (obj.event === 'edit') {
+                layer.open({
+                    type: 1,
+                    area: [900 + 'px', 600 + 'px'],
+                    fix: false, //不固定
+                    //maxmin: true,
+                    //shadeClose: true,
+                    skin: 'layui-layer-rim',
+                    shade: 0.6,
+                    title: '修改商品',
+                    content: $('.x-bodyedit'),
+                    success: function (layero, index) {
+                        form.render()
+
+                        console.log(obj.data)
+                        $('#item_title').val(obj.data.title);
+                        $('#item_num').val(obj.data.num);
+                        $('#item_sell_point').val(obj.data.sellPoint);
+                        $('#item_price').val(obj.data.price / 100)
+                        //这里显示上传的图片
+                        // $.ajax({
+                        //     url:'/item-list/getItemImg',
+                        //     data: {"id": data.id},
+                        //     dataType: "json",
+                        //     type: "post",
+                        //     success:function (data) {
+                        //         //data直接返回item所有数据
+                        //         //这里要获得item的iamge
+                        //
+                        //     }
+                        // });
+
+                        var ImageString = data.image;
+                        // if (ImageString!=null)
+                        var img = ImageString.split(",");
+
+                        for (var i =1;i<=img.length;i++){
+                            var pic = img[i-1];
+                            html = '<li>'+
+                                '<a >'+
+                                '<img style="width: 200px; height: 200px;" class="one" id="img'+i+'"  src="'+pic+'" />'+ '</a>'+
+                                '</li>';
+                            //test 是上面定义的ID名
+                            $('#img').append(html);
+                        }
+                        // $('#item_image').val(null);
+                        layui.use(['layedit'], function () {
+                            $.ajax({
+                                url: '/item-list/findItemDescById/',
+                                data: {"id": data.id},
+                                dataType: "json",
+                                type: "post",
+                                success: function (data) {
+                                    // console.log(obj.data.id)
+                                    console.log(data.data)
+
+                                    var index = layedit.build('LAY_demo1');
+                                    layedit.setContent(index, data.data);
+                                }
+                            })
+                        });
+                        //form表单监控
+                        form.on('submit(item-edit)', function (obj) {
+                            console.log(data.id)
+                            obj.field.itemDesc = layedit.getContent(index);
+                            var filed = obj.field;
+                            console.log($("#item_title").val())
+                            console.log(ImageString);
+                            var item = {
+                                id: data.id,
+                                itemId: data.id,
+                                title: $("#item_title").val(),
+                                sellPoint: $("#item_sell_point").val(),
+                                price: $("#item_price").val() * 100,
+                                num: $("#item_num").val(),
+                                image: ImageString+','+$("#imgInput").val(),
+                                itemDesc: filed.itemDesc
+                            }
+                            console.log(item);
+                            $.ajax({
+                                url: '/item-list/updateItem',
+                                data: item,
+                                dataType: "json",
+                                type: "post",
+                                success: function (data) {
+                                    if (data.status == 200) {
+                                        layer.close(index);
+                                        layer.msg("修改成功", {icon: 6});
+                                        //表格刷新
+                                        // $("#item-add")[0].reset();
+                                        // layui.layedit.build('LAY_demo1');
+                                        parent.location.reload();
+                                    } else {
+                                        layer.msg("修改失败", {icon: 5})
+
+                                        layer.alert(data.data)
+                                    }
+                                }
+                            })
+                            return false;
+                        });
+                    },
+                    end:function (layero,index) {
+                        parent.location.reload();
+                    }
+                })
+            }
+        });
+    });
+
+
+</script>
+
+</body>
+
+</html>

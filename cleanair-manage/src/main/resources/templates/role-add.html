@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!--职位添加-->
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+
+    <!--    <link rel="stylesheet" href="./ztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />-->
+    <link rel="stylesheet" href="./zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./ztree/jquery.ztree.all.min.js"></script>
+
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form action="" class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <label for="name" class="layui-form-label">
+                    <span class="x-red">*</span>角色名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="name" name="name" required="" lay-verify="roleId"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">授权</label>
+                <div class="col-sm-10">
+                    <ul id="ztree" class="ztree"></ul>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item layui-form-text">
+                <label for="desc" class="layui-form-label">
+                    描述
+                </label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" id="desc" name="note" class="layui-textarea"
+                              lay-verify="note"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn" lay-submit="" lay-filter="add">增加</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var zTree;
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true, //使用简单数据模式
+                idKey: "id",  //节点数据中保存唯一标识的属性名称
+                pIdKey: "pid",  //节点数据中保存其父节点唯一标识的属性名称
+                rootPId: null  //根节点id
+            }
+        },
+        check: {
+            enable: true,
+            nocheckInherit: true
+        }//此配置提供复选框操作(可查官方zTree)
+    }
+
+    $(function () {
+        //加载后端构建的ZTree树（节点的数据格式已在后端格式化好了）
+        $.ajax({
+            url: '/menus-list/findAllMenus',
+            type: 'get',
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                zTree = $.fn.zTree.init($("#ztree"), setting, data.data);
+
+            }
+
+        });
+    });
+
+
+    layui.use(['form', 'layer', 'layedit', 'upload'], function () {
+        $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer;
+        //自定义验证规则
+        form.verify({
+            roleId: function (value) {
+                if (value.length <= 0) {
+                    return '角色名不能为空'
+                }
+            }
+        });
+        form.on('submit(add)', function (obj) {
+            var menuIds = [];
+            var treeNodes = zTree.getCheckedNodes(true);
+            for (var i in treeNodes) {
+                //注意这里的id是menus的id 到时候在后端写做menuid进行保存 类似订单表
+                menuIds.push(treeNodes[i].id)
+            }
+            var parems = {
+                name: obj.field.name,
+                note: obj.field.note,
+                menuIds: menuIds.toString()
+            }
+            console.log(obj.field);
+            console.log(parems.menuIds)
+            $.ajax({
+                url: "/role-list/saveRole",
+                data: parems,
+                dataType: "json",
+                type: "get",
+                // async: false,
+                success: function (data) {
+                    console.log(data)
+                    if (data.status == 200) {
+                        layer.msg("添加成功", {icon: 20});
+
+                        parent.location.reload();
+                    } else {
+                        layer.msg("添加失败", {icon: 5});
+                        layer.alert(data.data);
+                    }
+                }
+            })
+
+            return false;
+        });
+
+    })
+
+
+    //页面加载完成时初始化zTree
+
+    // $.ajax({
+    //     url: 'menus-list/findAllMenus',
+    //     type: 'post',
+    //     dataType: 'json',
+    //     success: function (data) {
+    //         console.log(data.data);
+    //         $.fn.zTree.init($("#zTree"), setting, data);
+    //     }
+    // });
+
+    // function datetree(data, id, pid) {
+    //     var result = [];
+    //     var obj = {};
+    //     for (var i = 0; i < data.length; i++) {
+    //         obj[data[i][id]] = data[i];
+    //     }
+    //
+    //     for (var j = 0; j < data.length; j++) {
+    //         parent = obj[data[j][pid]];
+    //         if (parent) {
+    //             if (!parent["children"]) {
+    //                 parent["children"] = [];
+    //             }
+    //             parent["children"].push(data[j]);
+    //         } else {
+    //             result.push(data[j]);
+    //         }
+    //     }
+    //     return result;
+    // }
+
+
+</script>
+
+</body>
+
+</html>
