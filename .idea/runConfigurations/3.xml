@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="气清后台" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+    <module name="cleanair-manage" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.ca.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.ca.CleanairManageApplication" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/cleanair-manage" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="F:\java\jdk1.8.0_181\jre" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/cleanair.iml" filepath="$PROJECT_DIR$/.idea/cleanair.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aprm/aprm.iml" filepath="$PROJECT_DIR$/aprm/aprm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/as/as-manage.iml" filepath="$PROJECT_DIR$/as/as-manage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/biyexiangmu.iml" filepath="$PROJECT_DIR$/.idea/biyexiangmu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair.iml" filepath="$PROJECT_DIR$/cleanair/cleanair.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-cart/cleanair-cart.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-cart/cleanair-cart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-common/cleanair-common.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-common/cleanair-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-manage/cleanair-manage.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-manage/cleanair-manage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-order/cleanair-order.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-order/cleanair-order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-sso/cleanair-sso.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-sso/cleanair-sso.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cleanair/cleanair-web/cleanair-web.iml" filepath="$PROJECT_DIR$/cleanair/cleanair-web/cleanair-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../test/test.iml" filepath="$PROJECT_DIR$/../test/test.iml" />
     </modules>
   </component>
 </project>

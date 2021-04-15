@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="气清订单" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" singleton="false">
+    <module name="cleanair-order" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.ca.CleanairOrderApplication" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/cleanair-order" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="F:\java\jdk1.8.0_181\jre" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

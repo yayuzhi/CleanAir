@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cleanair-web:war">
+    <output-path>$PROJECT_DIR$/cleanair-web/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>cleanair-web</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="cleanair-web-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="cleanair-web:war exploded" />
+    </root>
+  </artifact>
+</component>
