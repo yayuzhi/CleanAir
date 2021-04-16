@@ -12,5 +12,7 @@ public interface DubboOrderService {
 
     void updateStatus(Order order);
 
+    boolean checkTime(Order order);
+
 
 }

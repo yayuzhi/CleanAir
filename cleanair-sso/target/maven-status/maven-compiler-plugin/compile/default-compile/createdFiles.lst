@@ -1,6 +1,0 @@
-com\ca\controller\UserController.class
-com\ca\CleanairSsoApplication.class
-com\ca\service\serviceImpl\DubboUserServiceImpl.class
-com\ca\service\serviceImpl\UserServiceImpl.class
-com\ca\mapper\UserMapper.class
-com\ca\service\UserService.class

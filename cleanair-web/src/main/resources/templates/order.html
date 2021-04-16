@@ -338,7 +338,11 @@
             type: "post",
             data:{"status":order.status,"orderId":orderId},
             success: function (result) {
-                init();
+                if (result.status == 200){
+                    init();
+                }else {
+                    window.alert("租期未满一天，还不能结束哦！")
+                }
             }
         });
     }

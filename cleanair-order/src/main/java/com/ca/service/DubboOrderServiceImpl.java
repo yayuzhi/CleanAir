@@ -118,4 +118,21 @@ public class DubboOrderServiceImpl implements DubboOrderService {
 
 
     }
+
+    @Override
+    public boolean checkTime(Order order) {
+
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("order_id", order.getOrderId());
+        Order oldorder = orderMapper.selectOne(queryWrapper);
+        Double day =Math.floor((new Date().getTime() - oldorder.getStart().getTime())/86400000) ;
+        if (day>0){
+            return true;
+        }else {
+            return false;
+        }
+
+
+
+    }
 }

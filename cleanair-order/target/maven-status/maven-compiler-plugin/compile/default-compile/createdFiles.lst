@@ -1,4 +1,0 @@
-com\ca\CleanairOrderApplication.class
-com\ca\mapper\OrderItemMapper.class
-com\ca\mapper\OrderMapper.class
-com\ca\service\DubboOrderServiceImpl.class

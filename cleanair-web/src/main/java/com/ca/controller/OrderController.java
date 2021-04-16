@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yayuhzi
+ */
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -84,7 +87,6 @@ public class OrderController {
         Long userId = user.getId();
         List<Order> orderList = orderService.findOrderUserId(userId);
 
-//        model.addAttribute("oderList",orderList);
         map.put("code", 0);
         map.put("msg", "操作成功");
         map.put("data", orderList);
@@ -94,7 +96,14 @@ public class OrderController {
 
     @RequestMapping("/update")
     public JsonResult updateStatus(Order order) {
-//        System.out.println(order);
+        if (order.getStatus() == 1){
+        }else {
+            if (orderService.checkTime(order)==false){
+                return JsonResult.fail();
+            }
+        }
+
+
         orderService.updateStatus(order);
         return JsonResult.success("update ok!");
     }
