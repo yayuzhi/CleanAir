@@ -26,9 +26,9 @@
     <link rel="stylesheet" href="./fonts/flaticon/flaticon.css">
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/vue.min.js"></script>
-    <style> [v-cloak] {
-        display: none;
-    } </style>
+<!--    <style> [v-cloak] {-->
+<!--        display: none;-->
+<!--    } </style>-->
 </head>
 <body class="inblog-page">
 <header class="header style7">
@@ -299,7 +299,7 @@
         },
     })
 
-    var vm = new Vue({
+    var vm2 = new Vue({
         el: '#user',
         data: {
             user: null,
@@ -316,6 +316,7 @@
                 console.info(result.data);
                 resData = result.data;
                 vm.carts = resData;
+                console.info(vm.carts)
                 var carts = resData;
                 //计算总价
                 pr.price = Totalprice(carts);
@@ -332,7 +333,7 @@
             success: function (result) {
                 console.info(result.data);
                 resData = result.data;
-                vm.user = resData;
+                vm2.user = resData;
 
             }
         });
