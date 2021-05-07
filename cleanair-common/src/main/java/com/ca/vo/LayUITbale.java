@@ -50,4 +50,10 @@ public class LayUITbale {
         String jso = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+json+"}";
         return jso;
     }
+    public String LayUIResponseByLeaveApply(Integer count, List<LeaveApply> leaveApplies) {
+        String json= JSON.toJSONString(leaveApplies);
+        //*****转为layui需要的json格式，必须要这一步，博主也是没写这一步，在页面上数据就是数据接口异常
+        String jso = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+json+"}";
+        return jso;
+    }
 }
