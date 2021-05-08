@@ -2,10 +2,6 @@ package com.ca.vo;
 
 import com.alibaba.fastjson.JSON;
 import com.ca.pojo.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -52,6 +48,12 @@ public class LayUITbale {
     }
     public String LayUIResponseByLeaveApply(Integer count, List<LeaveApply> leaveApplies) {
         String json= JSON.toJSONString(leaveApplies);
+        //*****转为layui需要的json格式，必须要这一步，博主也是没写这一步，在页面上数据就是数据接口异常
+        String jso = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+json+"}";
+        return jso;
+    }
+    public String LayUIResponseByReply(Integer count, List<Reply> replyList) {
+        String json= JSON.toJSONString(replyList);
         //*****转为layui需要的json格式，必须要这一步，博主也是没写这一步，在页面上数据就是数据接口异常
         String jso = "{\"code\":0,\"msg\":\"\",\"count\":"+count+",\"data\":"+json+"}";
         return jso;

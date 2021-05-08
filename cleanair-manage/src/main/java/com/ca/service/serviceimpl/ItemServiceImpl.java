@@ -102,8 +102,8 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(Item item, ItemDesc itemDesc) {
         item.setStatus(1);	//默认是正常状态
         itemMapper.insert(item); //执行数据库入库操作,动态生成ID
-        //如何实现主键自增的回显功能? 可以通过标签的配置实现,但是MP已经实现该功能
-        //2.入库详情信息  如何保证item与itemDesc主键信息一致?
+        //如何实现主键自增的回显功能? 可以通过标签的配置实现,但是MybatisPlus已经实现该功能
+        //2.入库详情信息  如何保证item与itemDesc主键信息一致? 在itemDesc存入item的主键信息
         itemDesc.setItemId(item.getId());
         itemDescMapper.insert(itemDesc);
     }

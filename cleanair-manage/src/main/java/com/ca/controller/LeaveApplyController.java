@@ -43,7 +43,7 @@ public class LeaveApplyController {
         //拿到用户的名字
         String username = ShiroUtils.getAdminname();
         List<LeaveApply> leaveApplyList = leaveApplyService.findAllPage(page1, limit, username);
-        int count = leaveApplyService.count();
+        int count = leaveApplyService.count(username);
         return new LayUITbale().LayUIResponseByLeaveApply(count, leaveApplyList);
     }
 
@@ -64,11 +64,40 @@ public class LeaveApplyController {
     }
 
 
-    @RequestMapping("/edit")
+    /**
+     * 显示 申请的详细数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("/show")
     @ResponseBody
     public JsonResult showApply(int id) {
         LeaveApply leaveApply = leaveApplyService.findApplyById(id);
-
         return JsonResult.success(leaveApply);
+    }
+
+    /**
+     * 对申请信息进行修改
+     * @param leaveApply
+     * @return
+     */
+    @RequestMapping("/edit")
+    @ResponseBody
+    public JsonResult editApply(LeaveApply leaveApply) {
+        leaveApplyService.updateLeaveApply(leaveApply);
+        return JsonResult.success("edit ok");
+    }
+
+    /**
+     * 取消申请
+     * @param id
+     * @return
+     */
+    @RequestMapping("/cancel")
+    @ResponseBody
+    public JsonResult cancelApply(int id){
+        String processInstanceId =leaveApplyService.findApplyById(id).getProcessInstanceId();
+        leaveApplyService.cancelApply(processInstanceId,id);
+        return JsonResult.success("cancel ok");
     }
 }

@@ -26,7 +26,7 @@
         <a href="">首页</a>
         <a href="">OA管理</a>
         <a>
-          <cite>我的请假申请</cite></a>
+          <cite>待批复</cite></a>
       </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
        href="javascript:location.replace(location.href);" title="刷新">
@@ -42,20 +42,21 @@
         <!--            <button class="layui-btn" data-type="reload">搜索</button>-->
         <!--            &lt;!&ndash;                                    <i class="layui-icon">&#xe615;</i>&ndash;&gt;-->
         <!--        </div>-->
-        <xblock>
-            </button>
-            <button class="layui-btn" onclick="x_admin_show('请假 ','./apply-add.html',800,600)"><i
-                    class="layui-icon"></i>请假
-            </button>
-            <span class="x-right" style="line-height:40px"></span>
-        </xblock>
+<!--        <xblock>-->
+<!--            </button>-->
+<!--            <button class="layui-btn" onclick="x_admin_show('请假 ','./apply-add.html',800,600)"><i-->
+<!--                    class="layui-icon"></i>请假-->
+<!--            </button>-->
+<!--            <span class="x-right" style="line-height:40px"></span>-->
+<!--        </xblock>-->
     </div>
-    <table class="apply-list" lay-filter="user">
+    <table class="reply-list" lay-filter="user">
 
     </table>
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-mini" lay-event="edit" >编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="cancel">取消</a>
+        <a class="layui-btn layui-btn-normal" lay-event="edit">详细</a>
+        <a class="layui-btn layui-btn-mini" lay-event="edit" >通过</a>
+        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="cancel">打回</a>
     </script>
 </div>
 <script th:inline="none">
@@ -67,29 +68,25 @@
         var form = layui.form;
         var layer = layui.layer;
         var table = layui.table;
-        var upload = layui.upload;
 
         table.render({
-            elem: '.apply-list',
-            url: '/apply-list/findApplyByPage',
+            elem: '.reply-list',
+            url: '/reply-list/showReply',
             cellMinWidth: 95,
             page: true,
             height: "312",
             limits: [10, 15, 20, 25],
             limit: 10,
-            id: "ApplyListTable",
+            id: "replyListTable",
             cols: [[
                 // {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
-                {field: 'processInstanceId', title: '流程编号', minWidth: 80, align: "center", id: 'id'},
-                {field: 'leaveType', title: '请假类型', minWidth: 80, align: "center"},
+                {field: 'id', title: '编号', minWidth: 80, align: "center", id: 'id'},
+                {field: 'processInstanceId', title: '流程编号', minWidth: 80, align: "center", id: 'processInstanceId'},
+                {field: 'username', title: '申请人', minWidth: 80, align: "center", },
+                {field: 'leaveType', title: '请假类型', minWidth: 80, align: "center",},
                 {
-                    field: 'created', title: '创建时间', minWidth: 80, align: 'center', templet: function (d) {
-                        return layui.util.toDateString(d.created / 1)
-                    }
-                },
-                {
-                    field: ' updated', title: '更新时间', minWidth: 80, align: 'center', templet: function (d) {
-                        return layui.util.toDateString(d.updated / 1)
+                    field: 'duration', title: '请假时长', minWidth: 80, align: 'center', templet: function (d) {
+                        return d.Duration+"天";
                     }
                 },
                 {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
@@ -98,22 +95,10 @@
         });
         table.on('tool(user)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'edit') {
-                layer.open({
-                    type: 2,
-                    area: [900 + 'px', 600 + 'px'],
-                    fix: false, //不固定
-                    //maxmin: true,
-                    //shadeClose: true,
-                    skin: 'layui-layer-rim',
-                    shade: 0.6,
-                    title: '修改申请',
-                    content: "apply-edit?id="+data.id
-                })
-            }else if (obj.event == 'cancel'){
+            if (obj.event == 'cancel'){
                 layer.confirm('真的要撤回这个申请吗？', function (index) {
                     $.ajax({
-                        url: '/apply-list/cancel',
+                        url: '/reply-list/cancel',
                         data: {'id': data.id},
                         method: 'get',
                         contentType: 'json',
@@ -136,25 +121,7 @@
                 });
             }
         })
-        //按照status搜索
-        var $ = layui.$, active = {
-            reload: function () {
-                var orderId = $('#orderId');
-                if (orderId.val() == "") {
-                    layer.msg("搜索订单编号不能为空");
-                    return;
-                } else if (isNaN(orderId.val())) {
-                    layer.msg("搜索订单编号不规范");
-                    return;
-                } else {
-                    table.reload('ApplyListTable', {
-                        where: {
-                            orderId: orderId.val(),
-                        }
-                    });
-                }
-            }
-        }
+
         //绑定点击事件
         $(' .layui-btn ').on('click', function () {
             var type = $(this).data('type');

@@ -62,11 +62,12 @@ public class LeaveApplyServiceImpl implements LeaveApplyService {
     }
 
     @Override
-    public int count() {
+    public int count(String username) {
         ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
-        int count = (int) processInstanceQuery.count();
-        return count;
+        List<ProcessInstance> processInstanceList = processInstanceQuery.processDefinitionKey(PROCESS_DEFINE_KEY).involvedUser(username).list();
+        return processInstanceList.size();
     }
+
 
     @Override
     public void startLeaveApply(LeaveApply leaveApply, String username, Map<String, Object> variables) {
@@ -84,8 +85,17 @@ public class LeaveApplyServiceImpl implements LeaveApplyService {
 
     @Override
     public LeaveApply findApplyById(int id) {
-
-
         return leaveApplyMapper.selectById(id);
+    }
+
+    @Override
+    public void updateLeaveApply(LeaveApply leaveApply) {
+        leaveApplyMapper.updateById(leaveApply);
+    }
+
+    @Override
+    public void cancelApply(String processInstanceId,int id) {
+        runtimeService.deleteProcessInstance(processInstanceId, "取消申请");
+        leaveApplyMapper.deleteById(id);
     }
 }

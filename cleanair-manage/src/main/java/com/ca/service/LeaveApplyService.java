@@ -10,7 +10,7 @@ public interface LeaveApplyService {
 
     //分页查询我正在请假的信息
     List<LeaveApply> findAllPage(int page, int limit, String username);
-    int count();
+    int count(String username);
 
     //开始请假流程
     void startLeaveApply(LeaveApply leaveApply, String username, Map<String,Object> variables);
@@ -18,4 +18,9 @@ public interface LeaveApplyService {
 
 
     LeaveApply findApplyById(int id);
+
+
+    void updateLeaveApply(LeaveApply leaveApply);
+
+    void cancelApply(String processInstanceId,int id);
 }
