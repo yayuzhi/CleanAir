@@ -161,13 +161,13 @@
                             <cite>我的请假历史</cite>
                         </a>
                     </li>
-                    <li>
+                    <li id="pass">
                         <a _href="reply-list.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>待批复</cite>
                         </a>
                     </li>
-                    <li>
+                    <li id="showpass">
                         <a _href="reply-H.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>批复记录</cite>
@@ -234,6 +234,8 @@
             $("#admin").hide(); //28 管理员
             $("#role").hide(); //29  角色
             $("#log").hide(); //25 日志
+            $("#pass").hide(); //24待批复
+            $("#showpass").hide(); //24批复记录
 
         })
         // $("#e").hide();
@@ -274,6 +276,10 @@
                     }
                     if (menusId[i] == 29) {
                         $("#role").show();
+                    }
+                    if (menusId[i] == 24){
+                        $("#pass").show(); //待批复
+                        $("#showpass").show(); //批复记录
                     }
                 }
             }

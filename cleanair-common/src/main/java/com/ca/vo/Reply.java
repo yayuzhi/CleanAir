@@ -23,12 +23,22 @@ public class Reply {
     private String username;//申请人name
 
 
-    private String duration; //请假时长
+    private String duration; //请假时长  这个其实可以不要的
 
 
     private String leaveType; //请假类型
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date start;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date end;
+
+    private Boolean result;
+
+    private String reason;//请假原因
 
 
 

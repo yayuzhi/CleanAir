@@ -1,0 +1,122 @@
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<!--个人申请列表-->
+<head>
+    <meta charset="UTF-8">
+    <title>气清</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="./js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">OA管理</a>
+        <a>
+          <cite>我的请假历史</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+
+    </div>
+    <table class="leaveApply-list" lay-filter="user">
+
+    </table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-normal" lay-event="show">详细</a>
+    </script>
+</div>
+<script th:inline="none">
+
+
+    function day(start,end) {
+        var day = (end-start)/86400000;
+        return day + '天';
+    }
+
+    //layui自带的渲染网页tble格式
+    layui.use(['layer', 'jquery', 'table', 'form', 'layedit', 'upload'], function () {
+        var layedit = layui.layedit;
+        $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+
+        table.render({
+            elem: '.leaveApply-list',
+            url: '/apply-list/showHleaveApply',
+            cellMinWidth: 95,
+            page: true,
+            height: "312",
+            limits: [10, 15, 20, 25],
+            limit: 10,
+            id: "leaveApplyListTable",
+            cols: [[
+                // {checkbox: true, align: 'center', LAT_CHECKED: false, filter: 'allChoose'},
+                {field: 'id', title: '编号', minWidth: 80, align: "center", id: 'id'},
+                {field: 'processInstanceId', title: '流程编号', minWidth: 80, align: "center", id: 'processInstanceId'},
+                {field: 'applicant', title: '审批人', minWidth: 80, align: "center",},
+                {field: 'leaveType', title: '请假类型', minWidth: 80, align: "center",},
+                {
+                    field: 'duration', title: '请假时长', minWidth: 80, align: 'center', templet: function (d) {
+                        return day(d.start,d.end);
+                    }
+                },
+                {field: 'result', title: '结果', minWidth: 80, align: "center", templet:function (d) {
+                        if (d.result == 1){
+                            return "通过" ;
+                        }else {
+                            return "未通过";
+                        }
+                    }},
+                {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
+
+            ]]
+        });
+        table.on('tool(user)', function (obj) {
+            var data = obj.data;
+            if (obj.event == 'show') {
+                console.log(data.id)
+                layer.open({
+                    type: 2,
+                    area: [900 + 'px', 600 + 'px'],
+                    fix: false, //不固定
+                    //maxmin: true,
+                    //shadeClose: true,
+                    skin: 'layui-layer-rim',
+                    shade: 0.6,
+                    title: '申请详细',
+                    content: "reply-show?id=" + data.id
+                })
+            }
+        })
+
+        //绑定点击事件
+        $(' .layui-btn ').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    })
+
+
+</script>
+</body>
+
+</html>

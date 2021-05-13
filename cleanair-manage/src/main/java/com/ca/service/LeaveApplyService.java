@@ -23,4 +23,7 @@ public interface LeaveApplyService {
     void updateLeaveApply(LeaveApply leaveApply);
 
     void cancelApply(String processInstanceId,int id);
+
+
+    Map findhApplyById(int page,int limit,String username);
 }

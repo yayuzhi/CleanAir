@@ -2,6 +2,7 @@ package com.ca.config;
 
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -45,6 +46,9 @@ public class SpringShiroConfig {
         SimpleCookie cookie=new SimpleCookie("rememberMe");
         cookie.setMaxAge(7*24*60*60);
         cookieRememberMeManager.setCookie(cookie);
+        //主动设计一个加密的密钥，因为shiro从新启动后会生成一个新的密钥对cookie进行解密
+        //这里我们设计一个密钥，解决了上一个coockie这边是密钥解密不了的问题
+        cookieRememberMeManager.setCipherKey(Base64.decode("6ZmI6I2j5Y+R5aSn5ZOlAA=="));
         return cookieRememberMeManager;
     }
 

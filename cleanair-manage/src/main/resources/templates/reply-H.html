@@ -42,21 +42,19 @@
         <!--            <button class="layui-btn" data-type="reload">搜索</button>-->
         <!--            &lt;!&ndash;                                    <i class="layui-icon">&#xe615;</i>&ndash;&gt;-->
         <!--        </div>-->
-<!--        <xblock>-->
-<!--            </button>-->
-<!--            <button class="layui-btn" onclick="x_admin_show('请假 ','./apply-add.html',800,600)"><i-->
-<!--                    class="layui-icon"></i>请假-->
-<!--            </button>-->
-<!--            <span class="x-right" style="line-height:40px"></span>-->
-<!--        </xblock>-->
+        <!--        <xblock>-->
+        <!--            </button>-->
+        <!--            <button class="layui-btn" onclick="x_admin_show('请假 ','./apply-add.html',800,600)"><i-->
+        <!--                    class="layui-icon"></i>请假-->
+        <!--            </button>-->
+        <!--            <span class="x-right" style="line-height:40px"></span>-->
+        <!--        </xblock>-->
     </div>
     <table class="reply-list" lay-filter="user">
 
     </table>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-normal" lay-event="show">详细</a>
-        <a class="layui-btn layui-btn-mini" lay-event="pass" >通过</a>
-        <a class="layui-btn layui-btn-danger layui-btn-mini btn-delete" lay-event="return">打回</a>
     </script>
 </div>
 <script th:inline="none">
@@ -75,7 +73,7 @@
 
         table.render({
             elem: '.reply-list',
-            url: '/reply-list/showReply',
+            url: '/reply-list/showHReply',
             cellMinWidth: 95,
             page: true,
             height: "312",
@@ -93,37 +91,20 @@
                         return day(d.duration);
                     }
                 },
+                {field: 'result', title: '结果', minWidth: 80, align: "center", templet:function (d) {
+                        if (d.result == 1){
+                            return "通过";
+                        }else {
+                            return "未通过";
+                        }
+                    }},
                 {field: 'right', title: '操作', align: 'center', minWidth: 200, toolbar: "#barDemo"}
 
             ]]
         });
         table.on('tool(user)', function (obj) {
             var data = obj.data;
-            if (obj.event == 'return'){
-                layer.confirm('真的要打回这个申请吗？', function (index) {
-                    $.ajax({
-                        url: '/reply-list/deptleaderapprove',
-                        data: {'processInstanceId': data.processInstanceId,'deptleaderapprove':false},
-                        method: 'get',
-                        contentType: 'json',
-                        //执行完成回调函数
-                        success: function (data) {
-                            console.log(data)
-                            if (data.status == 200) {
-                                layer.close(index);
-                                layer.msg("成功打回", {icon: 6});
-                                //表格刷新
-                                table.reload('ReplyListTable', {});
-                            } else {
-                                layer.msg("打回失败", {icon: 5});
-
-                                layer.alert(data.data)
-                            }
-                        }
-                    })
-                    layer.close(index);
-                });
-            }else if (obj.event == 'show'){
+            if (obj.event == 'show'){
                 console.log(data.id)
                 layer.open({
                     type: 2,
@@ -136,30 +117,6 @@
                     title: '申请详细',
                     content: "reply-show?id="+data.id
                 })
-            }else if (obj.event == 'pass'){
-                layer.confirm('真的要同意这个申请吗？', function (index) {
-                    $.ajax({
-                        url: '/reply-list/deptleaderapprove',
-                        data: {'processInstanceId': data.processInstanceId,'deptleaderapprove':true},
-                        method: 'get',
-                        contentType: 'json',
-                        //执行完成回调函数
-                        success: function (data) {
-                            console.log(data)
-                            if (data.status == 200) {
-                                layer.close(index);
-                                layer.msg("请假通过", {icon: 6});
-                                //表格刷新
-                                table.reload('ReplyListTable', {});
-                            } else {
-                                layer.msg("通过失败", {icon: 5});
-
-                                layer.alert(data.data)
-                            }
-                        }
-                    })
-                    layer.close(index);
-                });
             }
         })
 

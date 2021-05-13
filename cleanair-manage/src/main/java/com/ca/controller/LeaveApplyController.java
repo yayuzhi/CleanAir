@@ -1,6 +1,7 @@
 package com.ca.controller;
 
 
+import com.ca.pojo.HisLeaveApply;
 import com.ca.pojo.Item;
 import com.ca.pojo.LeaveApply;
 import com.ca.service.LeaveApplyService;
@@ -10,6 +11,7 @@ import com.ca.vo.LayUITbale;
 import com.ca.vo.RunApplyTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,6 +68,7 @@ public class LeaveApplyController {
 
     /**
      * 显示 申请的详细数据
+     *
      * @param id
      * @return
      */
@@ -78,6 +81,7 @@ public class LeaveApplyController {
 
     /**
      * 对申请信息进行修改
+     *
      * @param leaveApply
      * @return
      */
@@ -90,14 +94,30 @@ public class LeaveApplyController {
 
     /**
      * 取消申请
+     *
      * @param id
      * @return
      */
     @RequestMapping("/cancel")
     @ResponseBody
-    public JsonResult cancelApply(int id){
-        String processInstanceId =leaveApplyService.findApplyById(id).getProcessInstanceId();
-        leaveApplyService.cancelApply(processInstanceId,id);
+    public JsonResult cancelApply(int id) {
+        String processInstanceId = leaveApplyService.findApplyById(id).getProcessInstanceId();
+        leaveApplyService.cancelApply(processInstanceId, id);
         return JsonResult.success("cancel ok");
+    }
+
+    @RequestMapping("showHleaveApply")
+    @ResponseBody
+    public String showHleaveApply(int page, int limit) {
+        //拿到查询开始的 数字
+        int page1 = (page - 1) * limit;
+        //拿到用户的名字
+        String username = ShiroUtils.getAdminname();
+        Map map = leaveApplyService.findhApplyById(page1, limit, username);
+        int count = Integer.parseInt(map.get("count").toString());
+
+        List<LeaveApply> leaveApplyList = (List<LeaveApply>) map.get("leaveApplyList");
+        return new LayUITbale().LayUIResponseByLeaveApply(count,leaveApplyList);
+//        return "ok";
     }
 }

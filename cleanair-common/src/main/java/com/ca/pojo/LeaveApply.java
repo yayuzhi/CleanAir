@@ -1,6 +1,7 @@
 package com.ca.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,5 +36,8 @@ public class LeaveApply extends BasePojo {
 
     private String reason;//请假原因
 
+    private Boolean result; //结果信息
 
+    @TableField(exist = false)
+    private String applicant; //申请人
 }
